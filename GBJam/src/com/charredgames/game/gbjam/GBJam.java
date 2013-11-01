@@ -6,8 +6,14 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.util.Random;
 
 import javax.swing.JFrame;
+
+import com.charredgames.game.gbjam.graphics.Screen;
+import com.charredgames.game.gbjam.graphics.Sprite;
+import com.charredgames.game.gbjam.mob.Mob;
+import com.charredgames.game.gbjam.mob.Player;
 
 public class GBJam extends Canvas implements Runnable{
 
@@ -24,12 +30,29 @@ public class GBJam extends Canvas implements Runnable{
 	private boolean isRunning = false;
 	private BufferedImage img = new BufferedImage(_WIDTH, _HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private int[] pixels = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
+	private Random rand = new Random();
+	
+	private Screen screen;
+	private Keyboard keyboard;
+	private Player player;
 	
 	private void tick(){
+		keyboard.update();
+		player.update();
+		Controller.updateMobs();
 		
+		new Mob(rand.nextInt(_WIDTH), rand.nextInt(_HEIGHT), 0, Sprite.mob);
 	}
 	
 	private void render(){
+		
+		screen.clear();
+		screen.setOffset(0, 0);
+		
+		Controller.renderMobs(screen);
+		player.render(screen);
+		
+		for(int i = 0; i < pixels.length; i ++) pixels[i] = screen.pixels[i];
 		
 		g.drawImage(img, 0, 0, window.getWidth(), window.getHeight(), null);
 		
@@ -45,7 +68,30 @@ public class GBJam extends Canvas implements Runnable{
 	}
 	
 	public void run(){
-		while(isRunning) render();
+		long lastTime = System.nanoTime();
+		long timer = System.currentTimeMillis();
+		final double nanoSeconds = 1000000000.0 / _DESIREDTPS;
+		double delta = 0;
+		int frames = 0, ticks = 0;
+		requestFocus();
+		while(isRunning){
+			long now = System.nanoTime();
+			delta+= (now - lastTime) / nanoSeconds;
+			lastTime = now;
+			while(delta >= 1){
+				tick();
+				ticks++;
+				delta--;
+			}
+			render();
+			frames++;
+			if((System.currentTimeMillis() - timer) > 1000){
+				timer += 1000;
+				window.setTitle(title + " (" + ticks + " TPS, " + frames + "FPS)");
+				ticks = 0;
+				frames = 0;
+			}
+		}
 		stop();
 	}
 	
@@ -53,6 +99,10 @@ public class GBJam extends Canvas implements Runnable{
 		Dimension wSize = new Dimension(_WIDTH * _SCALE, _HEIGHT * _SCALE);
 		setPreferredSize(wSize);
 		window = new JFrame();
+		screen = new Screen(_WIDTH, _HEIGHT);
+		keyboard = new Keyboard();
+		addKeyListener(keyboard);
+		player = new Player(keyboard);
 	}
 	
 	public static void main(String[] args){
