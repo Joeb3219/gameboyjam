@@ -10,6 +10,8 @@ public class Sprite {
 	public static Sprite testSprite = new Sprite(16, 0xFF448844);
 	public static Sprite mob = new Sprite(1, 0xFFFF88BB);
 	
+	public static Sprite nullSprite = new Sprite(16, 0xFF222222);
+	
 	public Sprite(int size, int x, int y, SpriteSheet spriteSheet){
 		this.size = size;
 		this.x = x;

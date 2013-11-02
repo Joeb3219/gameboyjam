@@ -1,12 +1,16 @@
 package com.charredgames.game.gbjam;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.charredgames.game.gbjam.graphics.Screen;
+import com.charredgames.game.gbjam.graphics.Tile;
 import com.charredgames.game.gbjam.mob.Mob;
 
 public class Controller {
 
+	public static Map<Integer, Tile> tileColours = new HashMap<Integer, Tile>();
 	public static ArrayList<Mob> mobs = new ArrayList<Mob>();
 	public static ArrayList<Mob> removeMobs = new ArrayList<Mob>();
 	
@@ -35,6 +39,10 @@ public class Controller {
 			else removeMobs.add(mob);
 		}
 		removeOldMobs();
+	}
+	
+	public static void addTile(int identifier, Tile tile){
+		tileColours.put(identifier, tile);
 	}
 	
 }

@@ -15,7 +15,7 @@ public class Screen {
 	}
 	
 	public void clear(){
-		for(int i = 0; i < pixels.length; i++) pixels[i] = 0;
+		for(int i = 0; i < pixels.length; i++) pixels[i] = 0xFF222222;
 	}
 	
 	public void setOffset(int xOffset, int yOffset){
