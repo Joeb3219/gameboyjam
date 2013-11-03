@@ -1,6 +1,7 @@
 package com.charredgames.game.gbjam;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
@@ -10,16 +11,30 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 
+import com.charredgames.game.gbjam.graphics.GameImage;
 import com.charredgames.game.gbjam.graphics.Screen;
-import com.charredgames.game.gbjam.graphics.Sprite;
+import com.charredgames.game.gbjam.level.Level;
 import com.charredgames.game.gbjam.mob.Mob;
 import com.charredgames.game.gbjam.mob.Player;
 
+/**
+ * @author Joe Boyle <joe@charredgames.com>
+ * @version 1.0.0
+ * @since Nov 3, 2013
+ */
+/**
+ * @author Joe Boyle <joe@charredgames.com>
+ * @since Nov 3, 2013
+ */
+/**
+ * @author Joe Boyle <joe@charredgames.com>
+ * @since Nov 3, 2013
+ */
 public class GBJam extends Canvas implements Runnable{
 
 	public static final int _WIDTH = 160;
 	public static final int _HEIGHT = 144;
-	public static final int _SCALE = 3;
+	public static final int _SCALE = 2;
 	public static final int _DESIREDTPS = 60;
 	public static String title = "GBJam";
 	
@@ -35,30 +50,76 @@ public class GBJam extends Canvas implements Runnable{
 	private Screen screen;
 	private Keyboard keyboard;
 	private Player player;
+	private Mob mob = Mob.testing;
+	private Level level = Level.spawnLevel;
+	private int HUDHeight = 60;
 	
+	/**
+	 * @author Joe Boyle <joe@charredgames.com>
+	 * @since Nov 3, 2013
+	 * @description Stuff that shouldn't depend on FPS -> updates.
+	 */
 	private void tick(){
 		keyboard.update();
 		player.update();
 		Controller.updateMobs();
 		
-		new Mob(rand.nextInt(_WIDTH), rand.nextInt(_HEIGHT), 0, Sprite.mob);
+		//new Mob(rand.nextInt(_WIDTH), rand.nextInt(_HEIGHT), 0, Sprite.mob);
 	}
 	
+	/**
+	 * @author Joe Boyle <joe@charredgames.com>
+	 * @since Nov 3, 2013
+	 * @description Called every frame. Draws everything to the screen.
+	 */
 	private void render(){
 		
 		screen.clear();
-		screen.setOffset(0, 0);
+		
+		int xOffset = (player.getX()) - (_WIDTH/2);
+		int yOffset = (player.getY()) - (_HEIGHT/2);
+		
+		level.render(xOffset, yOffset, screen);
 		
 		Controller.renderMobs(screen);
 		player.render(screen);
 		
 		for(int i = 0; i < pixels.length; i ++) pixels[i] = screen.pixels[i];
 		
-		g.drawImage(img, 0, 0, window.getWidth(), window.getHeight(), null);
+		g.drawImage(img, 0, HUDHeight, getWindowWidth(), getWindowHeight() - HUDHeight, null);
+
+		loadHUD();
 		
 		buffer.show();
 	}
 	
+	/**
+	 * @author Joe Boyle <joe@charredgames.com>
+	 * @since Nov 3, 2013
+	 * @description Method to clean up the render() method. Draws all of the HUD aspects.
+	 */
+	private void loadHUD(){
+		g.setColor(Color.GRAY);
+		g.fillRect(0, 0, getWindowWidth(), HUDHeight);
+		int healthX = 3;
+		int healthY = 3;
+		for(int i = 0; i < player.getHealth(); i++){
+			if(i%2==0){
+				g.drawImage(GameImage.HEART_LEFT.getImage(), healthX, healthY, GameImage.HEART_LEFT.getImage().getWidth(), GameImage.HEART_LEFT.getImage().getHeight(), null);
+				healthX += 8;
+			}
+			else {
+				g.drawImage(GameImage.HEART_RIGHT.getImage(), healthX, healthY, GameImage.HEART_RIGHT.getImage().getWidth(), GameImage.HEART_RIGHT.getImage().getHeight(), null);
+				healthX += 10;
+			}
+		}
+	}
+	
+	/**
+	 * @author Joe Boyle <joe@charredgames.com>
+	 * @since Nov 3, 2013
+	 * @description Creates the buffer strategy && inits different variables.
+	 */
 	private void init(){
 		createBufferStrategy(3);
 		buffer = getBufferStrategy();
@@ -67,6 +128,11 @@ public class GBJam extends Canvas implements Runnable{
 		for(int i = 0; i < pixels.length; i++) pixels[i] = 0xFF222222;
 	}
 	
+	/**
+	 * @author Joe Boyle <joe@charredgames.com>
+	 * @since Nov 3, 2013
+	 * @description Implements Runnable.
+	 */
 	public void run(){
 		long lastTime = System.nanoTime();
 		long timer = System.currentTimeMillis();
@@ -95,6 +161,11 @@ public class GBJam extends Canvas implements Runnable{
 		stop();
 	}
 	
+	/**
+	 * @author Joe Boyle <joe@charredgames.com>
+	 * @since Nov 3, 2013
+	 * @description Creates the window, keyboard, etc. Sets up the game for launch.
+	 */
 	public GBJam(){
 		Dimension wSize = new Dimension(_WIDTH * _SCALE, _HEIGHT * _SCALE);
 		setPreferredSize(wSize);
@@ -103,6 +174,7 @@ public class GBJam extends Canvas implements Runnable{
 		keyboard = new Keyboard();
 		addKeyListener(keyboard);
 		player = new Player(keyboard);
+		player.reset();
 	}
 	
 	public static void main(String[] args){
@@ -118,7 +190,12 @@ public class GBJam extends Canvas implements Runnable{
 		
 		game.start();
 	}
-	
+
+	/**
+	 * @author Joe Boyle <joe@charredgames.com>
+	 * @since Nov 3, 2013
+	 * @description Called when the game starts; Creates the thread.
+	 */
 	private void start(){
 		isRunning = true;
 		init();
@@ -126,8 +203,32 @@ public class GBJam extends Canvas implements Runnable{
 		mainThread.start();
 	}
 	
+	/**
+	 * @author Joe Boyle <joe@charredgames.com>
+	 * @since Nov 3, 2013
+	 * @description Called when the game stops.
+	 */
 	private void stop(){
 		try {mainThread.join();} catch (InterruptedException e) {e.printStackTrace();}
 	}
+
+	/**
+	 * @author Joe Boyle <joe@charredgames.com>
+	 * @since Nov 3, 2013
+	 * @return Returns the correct height of the window.
+	 */
+	public static int getWindowHeight(){
+		return _HEIGHT * _SCALE;
+	}
+	
+	/**
+	 * @author Joe Boyle <joe@charredgames.com>
+	 * @since Nov 3, 2013
+	 * @return Returns the correct Width of the window.
+	 */
+	public static int getWindowWidth(){
+		return _WIDTH * _SCALE;
+	}
+
 	
 }

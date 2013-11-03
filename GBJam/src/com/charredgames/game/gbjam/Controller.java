@@ -8,11 +8,26 @@ import com.charredgames.game.gbjam.graphics.Screen;
 import com.charredgames.game.gbjam.graphics.Tile;
 import com.charredgames.game.gbjam.mob.Mob;
 
+/**
+ * @author Joe Boyle <joe@charredgames.com>
+ * @since Nov 3, 2013
+ */
 public class Controller {
 
 	public static Map<Integer, Tile> tileColours = new HashMap<Integer, Tile>();
+	public static Map<Integer, Mob> mobIdentifiers = new HashMap<Integer, Mob>();
 	public static ArrayList<Mob> mobs = new ArrayList<Mob>();
 	public static ArrayList<Mob> removeMobs = new ArrayList<Mob>();
+	
+	/**
+	 * @author Joe Boyle <joe@charredgames.com>
+	 * @since Nov 3, 2013
+	 * Adds mob's id colour to a hashmap w/ mob type.
+	 * Allows reading mob coords from map.
+	 */
+	public static void addMobIdentifier(int identifier, Mob mob){
+		mobIdentifiers.put(identifier, mob);
+	}
 	
 	public static void addMob(Mob mob){
 		mobs.add(mob);

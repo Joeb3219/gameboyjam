@@ -7,8 +7,12 @@ public class Sprite {
 	public int[] pixels;
 	private SpriteSheet spriteSheet;
 	
+	public static Sprite PLAYER = new Sprite(16, 0, 0, SpriteSheet.CHARACTERS);
+	
+	public static Sprite GRASS = new Sprite(16, 0, 0, SpriteSheet.SCENERY);
+	
 	public static Sprite testSprite = new Sprite(16, 0xFF448844);
-	public static Sprite mob = new Sprite(1, 0xFFFF88BB);
+	public static Sprite mob = new Sprite(16, 0xFFFF88BB);
 	
 	public static Sprite nullSprite = new Sprite(16, 0xFF222222);
 	
