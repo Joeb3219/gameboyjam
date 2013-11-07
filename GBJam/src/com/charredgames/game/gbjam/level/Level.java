@@ -8,15 +8,21 @@ import javax.imageio.ImageIO;
 
 import com.charredgames.game.gbjam.Controller;
 import com.charredgames.game.gbjam.GBJam;
+import com.charredgames.game.gbjam.entity.Chest;
+import com.charredgames.game.gbjam.entity.Mob;
 import com.charredgames.game.gbjam.graphics.Screen;
 import com.charredgames.game.gbjam.graphics.Tile;
-import com.charredgames.game.gbjam.mob.Mob;
 
+/**
+ * @author Joe Boyle <joe@charredgames.com>
+ * @since Nov 3, 2013
+ */
 public class Level {
 
 	protected int width, height;
 	protected int[] tiles;
 	protected ArrayList<Mob> mobs = new ArrayList<Mob>();
+	protected ArrayList<Chest> chests = new ArrayList<Chest>();
 	
 	public static Level spawnLevel = new Level("/levels/spawnlevel");
 	
@@ -65,6 +71,14 @@ public class Level {
 		int tileColour = tiles[x + y * width];
 		if(Controller.tileColours.containsKey(tileColour)) return Controller.tileColours.get(tileColour);
 		return Tile.nullTile;
+	}
+	
+	public void addChest(Chest chest){
+		chests.add(chest);
+	}
+	
+	public ArrayList<Chest> getChests(){
+		return chests;
 	}
 	
 }

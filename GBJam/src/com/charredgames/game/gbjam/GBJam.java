@@ -7,34 +7,32 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import javax.swing.JFrame;
 
+import com.charredgames.game.gbjam.entity.Chest;
+import com.charredgames.game.gbjam.entity.Mob;
+import com.charredgames.game.gbjam.entity.Player;
 import com.charredgames.game.gbjam.graphics.GameImage;
 import com.charredgames.game.gbjam.graphics.Screen;
+import com.charredgames.game.gbjam.inventory.Inventory;
+import com.charredgames.game.gbjam.inventory.Item;
+import com.charredgames.game.gbjam.inventory.ItemType;
 import com.charredgames.game.gbjam.level.Level;
-import com.charredgames.game.gbjam.mob.Mob;
-import com.charredgames.game.gbjam.mob.Player;
 
 /**
  * @author Joe Boyle <joe@charredgames.com>
  * @version 1.0.0
  * @since Nov 3, 2013
  */
-/**
- * @author Joe Boyle <joe@charredgames.com>
- * @since Nov 3, 2013
- */
-/**
- * @author Joe Boyle <joe@charredgames.com>
- * @since Nov 3, 2013
- */
+
 public class GBJam extends Canvas implements Runnable{
 
 	public static final int _WIDTH = 160;
 	public static final int _HEIGHT = 144;
-	public static final int _SCALE = 2;
+	public static final int _SCALE = 3;
 	public static final int _DESIREDTPS = 60;
 	public static String title = "GBJam";
 	
@@ -52,54 +50,74 @@ public class GBJam extends Canvas implements Runnable{
 	private Player player;
 	private Mob mob = Mob.testing;
 	private Level level = Level.spawnLevel;
-	private int HUDHeight = 60;
+	private int HUDHeight = 40;
+	private GameState gameState = GameState.GAME;
 	
-	/**
-	 * @author Joe Boyle <joe@charredgames.com>
-	 * @since Nov 3, 2013
-	 * @description Stuff that shouldn't depend on FPS -> updates.
-	 */
 	private void tick(){
+		Controller.update();
 		keyboard.update();
-		player.update();
-		Controller.updateMobs();
-		
-		//new Mob(rand.nextInt(_WIDTH), rand.nextInt(_HEIGHT), 0, Sprite.mob);
+		if(gameState == GameState.GAME){
+			player.update();
+			Controller.updateMobs();
+		}
+		if(keyboard.start && (Controller.tickCount%8 == 0)){
+			if(gameState == GameState.INVENTORY) gameState = GameState.GAME;
+			else gameState = GameState.INVENTORY;
+		}
 	}
 	
-	/**
-	 * @author Joe Boyle <joe@charredgames.com>
-	 * @since Nov 3, 2013
-	 * @description Called every frame. Draws everything to the screen.
-	 */
 	private void render(){
 		
 		screen.clear();
 		
 		int xOffset = (player.getX()) - (_WIDTH/2);
 		int yOffset = (player.getY()) - (_HEIGHT/2);
+		int maxX = ((256 * 16) - (_WIDTH/2));
+		int maxY = ((256 * 16) - (_HEIGHT/2));
+		if(xOffset < 0) xOffset = 0;
+		if(yOffset < 0) yOffset = 0;
+		if(xOffset > maxX) xOffset = maxX;
+		if(yOffset > maxY) yOffset = maxY;
 		
 		level.render(xOffset, yOffset, screen);
-		
+		for(Chest chest : level.getChests()) chest.render(screen);
 		Controller.renderMobs(screen);
 		player.render(screen);
 		
 		for(int i = 0; i < pixels.length; i ++) pixels[i] = screen.pixels[i];
 		
-		g.drawImage(img, 0, HUDHeight, getWindowWidth(), getWindowHeight() - HUDHeight, null);
-
+		g.drawImage(img, 0, 0, getWindowWidth(), getWindowHeight(), null);
+		
 		loadHUD();
+		
+		if(gameState == GameState.INVENTORY) loadInventory();
 		
 		buffer.show();
 	}
 	
-	/**
-	 * @author Joe Boyle <joe@charredgames.com>
-	 * @since Nov 3, 2013
-	 * @description Method to clean up the render() method. Draws all of the HUD aspects.
-	 */
+	private void loadInventory(){
+		if(keyboard.down || keyboard.up) player.getInventory().getNextItem();
+		g.setColor(Color.ORANGE);
+		int xPos = (getWindowWidth()/2)-150;
+		int width = (getWindowWidth()) - (xPos*2);
+		int yPos = 100;
+		g.fillRect(xPos, yPos, width, getWindowHeight()-100);
+		for(Entry<Item, Integer> entry : player.getInventory().getItems().entrySet()){
+			Item item = entry.getKey();
+			int amount = entry.getValue();
+			yPos += 20;
+			g.setColor(Color.WHITE);
+			g.drawImage(item.getImage().getImage(), xPos + 10, yPos, item.getImage().getImage().getWidth(), item.getImage().getImage().getHeight(), null);
+			if(amount > 1) g.drawString(item.getName() + ": " + amount, xPos + 30, yPos + 12);
+			else g.drawString(item.getName(), xPos + 30, yPos + 12);
+			g.setColor(Color.BLACK);
+			if(item == player.getInventory().getSelectedItem()) g.fillRect((xPos + width) - 180, yPos, 16, 16);
+		}
+		System.out.println(player.getInventory().getItem(1).getName());
+	}
+
 	private void loadHUD(){
-		g.setColor(Color.GRAY);
+		g.setColor(new Color(44, 44, 44, 100));
 		g.fillRect(0, 0, getWindowWidth(), HUDHeight);
 		int healthX = 3;
 		int healthY = 3;
@@ -113,26 +131,26 @@ public class GBJam extends Canvas implements Runnable{
 				healthX += 10;
 			}
 		}
+		g.setColor(Color.WHITE);
+		g.drawImage(GameImage.MONEY.getImage(), 3, 20, GameImage.MONEY.getImage().getWidth(), GameImage.MONEY.getImage().getHeight(), null);
+		g.drawString(Controller.getStringMoney(), 22, 33);
 	}
 	
-	/**
-	 * @author Joe Boyle <joe@charredgames.com>
-	 * @since Nov 3, 2013
-	 * @description Creates the buffer strategy && inits different variables.
-	 */
+	private void reset(){
+		player.reset();
+		Controller.reset();
+	}
+	
 	private void init(){
 		createBufferStrategy(3);
 		buffer = getBufferStrategy();
 		g = buffer.getDrawGraphics();
 		
 		for(int i = 0; i < pixels.length; i++) pixels[i] = 0xFF222222;
+		
+		reset();
 	}
 	
-	/**
-	 * @author Joe Boyle <joe@charredgames.com>
-	 * @since Nov 3, 2013
-	 * @description Implements Runnable.
-	 */
 	public void run(){
 		long lastTime = System.nanoTime();
 		long timer = System.currentTimeMillis();
@@ -161,11 +179,6 @@ public class GBJam extends Canvas implements Runnable{
 		stop();
 	}
 	
-	/**
-	 * @author Joe Boyle <joe@charredgames.com>
-	 * @since Nov 3, 2013
-	 * @description Creates the window, keyboard, etc. Sets up the game for launch.
-	 */
 	public GBJam(){
 		Dimension wSize = new Dimension(_WIDTH * _SCALE, _HEIGHT * _SCALE);
 		setPreferredSize(wSize);
@@ -175,6 +188,10 @@ public class GBJam extends Canvas implements Runnable{
 		addKeyListener(keyboard);
 		player = new Player(keyboard);
 		player.reset();
+		player.setLevel(level);
+		Inventory chest = new Inventory();
+		chest.addItem(Item.APPLE, 10);
+		level.addChest(new Chest(level, 20, 20, 5, chest));
 	}
 	
 	public static void main(String[] args){
@@ -191,11 +208,6 @@ public class GBJam extends Canvas implements Runnable{
 		game.start();
 	}
 
-	/**
-	 * @author Joe Boyle <joe@charredgames.com>
-	 * @since Nov 3, 2013
-	 * @description Called when the game starts; Creates the thread.
-	 */
 	private void start(){
 		isRunning = true;
 		init();
@@ -203,11 +215,6 @@ public class GBJam extends Canvas implements Runnable{
 		mainThread.start();
 	}
 	
-	/**
-	 * @author Joe Boyle <joe@charredgames.com>
-	 * @since Nov 3, 2013
-	 * @description Called when the game stops.
-	 */
 	private void stop(){
 		try {mainThread.join();} catch (InterruptedException e) {e.printStackTrace();}
 	}

@@ -12,6 +12,10 @@ public class GameImage {
 	
 	public static GameImage HEART_LEFT = new GameImage("/textures/heart_left.png");
 	public static GameImage HEART_RIGHT = new GameImage("/textures/heart_right.png");
+	public static GameImage MONEY = new GameImage("/textures/money.png");
+	
+	public static GameImage ITEM_SWORD = new GameImage("/textures/money.png");
+	public static GameImage ITEM_APPLE = new GameImage("/textures/money.png");
 	
 	public GameImage(String path){
 		this.path = path;

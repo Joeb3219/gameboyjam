@@ -1,4 +1,4 @@
-package com.charredgames.game.gbjam.mob;
+package com.charredgames.game.gbjam.entity;
 
 public enum MobMood {
 

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.charredgames.game.gbjam.entity.Mob;
 import com.charredgames.game.gbjam.graphics.Screen;
 import com.charredgames.game.gbjam.graphics.Tile;
-import com.charredgames.game.gbjam.mob.Mob;
 
 /**
  * @author Joe Boyle <joe@charredgames.com>
@@ -18,6 +18,18 @@ public class Controller {
 	public static Map<Integer, Mob> mobIdentifiers = new HashMap<Integer, Mob>();
 	public static ArrayList<Mob> mobs = new ArrayList<Mob>();
 	public static ArrayList<Mob> removeMobs = new ArrayList<Mob>();
+	
+	public static int money = 0;
+	public static int tickCount = 0;
+
+	public static void update(){
+		tickCount++;
+	}
+	
+	public static void reset(){
+		money = 0;
+		tickCount = 0;
+	}
 	
 	/**
 	 * @author Joe Boyle <joe@charredgames.com>
@@ -42,7 +54,7 @@ public class Controller {
 	
 	public static void updateMobs(){
 		for(Mob mob : mobs){
-			if(mob.isAlive()) mob.update();
+			if(mob.doesExist()) mob.update();
 			else removeMobs.add(mob);
 		}
 		removeOldMobs();
@@ -50,7 +62,7 @@ public class Controller {
 	
 	public static void renderMobs(Screen screen){
 		for(Mob mob : mobs){
-			if(mob.isAlive()) mob.render(screen);
+			if(mob.doesExist()) mob.render(screen);
 			else removeMobs.add(mob);
 		}
 		removeOldMobs();
@@ -58,6 +70,18 @@ public class Controller {
 	
 	public static void addTile(int identifier, Tile tile){
 		tileColours.put(identifier, tile);
+	}
+	
+	public static String getStringMoney(){
+		return String.format("%07d", money);
+	}
+	
+	public static int getMoney(){
+		return money;
+	}
+	
+	public static void addMoney(int num){
+		money += num;
 	}
 	
 }
