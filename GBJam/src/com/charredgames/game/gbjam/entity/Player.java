@@ -19,7 +19,8 @@ public class Player extends Mob{
 		this.sprite = Sprite.PLAYER_FORWARD;
 		type = MobType.PLAYER;
 		inventory.addItem(Item.SWORD, 1);
-		inventory.addItem(Item.APPLE, 2);
+		inventory.addItem(Item.APPLE, 200);
+		inventory.addItem(Item.NULL, 10);
 	}
 	
 	public void reset(){

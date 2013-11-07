@@ -9,6 +9,7 @@ import com.charredgames.game.gbjam.graphics.GameImage;
 public class Item {
 
 	private String name;
+	@SuppressWarnings("unused")
 	private int id, cost, value;
 	private ItemType type;
 	private GameImage inventoryImage;

@@ -12,9 +12,9 @@ public class Screen {
 	public int[] pixels;
 	private int[] tiles;
 	
-	public Screen(int width, int height){
-		this.height = height;
-		this.width = width;
+	public Screen(int w, int h){
+		height = h;
+		width = w;
 		pixels = new int[height * width];
 	}
 	

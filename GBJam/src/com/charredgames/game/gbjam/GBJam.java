@@ -18,8 +18,8 @@ import com.charredgames.game.gbjam.entity.Player;
 import com.charredgames.game.gbjam.graphics.GameImage;
 import com.charredgames.game.gbjam.graphics.Screen;
 import com.charredgames.game.gbjam.inventory.Inventory;
+import com.charredgames.game.gbjam.inventory.InventorySlot;
 import com.charredgames.game.gbjam.inventory.Item;
-import com.charredgames.game.gbjam.inventory.ItemType;
 import com.charredgames.game.gbjam.level.Level;
 
 /**
@@ -30,9 +30,10 @@ import com.charredgames.game.gbjam.level.Level;
 
 public class GBJam extends Canvas implements Runnable{
 
+	private static final long serialVersionUID = 1L;
 	public static final int _WIDTH = 160;
 	public static final int _HEIGHT = 144;
-	public static final int _SCALE = 3;
+	public static final int _SCALE = 4;
 	public static final int _DESIREDTPS = 60;
 	public static String title = "GBJam";
 	
@@ -43,11 +44,13 @@ public class GBJam extends Canvas implements Runnable{
 	private boolean isRunning = false;
 	private BufferedImage img = new BufferedImage(_WIDTH, _HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private int[] pixels = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
+	@SuppressWarnings("unused")
 	private Random rand = new Random();
 	
 	private Screen screen;
 	private Keyboard keyboard;
 	private Player player;
+	@SuppressWarnings("unused")
 	private Mob mob = Mob.testing;
 	private Level level = Level.spawnLevel;
 	private int HUDHeight = 40;
@@ -102,18 +105,18 @@ public class GBJam extends Canvas implements Runnable{
 		int width = (getWindowWidth()) - (xPos*2);
 		int yPos = 100;
 		g.fillRect(xPos, yPos, width, getWindowHeight()-100);
-		for(Entry<Item, Integer> entry : player.getInventory().getItems().entrySet()){
-			Item item = entry.getKey();
-			int amount = entry.getValue();
+		for(Entry<Integer, InventorySlot> entry : player.getInventory().getSlots().entrySet()){
+			if(entry.getValue() == null) continue;
+			Item item = entry.getValue().getItem();
+			int amount = entry.getValue().getQuantity();
 			yPos += 20;
 			g.setColor(Color.WHITE);
 			g.drawImage(item.getImage().getImage(), xPos + 10, yPos, item.getImage().getImage().getWidth(), item.getImage().getImage().getHeight(), null);
 			if(amount > 1) g.drawString(item.getName() + ": " + amount, xPos + 30, yPos + 12);
 			else g.drawString(item.getName(), xPos + 30, yPos + 12);
 			g.setColor(Color.BLACK);
-			if(item == player.getInventory().getSelectedItem()) g.fillRect((xPos + width) - 180, yPos, 16, 16);
-		}
-		System.out.println(player.getInventory().getItem(1).getName());
+			if(item == player.getInventory().getSelectedItem().getItem()) g.fillRect((xPos + width) - 180, yPos, 16, 16);
+			}
 	}
 
 	private void loadHUD(){
