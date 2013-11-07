@@ -23,7 +23,7 @@ import com.charredgames.game.gbjam.inventory.Item;
 import com.charredgames.game.gbjam.level.Level;
 
 /**
- * @author Joe Boyle <joe@charredgames.com>
+ * @author joeb3219 <joe@charredgames.com>
  * @version 1.0.0
  * @since Nov 3, 2013
  */
@@ -33,7 +33,7 @@ public class GBJam extends Canvas implements Runnable{
 	private static final long serialVersionUID = 1L;
 	public static final int _WIDTH = 160;
 	public static final int _HEIGHT = 144;
-	public static final int _SCALE = 4;
+	public static final int _SCALE = 3;
 	public static final int _DESIREDTPS = 60;
 	public static String title = "GBJam";
 	
@@ -116,7 +116,16 @@ public class GBJam extends Canvas implements Runnable{
 			else g.drawString(item.getName(), xPos + 30, yPos + 12);
 			g.setColor(Color.BLACK);
 			if(item == player.getInventory().getSelectedItem().getItem()) g.fillRect((xPos + width) - 180, yPos, 16, 16);
+		}
+		if(keyboard.a){
+			if(player.getInventory().getSelectedItem().getItem() == Item.APPLE){
+				player.heal(Item.APPLE.getValue());
+				player.getInventory().removeItem(Item.APPLE, 1);
 			}
+			if(player.getInventory().getSelectedItem().getItem() == Item.SWORD){
+				
+			}
+		}
 	}
 
 	private void loadHUD(){
@@ -223,7 +232,7 @@ public class GBJam extends Canvas implements Runnable{
 	}
 
 	/**
-	 * @author Joe Boyle <joe@charredgames.com>
+	 * @author joeb3219 <joe@charredgames.com>
 	 * @since Nov 3, 2013
 	 * @return Returns the correct height of the window.
 	 */
@@ -232,7 +241,7 @@ public class GBJam extends Canvas implements Runnable{
 	}
 	
 	/**
-	 * @author Joe Boyle <joe@charredgames.com>
+	 * @author joeb3219 <joe@charredgames.com>
 	 * @since Nov 3, 2013
 	 * @return Returns the correct Width of the window.
 	 */

@@ -5,7 +5,7 @@ import com.charredgames.game.gbjam.inventory.Inventory;
 import com.charredgames.game.gbjam.level.Level;
 
 /**
- * @author Joe Boyle <joe@charredgames.com>
+ * @author joeb3219 <joe@charredgames.com>
  * @since Nov 5, 2013
  */
 public abstract class Entity {

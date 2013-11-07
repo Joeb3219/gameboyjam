@@ -2,7 +2,7 @@ package com.charredgames.game.gbjam.graphics;
 
 
 /**
- * @author Joe Boyle <joe@charredgames.com>
+ * @author joeb3219 <joe@charredgames.com>
  * @since Nov 3, 2013
  */
 public class Sprite {

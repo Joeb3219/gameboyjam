@@ -13,8 +13,8 @@ public class GameImage {
 	public static GameImage HEART_RIGHT = new GameImage("/textures/heart_right.png");
 	public static GameImage MONEY = new GameImage("/textures/money.png");
 	
-	public static GameImage ITEM_SWORD = new GameImage("/textures/money.png");
-	public static GameImage ITEM_APPLE = new GameImage("/textures/money.png");
+	public static GameImage ITEM_SWORD = new GameImage("/textures/item_sword.png");
+	public static GameImage ITEM_APPLE = new GameImage("/textures/item_apple.png");
 	
 	public GameImage(String path){
 		try{

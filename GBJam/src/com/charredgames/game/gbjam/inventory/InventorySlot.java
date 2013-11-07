@@ -1,7 +1,7 @@
 package com.charredgames.game.gbjam.inventory;
 
 /**
- * @author Joe Boyle <joe@charredgames.com>
+ * @author joeb3219 <joe@charredgames.com>
  * @since Nov 6, 2013
  */
 public class InventorySlot {

@@ -5,7 +5,7 @@ import java.util.Random;
 import com.charredgames.game.gbjam.Controller;
 
 /**
- * @author Joe Boyle <joe@charredgames.com>
+ * @author joeb3219 <joe@charredgames.com>
  * @since Nov 3, 2013
  */
 public class Tile {

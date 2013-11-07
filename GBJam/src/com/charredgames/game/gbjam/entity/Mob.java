@@ -8,7 +8,7 @@ import com.charredgames.game.gbjam.inventory.Inventory;
 import com.charredgames.game.gbjam.level.Level;
 
 /**
- * @author Joe Boyle <joe@charredgames.com>
+ * @author joeb3219 <joe@charredgames.com>
  * @since Nov 3, 2013
  */
 public class Mob extends Entity{
@@ -52,6 +52,10 @@ public class Mob extends Entity{
 
 	public void damage(int num){
 		health -= num;
+	}
+	
+	public void heal(int num){
+		health += num;
 	}
 	
 	public boolean isMoving(){

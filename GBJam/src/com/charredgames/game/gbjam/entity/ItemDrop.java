@@ -4,7 +4,7 @@ import com.charredgames.game.gbjam.graphics.Screen;
 import com.charredgames.game.gbjam.inventory.Inventory;
 
 /**
- * @author Joe Boyle <joe@charredgames.com>
+ * @author joeb3219 <joe@charredgames.com>
  * @since Nov 5, 2013
  */
 public class ItemDrop extends Entity{

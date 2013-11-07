@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * @author Joe Boyle <joe@charredgames.com>
+ * @author joeb3219 <joe@charredgames.com>
  * @since Nov 5, 2013
  */
 public class Inventory {
@@ -85,7 +85,6 @@ public class Inventory {
 		}
 		else{
 			if(isFull()) return;
-			System.out.println("Here?");
 			slots.put(getEmptySlot(), new InventorySlot(item, amount));
 		}
 	}

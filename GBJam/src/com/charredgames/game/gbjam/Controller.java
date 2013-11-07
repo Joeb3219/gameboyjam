@@ -9,7 +9,7 @@ import com.charredgames.game.gbjam.graphics.Screen;
 import com.charredgames.game.gbjam.graphics.Tile;
 
 /**
- * @author Joe Boyle <joe@charredgames.com>
+ * @author joeb3219 <joe@charredgames.com>
  * @since Nov 3, 2013
  */
 public class Controller {
@@ -32,7 +32,7 @@ public class Controller {
 	}
 	
 	/**
-	 * @author Joe Boyle <joe@charredgames.com>
+	 * @author joeb3219 <joe@charredgames.com>
 	 * @since Nov 3, 2013
 	 * Adds mob's id colour to a hashmap w/ mob type.
 	 * Allows reading mob coords from map.

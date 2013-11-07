@@ -20,7 +20,6 @@ public class Player extends Mob{
 		type = MobType.PLAYER;
 		inventory.addItem(Item.SWORD, 1);
 		inventory.addItem(Item.APPLE, 200);
-		inventory.addItem(Item.NULL, 10);
 	}
 	
 	public void reset(){
@@ -69,5 +68,11 @@ public class Player extends Mob{
 		this.level = level;
 	}
 
-	
+	public void heal(int num){
+		if(health + num <= 20) health += num;
+	}
+
+	public void damage(int num){
+		if(health - num >= 0) health -= num;
+	}
 }

@@ -3,7 +3,7 @@ package com.charredgames.game.gbjam.inventory;
 import com.charredgames.game.gbjam.graphics.GameImage;
 
 /**
- * @author Joe Boyle <joe@charredgames.com>
+ * @author joeb3219 <joe@charredgames.com>
  * @since Nov 5, 2013
  */
 public class Item {
