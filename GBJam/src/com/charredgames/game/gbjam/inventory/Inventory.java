@@ -11,18 +11,24 @@ import java.util.Map.Entry;
 public class Inventory {
 
 	private Map<Integer, InventorySlot> slots = new LinkedHashMap<Integer, InventorySlot>(); //Controlls Inventory slots
-	//private Map<Item, Integer> items = new LinkedHashMap<Item, Integer>(); //Controlls item quantities in inventory.
 	private InventorySlot selectedSlot = new InventorySlot(Item.SWORD, 1);
 	
 	public Inventory(){
 		for(int i = 1; i <= 40; i++) slots.put(i, null);
 	}
 	
+	public int getFirstFullSlot(){
+		for(Entry<Integer, InventorySlot> entry : slots.entrySet()){
+			if(entry.getValue() != null) return entry.getKey();
+		}
+		return 1;
+	}
+	
 	public int getEmptySlot(){
 		for(Entry<Integer, InventorySlot> entry : slots.entrySet()){
 			if(entry.getValue() == null) return entry.getKey();
 		}
-		return 100;
+		return 1;
 	}
 	
 	public boolean isEmpty(){
@@ -92,6 +98,7 @@ public class Inventory {
 	public void removeItem(Item item){
 		for(Entry<Integer, InventorySlot> entry : slots.entrySet()){
 			if(entry.getValue() != null && entry.getValue().getItem() == item){
+				if(selectedSlot.getItem() == item) selectedSlot = getInventorySlot(getFirstFullSlot());
 				slots.put(entry.getKey(), null);
 				break;
 			}

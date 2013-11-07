@@ -51,6 +51,8 @@ public class Player extends Mob{
 		if(moving && level.getTile(x / 16, y / 16).dropped()) Controller.addMoney(1);
 	}
 	
+	
+	
 	public int getHealth(){
 		return health;
 	}

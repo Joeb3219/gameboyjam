@@ -63,9 +63,11 @@ public class GBJam extends Canvas implements Runnable{
 			player.update();
 			Controller.updateMobs();
 		}
-		if(keyboard.start && (Controller.tickCount%8 == 0)){
+		if(keyboard.start && (Controller.tickCount%16 == 0)){
 			if(gameState == GameState.INVENTORY) gameState = GameState.GAME;
 			else gameState = GameState.INVENTORY;
+			if(keyboard.a) keyboard.a = false;
+			if(keyboard.b) keyboard.b = false;
 		}
 	}
 	
@@ -89,7 +91,7 @@ public class GBJam extends Canvas implements Runnable{
 		
 		for(int i = 0; i < pixels.length; i ++) pixels[i] = screen.pixels[i];
 		
-		g.drawImage(img, 0, 0, getWindowWidth(), getWindowHeight(), null);
+		g.drawImage(img, 0, 0, window.getWidth(), window.getHeight(), null);
 		
 		loadHUD();
 		
@@ -100,7 +102,7 @@ public class GBJam extends Canvas implements Runnable{
 	
 	private void loadInventory(){
 		if(keyboard.down || keyboard.up) player.getInventory().getNextItem();
-		g.setColor(Color.ORANGE);
+		g.setColor(new Color(97, 97, 97, 200));
 		int xPos = (getWindowWidth()/2)-150;
 		int width = (getWindowWidth()) - (xPos*2);
 		int yPos = 100;
@@ -146,6 +148,16 @@ public class GBJam extends Canvas implements Runnable{
 		g.setColor(Color.WHITE);
 		g.drawImage(GameImage.MONEY.getImage(), 3, 20, GameImage.MONEY.getImage().getWidth(), GameImage.MONEY.getImage().getHeight(), null);
 		g.drawString(Controller.getStringMoney(), 22, 33);
+		
+		int startingX = 200;
+		int startingY = 15;
+		g.drawString("Selected", startingX, startingY);
+		BufferedImage selectedImg = player.getInventory().getSelectedItem().getItem().getImage().getImage();
+		g.drawImage(selectedImg, startingX + selectedImg.getWidth(), startingY + 5, selectedImg.getWidth(), selectedImg.getHeight(), null);
+		if(player.getInventory().getSelectedItem().getQuantity() > 1) {
+			g.setColor(Color.WHITE);
+			g.drawString(player.getInventory().getSelectedItem().getQuantity() + " ", startingX + selectedImg.getWidth() + 10, startingY + 8 + selectedImg.getHeight());
+		}
 	}
 	
 	private void reset(){
