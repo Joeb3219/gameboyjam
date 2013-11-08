@@ -3,6 +3,7 @@ package com.charredgames.game.gbjam;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -12,11 +13,14 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 
+import sun.net.www.http.Hurryable;
+
 import com.charredgames.game.gbjam.entity.Chest;
 import com.charredgames.game.gbjam.entity.Mob;
 import com.charredgames.game.gbjam.entity.Player;
 import com.charredgames.game.gbjam.graphics.GameImage;
 import com.charredgames.game.gbjam.graphics.Screen;
+import com.charredgames.game.gbjam.graphics.Sprite;
 import com.charredgames.game.gbjam.inventory.Inventory;
 import com.charredgames.game.gbjam.inventory.InventorySlot;
 import com.charredgames.game.gbjam.inventory.Item;
@@ -51,14 +55,20 @@ public class GBJam extends Canvas implements Runnable{
 	private Keyboard keyboard;
 	private Player player;
 	@SuppressWarnings("unused")
-	private Mob mob = Mob.testing;
 	private Level level = Level.spawnLevel;
 	private int HUDHeight = 40;
+	private int HUD_BOTTOM_Height = 60;
+	private boolean showBottomHUD = false;
+	public static Mob BHUD_TARGET = Mob.testing;
 	private GameState gameState = GameState.GAME;
+	public static GameEvent currentEvent = GameEvent.NULL;
+	Font defaultFont;
 	
 	private void tick(){
 		Controller.update();
 		keyboard.update();
+		GameMessage.updateMessages();
+		GameEvent.updateCounter();
 		if(gameState == GameState.GAME){
 			player.update();
 			Controller.updateMobs();
@@ -72,7 +82,7 @@ public class GBJam extends Canvas implements Runnable{
 	}
 	
 	private void render(){
-		
+		g.setFont(defaultFont);
 		screen.clear();
 		
 		int xOffset = (player.getX()) - (_WIDTH/2);
@@ -85,7 +95,9 @@ public class GBJam extends Canvas implements Runnable{
 		if(yOffset > maxY) yOffset = maxY;
 		
 		level.render(xOffset, yOffset, screen);
-		for(Chest chest : level.getChests()) chest.render(screen);
+		for(Chest chest : level.getChests()) {
+			if(chest.doesExist()) chest.render(screen);
+		}
 		Controller.renderMobs(screen);
 		player.render(screen);
 		
@@ -93,9 +105,29 @@ public class GBJam extends Canvas implements Runnable{
 		
 		g.drawImage(img, 0, 0, window.getWidth(), window.getHeight(), null);
 		
+		/*Draw mob names
+		for(Mob mob : Controller.mobs){
+			if((xOffset < mob.getX() && xOffset + getWindowWidth() > mob.getX()) && (yOffset < mob.getY() && yOffset + getWindowHeight() > mob.getY())){
+				g.drawString(mob.getName(), (((_WIDTH / 2) - mob.getX()) + (g.getFontMetrics().stringWidth(mob.getName()))), ((_HEIGHT/2) - mob.getY()) + 2);
+			}
+		}*/
+		
 		loadHUD();
 		
 		if(gameState == GameState.INVENTORY) loadInventory();
+		
+		g.setFont(new Font(Font.DIALOG, Font.PLAIN, 16));
+		g.setColor(Color.WHITE);
+		for(GameMessage message : GameMessage.messages){
+			if(message == null) continue;
+			if(((getWindowHeight()/2) - message.getY()) > 0){
+				g.drawString(message.getMessage(), (getWindowWidth() - g.getFontMetrics().stringWidth(message.getMessage())), (getWindowHeight()/2) - message.getY());
+				message.visible = true;
+			}
+			else message.visible = false;
+		}
+		
+		loadBottomHUD();
 		
 		buffer.show();
 	}
@@ -119,17 +151,15 @@ public class GBJam extends Canvas implements Runnable{
 			g.setColor(Color.BLACK);
 			if(item == player.getInventory().getSelectedItem().getItem()) g.fillRect((xPos + width) - 180, yPos, 16, 16);
 		}
-		if(keyboard.a){
-			if(player.getInventory().getSelectedItem().getItem() == Item.APPLE){
-				player.heal(Item.APPLE.getValue());
-				player.getInventory().removeItem(Item.APPLE, 1);
-			}
-			if(player.getInventory().getSelectedItem().getItem() == Item.SWORD){
-				
-			}
-		}
 	}
 
+	private void loadBottomHUD(){
+		g.setColor(new Color(44, 44, 44, 100));
+		g.fillRect(0, window.getHeight() - HUD_BOTTOM_Height, getWindowWidth(), HUD_BOTTOM_Height);
+		g.setColor(Color.WHITE);
+		g.drawString(BHUD_TARGET.getName() + " : " + BHUD_TARGET.getPhrase(), 10,(window.getHeight() - HUD_BOTTOM_Height) + 20 );
+	}
+	
 	private void loadHUD(){
 		g.setColor(new Color(44, 44, 44, 100));
 		g.fillRect(0, 0, getWindowWidth(), HUDHeight);
@@ -171,6 +201,8 @@ public class GBJam extends Canvas implements Runnable{
 		g = buffer.getDrawGraphics();
 		
 		for(int i = 0; i < pixels.length; i++) pixels[i] = 0xFF222222;
+		
+		defaultFont = g.getFont();
 		
 		reset();
 	}
@@ -214,8 +246,11 @@ public class GBJam extends Canvas implements Runnable{
 		player.reset();
 		player.setLevel(level);
 		Inventory chest = new Inventory();
-		chest.addItem(Item.APPLE, 10);
-		level.addChest(new Chest(level, 20, 20, 5, chest));
+		chest.addItem(Item.APPLE, 30);
+		level.addChest(new Chest(level, 48, 16, 5, chest, Sprite.CHEST));
+		level.addChest(new Chest(level, 16, 48, 5, chest, Sprite.CHEST));
+		level.addChest(new Chest(level, 48, 48, 5, chest, Sprite.CHEST));
+		level.addChest(new Chest(level, 64, 64, 5, chest, Sprite.CHEST));
 	}
 	
 	public static void main(String[] args){
@@ -261,5 +296,8 @@ public class GBJam extends Canvas implements Runnable{
 		return _WIDTH * _SCALE;
 	}
 
+	public static void setHUDMob(Mob mob){
+		BHUD_TARGET = mob;
+	}
 	
 }

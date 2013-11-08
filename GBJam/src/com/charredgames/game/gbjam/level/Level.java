@@ -81,4 +81,8 @@ public class Level {
 		return chests;
 	}
 	
+	public ArrayList<Mob> getMobs(){
+		return mobs;
+	}
+	
 }

@@ -1,6 +1,7 @@
 package com.charredgames.game.gbjam.entity;
 
 import com.charredgames.game.gbjam.graphics.Screen;
+import com.charredgames.game.gbjam.graphics.Sprite;
 import com.charredgames.game.gbjam.inventory.Inventory;
 import com.charredgames.game.gbjam.level.Level;
 
@@ -12,7 +13,8 @@ public class Chest extends Entity{
 
 	private int damage = 0;
 	
-	public Chest(Level level, int x, int y, int damage, Inventory inventory){
+	public Chest(Level level, int x, int y, int damage, Inventory inventory, Sprite sprite){
+		this.sprite = sprite;
 		this.x = x;
 		this.y = y;
 		this.level = level;
@@ -20,7 +22,8 @@ public class Chest extends Entity{
 		this.inventory = inventory;
 	}
 	
-	public Chest(Level level, int x, int y, int damage){
+	public Chest(Level level, int x, int y, int damage, Sprite sprite){
+		this.sprite = sprite;
 		this.x = x;
 		this.y = y;
 		this.level = level;

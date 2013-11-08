@@ -16,6 +16,7 @@ public class Sprite {
 	public static Sprite PLAYER_LEFT = new Sprite(16, 1, 1, SpriteSheet.CHARACTERS);
 	public static Sprite PLAYER_RIGHT = new Sprite(16, 2, 1, SpriteSheet.CHARACTERS);
 	
+	public static Sprite CHEST = new Sprite(16, 0, 2, SpriteSheet.SCENERY);
 	public static Sprite GRASS = new Sprite(16, 0, 1, SpriteSheet.SCENERY);
 	public static Sprite TALL_GRASS = new Sprite(16, 1, 1, SpriteSheet.SCENERY);
 	public static Sprite SAND = new Sprite(16, 1, 0, SpriteSheet.SCENERY);
