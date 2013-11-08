@@ -13,39 +13,52 @@ import com.charredgames.game.gbjam.level.Level;
  */
 public class Mob extends Entity{
 
-	protected int  identifier, direction, health;
+	protected int  identifier,  health;
+	protected int direction = 2;
 	protected boolean moving = false;
-	protected MobMood mood = MobMood.NULL;
+	protected MobMood mood;
 	protected MobType type = MobType.NULL;
 	protected int viewDistance = 6;
 	protected String name = "Bob Saget", phrase = "I like shorts! They're comfy!";
 	
-	public static Mob testing = new Mob(0xFF111111, 10, Sprite.PLAYER_FORWARD);
+	public static Mob testing = new Mob(0xFF111111, 10, Sprite.PLAYER_FORWARD, MobType.YOUNGSTER);
+	public static Mob SALESMAN = new Salesman(0xFF222222, 100, Sprite.PLAYER_LEFT, MobType.SALESMAN);
 	
-	public Mob(int identifier, int health, Sprite sprite){
+	public Mob(int identifier, int health, Sprite sprite, MobType type){
 		this.sprite = sprite;
 		this.health = health;
+		this.type = type;
+		this.mood = type.getDefaultMood();
 		inventory = new Inventory();
 		Controller.mobIdentifiers.put(identifier, this);
 	}
 	
-	public Mob(int x, int y, int health, Sprite sprite, Level level){
+	public Mob(MobType mobType, int x, int y, int health, Sprite sprite, Level level){
 		this.x = x;
 		this.y = y;
 		this.sprite = sprite;
+		this.type = mobType;
+		this.mood = type.getDefaultMood();
+		this.level = level;
 		inventory = new Inventory();
 		Controller.addMob(this);
+		setNameAndPhrase();
 	}
 	
 	public Mob(Keyboard input){	
 	}
 	
 	public void spawn(int x, int y, Level level){
-		new Mob(x, y, this.health, this.sprite, level);
+		new Mob(this.type, x, y, this.health, this.sprite, level);
 	}
 	
 	public void render(Screen screen){
 		screen.renderTile(this.x, this.y, this.sprite);
+	}
+	
+	private void setNameAndPhrase(){
+		this.name = Controller.getNextName();
+		this.phrase = Controller.getNextPhrase();
 	}
 	
 	public String getPhrase(){
@@ -110,17 +123,21 @@ public class Mob extends Entity{
 		return xDist + yDist;
 	}
 	
-	public int getRelativeDirection(int x, int y, int xPrime, int yPrime){
-		int xDelta = xPrime - x;
-		int yDelta = yPrime - y;
-		if(xDelta < 0) return 1;
-		if(xDelta > 0) return 3;
-		if(yDelta < 0) return 2;
-		if(yDelta > 0) return 0;
-		return 4; //Standing on the same tile
+	public boolean isFacing(int direction, int x, int y, int xPrime, int yPrime){
+		int xDelta = Math.abs(xPrime - x)/16;
+		int yDelta = Math.abs(yPrime - y)/16;
+		if(direction == 1 && yDelta == 0 && (xPrime - x) < 0) return true;
+		else if(direction == 3 && yDelta == 0 && (xPrime - x) > 0) return true;
+		else if(direction == 0 && xDelta == 0 && (yPrime - y) < 0) return true;
+		else if(direction == 2 && xDelta == 0 && (yPrime - y) > 0) return true;
+		return false;
 	}
 	
 	public int getViewDistance(){
 		return viewDistance;
+	}
+	
+	public int getDirection(){
+		return direction;
 	}
 }

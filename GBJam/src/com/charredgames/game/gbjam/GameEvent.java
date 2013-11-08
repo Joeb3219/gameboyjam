@@ -6,13 +6,15 @@ package com.charredgames.game.gbjam;
  */
 public enum GameEvent {
 
-	EATING(1), WEAPON(1), TALKING(1), NULL(0);
+	EATING(1, Sound.eating), WEAPON(1, null), TALKING(1, null), OPENED_CHEST(1, Sound.breaking), NULL(0, null);
 	
 	private int delay;
-	public static int counter = 0;
+	private static int counter = 0;
+	private Sound sound;
 	
-	private GameEvent(int delay){
-		this.delay = delay;
+	private GameEvent(int delay, Sound sound){
+		this.delay = delay * GBJam._DESIREDTPS;
+		this.sound = sound;
 	}
 	
 	public int getDelay(){
@@ -25,7 +27,8 @@ public enum GameEvent {
 	}
 	
 	public static void setEvent(GameEvent event){
-		counter = event.getDelay() * 60;
+		counter = event.getDelay();
 		GBJam.currentEvent = event;
+		if(event.sound != null) event.sound.playSound();
 	}
 }

@@ -13,8 +13,6 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 
-import sun.net.www.http.Hurryable;
-
 import com.charredgames.game.gbjam.entity.Chest;
 import com.charredgames.game.gbjam.entity.Mob;
 import com.charredgames.game.gbjam.entity.Player;
@@ -38,7 +36,7 @@ public class GBJam extends Canvas implements Runnable{
 	public static final int _WIDTH = 160;
 	public static final int _HEIGHT = 144;
 	public static final int _SCALE = 3;
-	public static final int _DESIREDTPS = 60;
+	public static final int _DESIREDTPS = 10;
 	public static String title = "GBJam";
 	
 	private static JFrame window;
@@ -54,13 +52,12 @@ public class GBJam extends Canvas implements Runnable{
 	private Screen screen;
 	private Keyboard keyboard;
 	private Player player;
-	@SuppressWarnings("unused")
 	private Level level = Level.spawnLevel;
 	private int HUDHeight = 40;
 	private int HUD_BOTTOM_Height = 60;
-	private boolean showBottomHUD = false;
+	private static boolean showBottomHUD = false;
 	public static Mob BHUD_TARGET = Mob.testing;
-	private GameState gameState = GameState.GAME;
+	private static GameState gameState = GameState.GAME;
 	public static GameEvent currentEvent = GameEvent.NULL;
 	Font defaultFont;
 	
@@ -73,7 +70,7 @@ public class GBJam extends Canvas implements Runnable{
 			player.update();
 			Controller.updateMobs();
 		}
-		if(keyboard.start && (Controller.tickCount%16 == 0)){
+		if(keyboard.start && (Controller.tickCount%2 == 0)){
 			if(gameState == GameState.INVENTORY) gameState = GameState.GAME;
 			else gameState = GameState.INVENTORY;
 			if(keyboard.a) keyboard.a = false;
@@ -121,13 +118,13 @@ public class GBJam extends Canvas implements Runnable{
 		for(GameMessage message : GameMessage.messages){
 			if(message == null) continue;
 			if(((getWindowHeight()/2) - message.getY()) > 0){
-				g.drawString(message.getMessage(), (getWindowWidth() - g.getFontMetrics().stringWidth(message.getMessage())), (getWindowHeight()/2) - message.getY());
+				g.drawString(message.getMessage(), (getWindowWidth() - g.getFontMetrics().stringWidth(message.getMessage()) - 10), (getWindowHeight()/2) - message.getY());
 				message.visible = true;
 			}
 			else message.visible = false;
 		}
 		
-		loadBottomHUD();
+		if(showBottomHUD) loadBottomHUD();
 		
 		buffer.show();
 	}
@@ -298,6 +295,14 @@ public class GBJam extends Canvas implements Runnable{
 
 	public static void setHUDMob(Mob mob){
 		BHUD_TARGET = mob;
+	}
+	
+	public static void toggleBottomHud(boolean cond){
+		showBottomHUD = cond;
+	}
+	
+	public static void setGameState(GameState state){
+		gameState = state;
 	}
 	
 }

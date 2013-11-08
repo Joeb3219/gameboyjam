@@ -6,6 +6,7 @@ import com.charredgames.game.gbjam.Controller;
 import com.charredgames.game.gbjam.GBJam;
 import com.charredgames.game.gbjam.GameEvent;
 import com.charredgames.game.gbjam.GameMessage;
+import com.charredgames.game.gbjam.GameState;
 import com.charredgames.game.gbjam.Keyboard;
 import com.charredgames.game.gbjam.graphics.Screen;
 import com.charredgames.game.gbjam.graphics.Sprite;
@@ -36,23 +37,23 @@ public class Player extends Mob{
 	public void update(){
 		moving = false;
 		int xPrime = 0, yPrime = 0;
-		if(input.right) xPrime ++;
-		if(input.left) xPrime --;
-		if(input.up) yPrime --;
-		if(input.down) yPrime ++;
+		if(input.right) xPrime += 16;
+		if(input.left) xPrime -= 16;
+		if(input.up) yPrime -= 16;
+		if(input.down) yPrime += 16;
 		
 		if(xPrime != 0 || yPrime != 0) canMove(xPrime, yPrime);
 		
 		if(moving && level.getTile(x / 16, y / 16).dropped()) Controller.addMoney(1);
 		
+		checkMobs();
+		
 		if(input.a && GBJam.currentEvent == GameEvent.NULL){
-			if(checkChests() || checkMobs()){
-				
-			}
+			if(checkChests()) GameEvent.setEvent(GameEvent.OPENED_CHEST);
 			else if(inventory.getSelectedItem().getItem().getType() == ItemType.EDIBLE){
-				heal(Item.APPLE.getValue());
-				inventory.removeItem(Item.APPLE, 1);
-				new GameMessage("You ate 1 of" + inventory.getSelectedItem().getItem().getName());
+				heal(inventory.getSelectedItem().getItem().getValue());
+				inventory.removeItem(inventory.getSelectedItem().getItem(), 1);
+				new GameMessage("You ate 1 of " + inventory.getSelectedItem().getItem().getName());
 				GameEvent.setEvent(GameEvent.EATING);
 			}
 			else if(inventory.getSelectedItem().getItem().getType() == ItemType.WEAPON){
@@ -63,18 +64,31 @@ public class Player extends Mob{
 	}
 
 	private boolean checkMobs(){
-		for(Mob mob : level.getMobs()){
-			if(tileDistance(x, y, mob.getX(), mob.getY()) < viewDistance){
-				
-				return true;
+		for(Mob mob : Controller.mobs){
+			if(mob.getLevel() != level) continue;
+			if(tileDistance(x, y, mob.getX(), mob.getY()) < mob.getViewDistance()){
+				if(isFacing(mob.getDirection(), x, y, mob.getX(), mob.getY())){
+					if(input.a || mob.getMood() == MobMood.AGRESSIVE){
+						GBJam.setHUDMob(mob);
+						GBJam.toggleBottomHud(true);
+						if(mob.getMood() != MobMood.PASSIVE) battle();
+						return true;
+					}
+				}
 			}
 		}
+		GBJam.toggleBottomHud(false);
 		return false;
+	}
+	
+	private void battle(){
+		GBJam.setGameState(GameState.BATTLE);
+		System.out.println("GET READY TO FIGHT!");
 	}
 	
 	private boolean checkChests(){
 		for(Chest chest : level.getChests()){
-			if(chest.doesExist() && ((getRelativeDirection(x, y, chest.getX(), chest.getY()) == 4) || (getRelativeDirection(x, y, chest.getX(), chest.getY()) == direction))){
+			if(chest.doesExist() && isFacing(direction, x, y, chest.getX(), chest.getY())){
 				if(tileDistance(x, y, chest.getX(), chest.getY()) < viewDistance){
 					for(Entry<Integer, InventorySlot> entry : chest.getInventory().getSlots().entrySet()){
 						if(entry.getValue() == null) continue;

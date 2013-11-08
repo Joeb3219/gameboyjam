@@ -37,7 +37,10 @@ public class Level {
 			for(int x = 0; x < GBJam.getWindowWidth(); x++){
 				if( x < 0 || y < 0 || x >= width || y >= height) continue;
 				int tileColour = tiles[x + y * width];
-				if(Controller.mobIdentifiers.containsKey(tileColour)) Controller.mobIdentifiers.get(tileColour).spawn(x * 16, y * 16, this);
+				if(Controller.mobIdentifiers.containsKey(tileColour)) {
+					Mob.SALESMAN.spawn(x * 32, y * 32, this);
+					Controller.mobIdentifiers.get(tileColour).spawn(x * 16, y * 16, this);
+				}
 			}
 		}
 		
@@ -81,8 +84,5 @@ public class Level {
 		return chests;
 	}
 	
-	public ArrayList<Mob> getMobs(){
-		return mobs;
-	}
 	
 }
