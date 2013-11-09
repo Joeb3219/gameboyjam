@@ -36,7 +36,7 @@ public class GBJam extends Canvas implements Runnable{
 	public static final int _WIDTH = 160;
 	public static final int _HEIGHT = 144;
 	public static final int _SCALE = 3;
-	public static final int _DESIREDTPS = 10;
+	public static final int _DESIREDTPS = 15;
 	public static String title = "GBJam";
 	
 	private static JFrame window;
@@ -101,13 +101,6 @@ public class GBJam extends Canvas implements Runnable{
 		for(int i = 0; i < pixels.length; i ++) pixels[i] = screen.pixels[i];
 		
 		g.drawImage(img, 0, 0, window.getWidth(), window.getHeight(), null);
-		
-		/*Draw mob names
-		for(Mob mob : Controller.mobs){
-			if((xOffset < mob.getX() && xOffset + getWindowWidth() > mob.getX()) && (yOffset < mob.getY() && yOffset + getWindowHeight() > mob.getY())){
-				g.drawString(mob.getName(), (((_WIDTH / 2) - mob.getX()) + (g.getFontMetrics().stringWidth(mob.getName()))), ((_HEIGHT/2) - mob.getY()) + 2);
-			}
-		}*/
 		
 		loadHUD();
 		
@@ -185,6 +178,9 @@ public class GBJam extends Canvas implements Runnable{
 			g.setColor(Color.WHITE);
 			g.drawString(player.getInventory().getSelectedItem().getQuantity() + " ", startingX + selectedImg.getWidth() + 10, startingY + 8 + selectedImg.getHeight());
 		}
+		
+		g.drawString("Level " + player.getXPLevel() + " (" + player.getExp() + " EXP)", 100, 33);
+		
 	}
 	
 	private void reset(){

@@ -23,6 +23,7 @@ public class Level {
 	protected int[] tiles;
 	protected ArrayList<Mob> mobs = new ArrayList<Mob>();
 	protected ArrayList<Chest> chests = new ArrayList<Chest>();
+	protected int hospitalX, hospitalY = 32;
 	
 	public static Level spawnLevel = new Level("/levels/spawnlevel");
 	
@@ -84,5 +85,11 @@ public class Level {
 		return chests;
 	}
 	
+	public int getHospitalX(){
+		return hospitalX;
+	}
 	
+	public int getHospitalY(){
+		return hospitalY;
+	}
 }

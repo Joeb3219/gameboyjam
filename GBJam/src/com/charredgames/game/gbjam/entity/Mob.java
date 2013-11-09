@@ -13,8 +13,8 @@ import com.charredgames.game.gbjam.level.Level;
  */
 public class Mob extends Entity{
 
-	protected int  identifier,  health;
-	protected int direction = 2;
+	protected int identifier, health;
+	protected int direction = 2, exp = 0;
 	protected boolean moving = false;
 	protected MobMood mood;
 	protected MobType type = MobType.NULL;
@@ -139,5 +139,21 @@ public class Mob extends Entity{
 	
 	public int getDirection(){
 		return direction;
+	}
+
+	public int getExp(){
+		return exp;
+	}
+	
+	public int getXPLevel(){
+		return EXP.getLevel(exp);
+	}
+	
+	public void addXP(int num){
+		exp += num;
+	}
+	
+	public int getHealth(){
+		return health;
 	}
 }
