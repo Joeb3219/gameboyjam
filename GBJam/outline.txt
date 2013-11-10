@@ -24,3 +24,17 @@ LEFT TO DO (MAIN):
 	
 BATTLE SYSTEM:
 ==============
+	- Stab (Strength) -> Generally higher hits, low critical hit chance.
+		- CALCULATION:
+			- attackPoints = 4x * (y / rand)
+			- x = level
+			- y = strength points
+	- Slash (Dexterity) -> Generally medium hits, higher critical hit chance.
+		- 
+	- Block (Defense) -> Limit opponent's next attack.
+		- 
+	- Inventory (Get stuff)
+		-
+	- Run (whimpy)
+		- Cost XP (less XP than if lost)
+		- Cost $$ (More than if you lost)

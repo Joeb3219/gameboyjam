@@ -12,9 +12,20 @@ public class Sprite {
 	public int[] pixels;
 	private SpriteSheet spriteSheet;
 	
-	public static Sprite PLAYER_FORWARD = new Sprite(16, 0, 1, SpriteSheet.CHARACTERS);
-	public static Sprite PLAYER_LEFT = new Sprite(16, 1, 1, SpriteSheet.CHARACTERS);
-	public static Sprite PLAYER_RIGHT = new Sprite(16, 2, 1, SpriteSheet.CHARACTERS);
+	public static Sprite MOB_FORWARD = new Sprite(16, 0, 1, SpriteSheet.CHARACTERS);
+	public static Sprite MOB_LEFT = new Sprite(16, 1, 1, SpriteSheet.CHARACTERS);
+	public static Sprite MOB_RIGHT = new Sprite(16, 2, 1, SpriteSheet.CHARACTERS);
+	public static Sprite MOB_BACKWARD = new Sprite(16, 3, 1, SpriteSheet.CHARACTERS);
+	
+	public static Sprite PLAYER_FORWARD = new Sprite(16, 0, 3, SpriteSheet.PLAYER);
+	public static Sprite PLAYER_LEFT = new Sprite(16, 0, 1, SpriteSheet.PLAYER);
+	public static Sprite PLAYER_RIGHT = new Sprite(16, 0, 2, SpriteSheet.PLAYER);
+	public static Sprite PLAYER_BACKWARD = new Sprite(16, 0, 0, SpriteSheet.PLAYER);
+	
+	public static Sprite MOB2_FORWARD = new Sprite(16, 1, 3, SpriteSheet.MOB);
+	public static Sprite MOB2_LEFT = new Sprite(16, 1, 1, SpriteSheet.MOB);
+	public static Sprite MOB2_RIGHT = new Sprite(16, 1, 2, SpriteSheet.MOB);
+	public static Sprite MOB2_BACKWARD = new Sprite(16, 1, 0, SpriteSheet.MOB);
 	
 	public static Sprite CHEST = new Sprite(16, 0, 2, SpriteSheet.SCENERY);
 	public static Sprite GRASS = new Sprite(16, 0, 1, SpriteSheet.SCENERY);

@@ -1,5 +1,7 @@
 package com.charredgames.game.gbjam.entity;
 
+import java.util.Random;
+
 import com.charredgames.game.gbjam.Controller;
 import com.charredgames.game.gbjam.Keyboard;
 import com.charredgames.game.gbjam.graphics.Screen;
@@ -13,20 +15,23 @@ import com.charredgames.game.gbjam.level.Level;
  */
 public class Mob extends Entity{
 
-	protected int identifier, health = 100;
+	protected int identifier, health = 30, defaultHealth;
+	protected int strength = 5, dexterity = 5, defense = 5;
 	protected int direction = 2, exp = 0;
 	protected boolean lostBattle, moving = false;
 	protected MobMood mood;
 	protected MobType type = MobType.NULL;
 	protected int viewDistance = 6;
 	protected String name = "Bob Saget", phrase = "I like shorts! They're comfy!", losingPhrase = "I'll win next time!";
+	protected Random rand = new Random();
 	
-	public static Mob testing = new Mob(0xFF111111, 100, Sprite.PLAYER_FORWARD, MobType.YOUNGSTER);
-	public static Mob SALESMAN = new Salesman(0xFF222222, 100, Sprite.PLAYER_LEFT, MobType.SALESMAN);
+	public static Mob testing = new Mob(0xFF111111, 30, Sprite.PLAYER_FORWARD, MobType.YOUNGSTER);
+	public static Mob SALESMAN = new Salesman(0xFF222222, 30, Sprite.PLAYER_LEFT, MobType.SALESMAN);
 	
 	public Mob(int identifier, int health, Sprite sprite, MobType type){
 		this.sprite = sprite;
 		this.health = health;
+		this.defaultHealth = health;
 		this.type = type;
 		this.mood = type.getDefaultMood();
 		inventory = new Inventory();
@@ -36,6 +41,8 @@ public class Mob extends Entity{
 	public Mob(MobType mobType, int x, int y, int health, Sprite sprite, Level level){
 		this.x = x;
 		this.y = y;
+		this.health = health;
+		this.defaultHealth = health;
 		this.sprite = sprite;
 		this.type = mobType;
 		this.mood = type.getDefaultMood();
@@ -54,10 +61,19 @@ public class Mob extends Entity{
 	
 	public void update(){
 		if(exp < 0) exp = 0;
+		move();
+	}
+	
+	protected void move(){
+		direction = rand.nextInt(4);
 	}
 	
 	public void render(Screen screen){
-		screen.renderTile(this.x, this.y, this.sprite);
+		Sprite facingSprite = Sprite.MOB2_FORWARD;
+		//if(direction == 1) facingSprite = Sprite.MOB2_LEFT;
+		//else if(direction == 2) facingSprite = Sprite.MOB2_BACKWARD;
+		//else if(direction == 3) facingSprite = Sprite.MOB2_RIGHT;
+		screen.renderTile(this.x, this.y, facingSprite);
 	}
 	
 	private void setNameAndPhrase(){
@@ -124,6 +140,7 @@ public class Mob extends Entity{
 			final int yPrime = ((this.y + yCord) + i % 2 * 12 + 2)/16;
 			if(level.getTile(xPrime,yPrime).isSolid()) return true;
 			for(Chest chest : level.getChests()){
+				if(!chest.doesExist()) continue;
 				if(chest.getX() == xPrime * 16 && chest.getY() == yPrime * 16) return true;
 			}
 		}
@@ -176,5 +193,21 @@ public class Mob extends Entity{
 	
 	public void toggleBattleLost(boolean val){
 		lostBattle = val;
+	}
+	
+	public int getStrength(){
+		return strength;
+	}
+	
+	public int getDexterity(){
+		return dexterity;
+	}
+	
+	public int getDefense(){
+		return defense;
+	}
+	
+	public int getDefaultHealth(){
+		return defaultHealth;
 	}
 }

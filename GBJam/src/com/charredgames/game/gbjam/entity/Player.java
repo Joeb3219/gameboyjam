@@ -22,7 +22,6 @@ public class Player extends Mob{
 
 	private Keyboard input;
 	private int defaultHealth = 20, tickCount = 0;
-	private int strength = 5, dexterity = 5, defense = 5;
 	
 	public Player(Keyboard input) {
 		super(input);
@@ -40,6 +39,7 @@ public class Player extends Mob{
 	}
 
 	public void update(){
+		if(exp < 0) exp = 0;
 		tickCount ++;
 		if(health <= 0) die();
 		moving = false;
@@ -109,6 +109,7 @@ public class Player extends Mob{
 		return false;
 	}
 	
+	
 	private void battle(Mob mob){
 		GBJam.setGameState(GameState.BATTLE);
 
@@ -122,6 +123,7 @@ public class Player extends Mob{
 		
 		GBJam.setGameState(GameState.GAME);
 	}
+	
 	
 	private void lostBattle(Battle battle){
 		addXP(-1 * battle.getWinningXP());
@@ -159,7 +161,7 @@ public class Player extends Mob{
 		Sprite player = Sprite.PLAYER_FORWARD;
 		if(direction==0) player = Sprite.PLAYER_FORWARD;
 		else if(direction==1) player = Sprite.PLAYER_LEFT;
-		else if(direction==2) player = Sprite.PLAYER_FORWARD;
+		else if(direction==2) player = Sprite.PLAYER_BACKWARD;
 		else if(direction==3) player = Sprite.PLAYER_RIGHT;
 		screen.renderTile(this.x, this.y, player);
 	}
@@ -175,17 +177,5 @@ public class Player extends Mob{
 
 	public void damage(int num){
 		health -= num;
-	}
-	
-	public int getStrength(){
-		return strength;
-	}
-	
-	public int getDexterity(){
-		return dexterity;
-	}
-	
-	public int getDefense(){
-		return defense;
 	}
 }

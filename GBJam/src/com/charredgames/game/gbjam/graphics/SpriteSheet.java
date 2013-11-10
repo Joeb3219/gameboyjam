@@ -11,8 +11,10 @@ public class SpriteSheet {
 	public final int size = 256;
 	public int[] pixels;
 	
-	public static SpriteSheet SCENERY = new SpriteSheet("/textures/scenery.png");
-	public static SpriteSheet CHARACTERS = new SpriteSheet("/textures/characters.png");
+	public static final SpriteSheet SCENERY = new SpriteSheet("/textures/scenery.png");
+	public static final SpriteSheet CHARACTERS = new SpriteSheet("/textures/characters.png");
+	public static final SpriteSheet PLAYER = new SpriteSheet("/textures/player.png");
+	public static final SpriteSheet MOB = new SpriteSheet("/textures/mob.png");
 	
 	public SpriteSheet(String path){
 		this.path = path;

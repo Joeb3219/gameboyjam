@@ -1,5 +1,7 @@
 package com.charredgames.game.gbjam.battle;
 
+import java.util.Random;
+
 import com.charredgames.game.gbjam.entity.Mob;
 import com.charredgames.game.gbjam.entity.Player;
 import com.charredgames.game.gbjam.level.Level;
@@ -14,6 +16,7 @@ public class Battle {
 	private Mob opponent, winner = null;
 	private Level level;
 	private boolean over = false;
+	private final Random rand = new Random();
 	
 	public Battle(Player player, Mob opponent, Level level){
 		this.player = player;
@@ -22,12 +25,19 @@ public class Battle {
 	}
 	
 	public boolean attack(boolean playerAttack, BattleMove move){
-		if(playerAttack){
-			opponent.damage(6);
-		}else{
-			player.damage(1);
+		Mob attacker;
+		int damage = 0;
+		if(playerAttack) attacker = player;
+		else attacker = opponent;
+		if(move == BattleMove.STAB) damage = (4 * attacker.getXPLevel()) * (attacker.getStrength() / (rand.nextInt(100) + 1));
+		System.out.println(attacker.getName() + " " + damage);
+		if(attacker == player) opponent.damage(damage);
+		else player.damage(damage);
+		
+		if(player.getHealth() <= 0){
+			winner = opponent;
+			opponent.heal((opponent.getDefaultHealth() - opponent.getHealth()));
 		}
-		if(player.getHealth() <= 0) winner = opponent;
 		else if(opponent.getHealth() <= 0) winner = player;
 		if(winner != null) {
 			over = true;
