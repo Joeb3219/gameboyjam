@@ -36,7 +36,7 @@ public class GBJam extends Canvas implements Runnable{
 	public static final int _WIDTH = 160;
 	public static final int _HEIGHT = 144;
 	public static final int _SCALE = 3;
-	public static final int _DESIREDTPS = 15;
+	public static final int _DESIREDTPS = 10;
 	public static String title = "GBJam";
 	
 	private static JFrame window;
@@ -69,6 +69,10 @@ public class GBJam extends Canvas implements Runnable{
 		if(gameState == GameState.GAME){
 			player.update();
 			Controller.updateMobs();
+		}
+		else if(gameState == GameState.INVENTORY){
+			if(keyboard.down) player.getInventory().getNextItem();
+			else if(keyboard.up) player.getInventory().getPreviousItem();
 		}
 		if(keyboard.start && (Controller.tickCount%2 == 0)){
 			if(gameState == GameState.INVENTORY) gameState = GameState.GAME;
@@ -123,7 +127,6 @@ public class GBJam extends Canvas implements Runnable{
 	}
 	
 	private void loadInventory(){
-		if(keyboard.down || keyboard.up) player.getInventory().getNextItem();
 		g.setColor(new Color(97, 97, 97, 200));
 		int xPos = (getWindowWidth()/2)-150;
 		int width = (getWindowWidth()) - (xPos*2);

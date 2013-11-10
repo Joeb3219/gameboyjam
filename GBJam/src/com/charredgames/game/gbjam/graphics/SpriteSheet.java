@@ -14,7 +14,7 @@ public class SpriteSheet {
 	public static final SpriteSheet SCENERY = new SpriteSheet("/textures/scenery.png");
 	public static final SpriteSheet CHARACTERS = new SpriteSheet("/textures/characters.png");
 	public static final SpriteSheet PLAYER = new SpriteSheet("/textures/player.png");
-	public static final SpriteSheet MOB = new SpriteSheet("/textures/mob.png");
+	public static final SpriteSheet MOB = new SpriteSheet("/textures/Mob.png");
 	
 	public SpriteSheet(String path){
 		this.path = path;

@@ -172,7 +172,11 @@ public class Inventory {
 		if(isEmpty()) return selectedSlot;
 		int currentSlot = getSlot(selectedSlot.getItem());
 		if(getInventorySlot(currentSlot - 1) != null) selectedSlot = getInventorySlot(currentSlot - 1);
-		else selectedSlot = getInventorySlot(1);
+		else {
+			for(int i = currentSlot; i <= 40; i++){
+				if(getInventorySlot(i) != null) selectedSlot = getInventorySlot(i);
+			}
+		}
 		if(selectedSlot == null) selectedSlot = getInventorySlot(currentSlot);
 		return selectedSlot;
 	}

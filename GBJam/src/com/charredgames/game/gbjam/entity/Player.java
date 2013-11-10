@@ -85,6 +85,7 @@ public class Player extends Mob{
 		}
 	}
 
+	
 	private boolean checkMobs(){
 		for(Mob mob : Controller.mobs){
 			if(mob.getLevel() != level) continue;
@@ -165,6 +166,7 @@ public class Player extends Mob{
 		else if(direction==3) player = Sprite.PLAYER_RIGHT;
 		screen.renderTile(this.x, this.y, player);
 	}
+	
 	
 	public void setLevel(Level level){
 		this.level = level;

@@ -65,14 +65,14 @@ public class Mob extends Entity{
 	}
 	
 	protected void move(){
-		direction = rand.nextInt(4);
+		if(rand.nextInt(150) == 0) direction = rand.nextInt(4);
 	}
 	
 	public void render(Screen screen){
 		Sprite facingSprite = Sprite.MOB2_FORWARD;
-		//if(direction == 1) facingSprite = Sprite.MOB2_LEFT;
-		//else if(direction == 2) facingSprite = Sprite.MOB2_BACKWARD;
-		//else if(direction == 3) facingSprite = Sprite.MOB2_RIGHT;
+		if(direction == 1) facingSprite = Sprite.MOB2_LEFT;
+		else if(direction == 2) facingSprite = Sprite.MOB2_BACKWARD;
+		else if(direction == 3) facingSprite = Sprite.MOB2_RIGHT;
 		screen.renderTile(this.x, this.y, facingSprite);
 	}
 	
