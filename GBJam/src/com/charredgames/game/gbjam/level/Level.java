@@ -1,10 +1,17 @@
 package com.charredgames.game.gbjam.level;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
+
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 
 import com.charredgames.game.gbjam.Controller;
 import com.charredgames.game.gbjam.GBJam;
@@ -31,6 +38,34 @@ public class Level {
 		loadMobs(path + "/mobs.png");
 		loadBuildings(path + "/buildings.png");
 		loadMap(path + "/map.png");
+		findChests(path + "/chest.cgf");
+	}
+	
+	private void findChests(String path){
+		SAXBuilder builder = new SAXBuilder();
+		  File xmlFile = new File((Level.class.getResource(path)).toString());
+	 
+		  try {
+	 
+			Document document = (Document) builder.build(xmlFile);
+			Element rootNode = document.getRootElement();
+			List list = rootNode.getChildren("chest");
+	 
+			for (int i = 0; i < list.size(); i++) {
+	 
+			   Element node = (Element) list.get(i);
+	 
+			   System.out.println("Chest X : " + node.getChildText("firstname"));
+			   System.out.println("Chest Y : " + node.getChildText("lastname"));
+			  
+	 
+			}
+	 
+		  } catch (IOException io) {
+			System.out.println(io.getMessage());
+		  } catch (JDOMException jdomex) {
+			System.out.println(jdomex.getMessage());
+		  }
 	}
 	
 	private void loadBuildings(String path){

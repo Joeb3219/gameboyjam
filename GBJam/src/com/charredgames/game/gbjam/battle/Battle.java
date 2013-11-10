@@ -29,7 +29,8 @@ public class Battle {
 		int damage = 0;
 		if(playerAttack) attacker = player;
 		else attacker = opponent;
-		if(move == BattleMove.STAB) damage = (4 * attacker.getXPLevel()) * (attacker.getStrength() / (rand.nextInt(100) + 1));
+		//if(move == BattleMove.STAB) damage = (4 * ((attacker.getXPLevel() + 2) ^ 2)) * (attacker.getStrength() / (rand.nextInt(100) + 1));
+		if(move == BattleMove.STAB) damage = ( ((2 * attacker.getXPLevel()) * (1/2 * attacker.getStrength()) ) + (attacker.getStrength() / (rand.nextInt(100) + 1)/2) );
 		System.out.println(attacker.getName() + " " + damage);
 		if(attacker == player) opponent.damage(damage);
 		else player.damage(damage);

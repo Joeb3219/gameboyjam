@@ -1,0 +1,19 @@
+<?xml version ="1.0"?>
+
+<chests>
+	<chest>
+		<location>
+			<x>4</x>
+			<y>4</y>
+		</location>
+		<inventory>
+			<item>
+				<id>2</id>
+				<quantity>30</quantity>
+			</item>
+			<item>
+				<id>3</id>
+				<quantity>2</quantity>
+		</inventory>
+	</chest>
+</chests>
