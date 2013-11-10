@@ -111,7 +111,17 @@ public class Inventory {
 				InventorySlot invSlot = entry.getValue();
 				if((invSlot.getQuantity() - amount) > 0) invSlot.add(-1 * amount);
 				else {
+					int slot = getSlot(item);
 					removeItem(item);
+					for(int i = slot; i <= slots.size(); i++){
+						InventorySlot iSlot = slots.get(i);
+						if(iSlot != null){
+							if(slots.get(i - 1) == null) {
+								slots.put(i, null);
+								slots.put(i - 1, iSlot);
+							}
+						}
+					}
 				}
 				break;
 			}

@@ -47,7 +47,7 @@ public class GBJam extends Canvas implements Runnable{
 	private BufferedImage img = new BufferedImage(_WIDTH, _HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private int[] pixels = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
 	@SuppressWarnings("unused")
-	private Random rand = new Random();
+	private static final Random rand = new Random();
 	
 	private Screen screen;
 	private Keyboard keyboard;
@@ -138,8 +138,8 @@ public class GBJam extends Canvas implements Runnable{
 			g.drawImage(item.getImage().getImage(), xPos + 10, yPos, item.getImage().getImage().getWidth(), item.getImage().getImage().getHeight(), null);
 			if(amount > 1) g.drawString(item.getName() + ": " + amount, xPos + 30, yPos + 12);
 			else g.drawString(item.getName(), xPos + 30, yPos + 12);
-			g.setColor(Color.BLACK);
-			if(item == player.getInventory().getSelectedItem().getItem()) g.fillRect((xPos + width) - 180, yPos, 16, 16);
+			int selectedXPos = (xPos + width) - 100;
+			if(item == player.getInventory().getSelectedItem().getItem()) g.drawImage(GameImage.INVENTORY_SELECT.getImage(), selectedXPos, yPos, GameImage.INVENTORY_SELECT.getImage().getWidth(), GameImage.INVENTORY_SELECT.getImage().getHeight(), null);
 		}
 	}
 
@@ -147,12 +147,13 @@ public class GBJam extends Canvas implements Runnable{
 		g.setColor(new Color(44, 44, 44, 100));
 		g.fillRect(0, window.getHeight() - HUD_BOTTOM_Height, getWindowWidth(), HUD_BOTTOM_Height);
 		g.setColor(Color.WHITE);
-		g.drawString(BHUD_TARGET.getName() + " : " + BHUD_TARGET.getPhrase(), 10,(window.getHeight() - HUD_BOTTOM_Height) + 20 );
+		if(!BHUD_TARGET.didLose()) g.drawString(BHUD_TARGET.getName() + " : " + BHUD_TARGET.getPhrase(), 10,(window.getHeight() - HUD_BOTTOM_Height) + 20 );
+		else g.drawString(BHUD_TARGET.getName() + " : " + BHUD_TARGET.getLosingPhrase(), 10,(window.getHeight() - HUD_BOTTOM_Height) + 20 );
 	}
 	
 	private void loadHUD(){
 		g.setColor(new Color(44, 44, 44, 100));
-		g.fillRect(0, 0, getWindowWidth(), HUDHeight);
+		g.fillRect(0, 0, window.getWidth(), HUDHeight);
 		int healthX = 3;
 		int healthY = 3;
 		for(int i = 0; i < player.getHealth(); i++){
@@ -180,6 +181,10 @@ public class GBJam extends Canvas implements Runnable{
 		}
 		
 		g.drawString("Level " + player.getXPLevel() + " (" + player.getExp() + " EXP)", 100, 33);
+		
+		g.drawString("STR: " + player.getStrength(), 275, 10);
+		g.drawString("DEX: " + player.getDexterity(), 275, 25);
+		g.drawString("DEF: " + player.getDefense(), 275, 40);
 		
 	}
 	
@@ -240,6 +245,9 @@ public class GBJam extends Canvas implements Runnable{
 		player.setLevel(level);
 		Inventory chest = new Inventory();
 		chest.addItem(Item.APPLE, 30);
+		chest.addItem(Item.STRENGTH_POTION, 1);
+		chest.addItem(Item.DEXTERITY_POTION, 1);
+		chest.addItem(Item.DEFENSE_POTION, 1);
 		level.addChest(new Chest(level, 48, 16, 5, chest, Sprite.CHEST));
 		level.addChest(new Chest(level, 16, 48, 5, chest, Sprite.CHEST));
 		level.addChest(new Chest(level, 48, 48, 5, chest, Sprite.CHEST));

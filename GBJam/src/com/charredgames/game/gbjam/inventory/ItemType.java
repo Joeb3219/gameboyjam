@@ -6,6 +6,6 @@ package com.charredgames.game.gbjam.inventory;
  */
 public enum ItemType {
 
-	WEAPON, EDIBLE, ;
+	WEAPON, EDIBLE, POTION;
 	
 }

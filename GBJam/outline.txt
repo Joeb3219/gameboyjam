@@ -6,3 +6,21 @@ OUTLINE & IDEAS
 	- Treasure -> random loot (this means an inventory system)
 	- Story line?
 	
+LEFT TO DO (MAIN):
+=================
+	- Mob classes
+		- Images, animation, levels, etc.
+		-> shops (salesman!)
+	- Storyline
+	- Story line -> level design.
+	- Develop battle mechanics.
+		- Pokemon-styled fights.
+	- Randomized chest loot?
+		- Perhaps not random!
+		- Store extra hearts -> more max health? (Zelda)?
+	- More items
+	
+	
+	
+BATTLE SYSTEM:
+==============

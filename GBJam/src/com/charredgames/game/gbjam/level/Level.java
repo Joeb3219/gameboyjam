@@ -29,7 +29,23 @@ public class Level {
 	
 	public Level(String path){
 		loadMobs(path + "/mobs.png");
+		loadBuildings(path + "/buildings.png");
 		loadMap(path + "/map.png");
+	}
+	
+	private void loadBuildings(String path){
+		loadMap(path);
+		int hospitalColour = 0xFFF72BFF;
+		for(int y = 0; y < GBJam.getWindowHeight(); y++){
+			for(int x = 0; x < GBJam.getWindowWidth(); x++){
+				if( x < 0 || y < 0 || x >= width || y >= height) continue;
+				int tileColour = tiles[x + y * width];
+				if(tileColour == hospitalColour) {
+					hospitalX = x * 16;
+					hospitalY = y * 16;
+				}
+			}
+		}
 	}
 	
 	private void loadMobs(String path){

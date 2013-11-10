@@ -14,10 +14,12 @@ public class Item {
 	private ItemType type;
 	private GameImage inventoryImage;
 	
-	public static Item NULL = new Item(0, "Nullificate", ItemType.WEAPON, 1000000000, 0, GameImage.ITEM_SWORD);
-	public static Item SWORD = new Item(1, "Sword", ItemType.WEAPON, 100, 5, GameImage.ITEM_SWORD);
-	public static Item APPLE = new Item(2, "Apple", ItemType.EDIBLE, 40, 1, GameImage.ITEM_APPLE);
-	
+	public static final Item NULL = new Item(0, "Nullificate", ItemType.WEAPON, 1000000000, 0, GameImage.ITEM_SWORD);
+	public static final Item SWORD = new Item(1, "Sword", ItemType.WEAPON, 100, 5, GameImage.ITEM_SWORD);
+	public static final Item APPLE = new Item(2, "Apple", ItemType.EDIBLE, 40, 1, GameImage.ITEM_APPLE);
+	public static final Item STRENGTH_POTION = new Item(3, "Strength Potion", ItemType.POTION, 2000, 1, GameImage.ITEM_STRENGTH_POTION);
+	public static final Item DEXTERITY_POTION = new Item(4, "Dexterity Potion", ItemType.POTION, 2500, 1, GameImage.ITEM_DEXTERITY_POTION);
+	public static final Item DEFENSE_POTION = new Item(5, "Defense Potion", ItemType.POTION, 2500, 1, GameImage.ITEM_DEFENSE_POTION);	
 	
 	public Item(int id,String name, ItemType type, int cost, int value, GameImage inventoryImage){
 		this.name = name;

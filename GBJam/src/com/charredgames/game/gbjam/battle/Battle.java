@@ -11,7 +11,7 @@ import com.charredgames.game.gbjam.level.Level;
 public class Battle {
 
 	private Player player;
-	private Mob opponent, winner;
+	private Mob opponent, winner = null;
 	private Level level;
 	private boolean over = false;
 	
@@ -23,13 +23,13 @@ public class Battle {
 	
 	public boolean attack(boolean playerAttack, BattleMove move){
 		if(playerAttack){
-			opponent.damage(100);
+			opponent.damage(6);
 		}else{
-			player.damage(10);
+			player.damage(1);
 		}
 		if(player.getHealth() <= 0) winner = opponent;
 		else if(opponent.getHealth() <= 0) winner = player;
-		if(winner == player || winner == opponent) {
+		if(winner != null) {
 			over = true;
 			return false;
 		}
@@ -40,8 +40,21 @@ public class Battle {
 		return winner;
 	}
 	
+	public Mob getLoser(){
+		if(winner == opponent) return player;
+		return opponent;
+	}
+	
 	public Level getLevel(){
 		return level;
+	}
+	
+	public int getWinningXP(){
+		return getLoser().getXPLevel() * 45;
+	}
+	
+	public boolean isOver(){
+		return over;
 	}
 	
 }

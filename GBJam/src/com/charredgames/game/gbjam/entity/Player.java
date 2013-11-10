@@ -21,7 +21,8 @@ import com.charredgames.game.gbjam.level.Level;
 public class Player extends Mob{
 
 	private Keyboard input;
-	private int maxHealth = 20;
+	private int defaultHealth = 20, tickCount = 0;
+	private int strength = 5, dexterity = 5, defense = 5;
 	
 	public Player(Keyboard input) {
 		super(input);
@@ -35,10 +36,12 @@ public class Player extends Mob{
 	}
 	
 	public void reset(){
-		this.health = maxHealth;
+		this.health = defaultHealth;
 	}
 
 	public void update(){
+		tickCount ++;
+		if(health <= 0) die();
 		moving = false;
 		int xPrime = 0, yPrime = 0;
 		if(input.right) xPrime += 16;
@@ -53,15 +56,31 @@ public class Player extends Mob{
 		checkMobs();
 		
 		if(input.a && GBJam.currentEvent == GameEvent.NULL){
+			Item selectedItem = inventory.getSelectedItem().getItem();
 			if(checkChests()) GameEvent.setEvent(GameEvent.OPENED_CHEST);
-			else if(inventory.getSelectedItem().getItem().getType() == ItemType.EDIBLE && health < maxHealth){
-				heal(inventory.getSelectedItem().getItem().getValue());
-				inventory.removeItem(inventory.getSelectedItem().getItem(), 1);
-				new GameMessage("You ate 1 of " + inventory.getSelectedItem().getItem().getName());
+			else if(selectedItem.getType() == ItemType.EDIBLE && health < defaultHealth){
+				heal(selectedItem.getValue());
+				inventory.removeItem(selectedItem, 1);
+				new GameMessage("You ate 1 of " + selectedItem.getName());
 				GameEvent.setEvent(GameEvent.EATING);
 			}
-			else if(inventory.getSelectedItem().getItem().getType() == ItemType.WEAPON){
+			else if(selectedItem.getType() == ItemType.WEAPON){
 				GameEvent.setEvent(GameEvent.WEAPON);
+			}
+			else if(selectedItem.getType() == ItemType.POTION){
+				if(selectedItem == Item.STRENGTH_POTION) strength += Item.STRENGTH_POTION.getValue();
+				if(selectedItem == Item.DEXTERITY_POTION) dexterity += Item.DEXTERITY_POTION.getValue();
+				if(selectedItem == Item.DEFENSE_POTION) defense += Item.DEFENSE_POTION.getValue();
+				new GameMessage("You drank 1 of " + selectedItem.getName());
+				inventory.removeItem(selectedItem, 1);
+				GameEvent.setEvent(GameEvent.EATING);
+			}
+		}
+		
+		//Hospital management
+		if(tileDistance(x, y, level.getHospitalX(), level.getHospitalY()) <= 4){
+			if(tickCount % GBJam._DESIREDTPS == 0){
+				heal(1);
 			}
 		}
 	}
@@ -73,17 +92,15 @@ public class Player extends Mob{
 				if(isFacing(direction, x, y, mob.getX(), mob.getY())){
 					GBJam.setHUDMob(mob);
 					GBJam.toggleBottomHud(true);
-					mob.remove();
-					//if(mob.getMood() != MobMood.PASSIVE) battle();
-					addXP(100);
+					if(!mob.didLose() && mob.getMood() != MobMood.PASSIVE) battle(mob);
 					return true;
 				}
 			}
-			else if(mob.getMood() == MobMood.AGRESSIVE && tileDistance(x, y, mob.getX(), mob.getY()) < mob.getViewDistance()){
+			else if(!mob.didLose() && mob.getMood() == MobMood.AGRESSIVE && tileDistance(x, y, mob.getX(), mob.getY()) < mob.getViewDistance()){
 				if(isFacing(mob.getDirection(), x, y, mob.getX(), mob.getY())){
 					GBJam.setHUDMob(mob);
 					GBJam.toggleBottomHud(true);
-					if(mob.getMood() != MobMood.PASSIVE) battle(mob);
+					battle(mob);
 					return true;
 				}
 			}
@@ -96,12 +113,29 @@ public class Player extends Mob{
 		GBJam.setGameState(GameState.BATTLE);
 
 		Battle battle = new Battle(this, mob, this.level);
-		if(!battle.attack(true, BattleMove.STAB)){
-			if(battle.getWinner() != this) setPosition(level.getHospitalX(), level.getHospitalY());
-			else mob.remove();
+		while(!battle.isOver()){
+			battle.attack(true, BattleMove.STAB);
+			battle.attack(false, BattleMove.STAB);
 		}
+		if(battle.getWinner() != this) lostBattle(battle);
+		else wonBattle(battle);
 		
 		GBJam.setGameState(GameState.GAME);
+	}
+	
+	private void lostBattle(Battle battle){
+		addXP(-1 * battle.getWinningXP());
+		die();
+	}
+	
+	private void wonBattle(Battle battle){
+		addXP(battle.getWinningXP());
+		battle.getLoser().toggleBattleLost(true);
+	}
+	
+	private void die(){
+		health = defaultHealth;
+		setPosition(level.getHospitalX(), level.getHospitalY());
 	}
 	
 	private boolean checkChests(){
@@ -121,7 +155,6 @@ public class Player extends Mob{
 		return false;
 	}	
 
-
 	public void render(Screen screen){
 		Sprite player = Sprite.PLAYER_FORWARD;
 		if(direction==0) player = Sprite.PLAYER_FORWARD;
@@ -137,10 +170,22 @@ public class Player extends Mob{
 
 	public void heal(int num){
 		health += num;
-		if(health > maxHealth)  health = maxHealth;
+		if(health > defaultHealth)  health = defaultHealth;
 	}
 
 	public void damage(int num){
-		if(health - num >= 0) health -= num;
+		health -= num;
+	}
+	
+	public int getStrength(){
+		return strength;
+	}
+	
+	public int getDexterity(){
+		return dexterity;
+	}
+	
+	public int getDefense(){
+		return defense;
 	}
 }

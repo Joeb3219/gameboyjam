@@ -43,7 +43,7 @@ public class Controller {
 	private static void loadStrings(){
 		Scanner s;
 		try {
-			s = new Scanner(new File(Controller.class.getResource(("/strings/names.txt")).toURI())).useDelimiter(System.getProperty("line.separator"));
+			s = new Scanner(new File(Controller.class.getResource(("/strings/names.txt")).toURI()));//.useDelimiter(System.getProperty("line.separator"));
 			while (s.hasNext()){
 				names.add(s.next());
 			}
@@ -51,7 +51,7 @@ public class Controller {
 		} catch (FileNotFoundException e) {e.printStackTrace();} catch (URISyntaxException e) {e.printStackTrace();}
 		
 		try {
-			s = new Scanner(new File(Controller.class.getResource(("/strings/phrases.txt")).toURI())).useDelimiter(System.getProperty("line.separator"));
+			s = new Scanner(new File(Controller.class.getResource(("/strings/phrases.txt")).toURI()));//.useDelimiter(System.getProperty("line.separator"));
 			while (s.hasNext()){
 				phrases.add(s.next());
 			}

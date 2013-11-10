@@ -13,15 +13,15 @@ import com.charredgames.game.gbjam.level.Level;
  */
 public class Mob extends Entity{
 
-	protected int identifier, health;
+	protected int identifier, health = 100;
 	protected int direction = 2, exp = 0;
-	protected boolean moving = false;
+	protected boolean lostBattle, moving = false;
 	protected MobMood mood;
 	protected MobType type = MobType.NULL;
 	protected int viewDistance = 6;
-	protected String name = "Bob Saget", phrase = "I like shorts! They're comfy!";
+	protected String name = "Bob Saget", phrase = "I like shorts! They're comfy!", losingPhrase = "I'll win next time!";
 	
-	public static Mob testing = new Mob(0xFF111111, 10, Sprite.PLAYER_FORWARD, MobType.YOUNGSTER);
+	public static Mob testing = new Mob(0xFF111111, 100, Sprite.PLAYER_FORWARD, MobType.YOUNGSTER);
 	public static Mob SALESMAN = new Salesman(0xFF222222, 100, Sprite.PLAYER_LEFT, MobType.SALESMAN);
 	
 	public Mob(int identifier, int health, Sprite sprite, MobType type){
@@ -52,6 +52,10 @@ public class Mob extends Entity{
 		new Mob(this.type, x, y, this.health, this.sprite, level);
 	}
 	
+	public void update(){
+		if(exp < 0) exp = 0;
+	}
+	
 	public void render(Screen screen){
 		screen.renderTile(this.x, this.y, this.sprite);
 	}
@@ -63,6 +67,10 @@ public class Mob extends Entity{
 	
 	public String getPhrase(){
 		return phrase;
+	}
+	
+	public String getLosingPhrase(){
+		return losingPhrase;
 	}
 	
 	public String getName(){
@@ -94,10 +102,12 @@ public class Mob extends Entity{
 	}
 
 	protected void canMove(int xCord, int yCord){
+		int originalDirection = direction;
 		if(xCord > 0){direction = 3;}
 		if(xCord < 0){direction = 1;}
 		if(yCord > 0){direction = 2;}
 		if(yCord < 0){direction = 0;}
+		if(direction != originalDirection) return;
 		if(!collision(xCord,0)){
 			x += xCord;
 			moving = true;
@@ -110,9 +120,12 @@ public class Mob extends Entity{
 	
 	private boolean collision(int xCord, int yCord){
 		for(int i = 0; i < 4; i++){ //Four point detection
-			int xPrime = ((this.x + xCord) + i % 2 * 10 + 2)/16;
-			int yPrime = ((this.y + yCord) + i % 2 * 12 + 2)/16;
+			final int xPrime = ((this.x + xCord) + i % 2 * 10 + 2)/16;
+			final int yPrime = ((this.y + yCord) + i % 2 * 12 + 2)/16;
 			if(level.getTile(xPrime,yPrime).isSolid()) return true;
+			for(Chest chest : level.getChests()){
+				if(chest.getX() == xPrime * 16 && chest.getY() == yPrime * 16) return true;
+			}
 		}
 		return false;
 	}
@@ -155,5 +168,13 @@ public class Mob extends Entity{
 	
 	public int getHealth(){
 		return health;
+	}
+	
+	public boolean didLose(){
+		return lostBattle;
+	}
+	
+	public void toggleBattleLost(boolean val){
+		lostBattle = val;
 	}
 }
