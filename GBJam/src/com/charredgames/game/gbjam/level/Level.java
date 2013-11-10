@@ -3,6 +3,7 @@ package com.charredgames.game.gbjam.level;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,29 +44,37 @@ public class Level {
 	
 	private void findChests(String path){
 		SAXBuilder builder = new SAXBuilder();
-		  File xmlFile = new File((Level.class.getResource(path)).toString());
-	 
-		  try {
-	 
+		File xmlFile;
+		try {
+			xmlFile = new File((Level.class.getResource(path)).toURI());
+		try {
 			Document document = (Document) builder.build(xmlFile);
 			Element rootNode = document.getRootElement();
 			List list = rootNode.getChildren("chest");
 	 
 			for (int i = 0; i < list.size(); i++) {
 	 
-			   Element node = (Element) list.get(i);
+				Element node = (Element) list.get(i);
 	 
-			   System.out.println("Chest X : " + node.getChildText("firstname"));
-			   System.out.println("Chest Y : " + node.getChildText("lastname"));
-			  
-	 
+				System.out.println("Chest X : " + node.getChildText("x"));
+				System.out.println("Chest Y : " + node.getChildText("y"));
+				
+				List inv = node.getChildren("inventory.item");
+				for(int j = 0; j < inv.size(); j++){
+					Element invNode = (Element) list.get(j);
+					System.out.println(invNode.getChild("quantity") + "x " + invNode.getChild("id"));
+				}
+				
 			}
 	 
 		  } catch (IOException io) {
 			System.out.println(io.getMessage());
 		  } catch (JDOMException jdomex) {
 			System.out.println(jdomex.getMessage());
-		  }
+		  }} catch (URISyntaxException e) {
+				e.printStackTrace();
+			}
+		 
 	}
 	
 	private void loadBuildings(String path){
