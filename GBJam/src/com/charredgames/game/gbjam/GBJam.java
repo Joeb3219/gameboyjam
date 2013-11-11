@@ -110,6 +110,8 @@ public class GBJam extends Canvas implements Runnable{
 		
 		if(gameState == GameState.INVENTORY) loadInventory();
 		
+		if(gameState == GameState.BATTLE) loadBattleScreen(); 
+		
 		g.setFont(new Font(Font.DIALOG, Font.PLAIN, 16));
 		g.setColor(Color.WHITE);
 		for(GameMessage message : GameMessage.messages){
@@ -126,12 +128,17 @@ public class GBJam extends Canvas implements Runnable{
 		buffer.show();
 	}
 	
+	private void loadBattleScreen(){
+		g.setColor(Color.WHITE);
+		g.fillRect(0, 0, window.getWidth(), window.getHeight());
+	}
+	
 	private void loadInventory(){
 		g.setColor(new Color(97, 97, 97, 200));
-		int xPos = (getWindowWidth()/2)-150;
-		int width = (getWindowWidth()) - (xPos*2);
-		int yPos = 100;
-		g.fillRect(xPos, yPos, width, getWindowHeight()-100);
+		int xPos = 20;//(getWindowWidth()/2)-150;
+		int width = (window.getWidth()) - (xPos*2);
+		int yPos = HUDHeight + 20;
+		g.fillRect(xPos, yPos, width, window.getHeight()- HUDHeight - 40);
 		for(Entry<Integer, InventorySlot> entry : player.getInventory().getSlots().entrySet()){
 			if(entry.getValue() == null) continue;
 			Item item = entry.getValue().getItem();
@@ -141,7 +148,7 @@ public class GBJam extends Canvas implements Runnable{
 			g.drawImage(item.getImage().getImage(), xPos + 10, yPos, item.getImage().getImage().getWidth(), item.getImage().getImage().getHeight(), null);
 			if(amount > 1) g.drawString(item.getName() + ": " + amount, xPos + 30, yPos + 12);
 			else g.drawString(item.getName(), xPos + 30, yPos + 12);
-			int selectedXPos = (xPos + width) - 100;
+			int selectedXPos = g.getFontMetrics().stringWidth(player.getInventory().getSelectedItem().getItem().getName()) + 80;
 			if(item == player.getInventory().getSelectedItem().getItem()) g.drawImage(GameImage.INVENTORY_SELECT.getImage(), selectedXPos, yPos, GameImage.INVENTORY_SELECT.getImage().getWidth(), GameImage.INVENTORY_SELECT.getImage().getHeight(), null);
 		}
 	}

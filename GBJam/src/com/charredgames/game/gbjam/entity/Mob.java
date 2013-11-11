@@ -17,7 +17,7 @@ public class Mob extends Entity implements Cloneable{
 
 	protected int identifier, health = 30, defaultHealth;
 	protected int strength = 5, dexterity = 5, defense = 5;
-	protected int direction = 2, exp = 0;
+	protected int direction = 2, exp = 0, money = 0;
 	protected boolean lostBattle, moving = false;
 	protected MobMood mood;
 	protected MobType type = MobType.NULL;
@@ -52,6 +52,14 @@ public class Mob extends Entity implements Cloneable{
 	}
 	
 	public Mob(Keyboard input){	
+	}
+	
+	public int getMoney(){
+		return money;
+	}
+	
+	public void setMoney(int num){
+		this.money = num;
 	}
 	
 	public void setDirection(int dir){

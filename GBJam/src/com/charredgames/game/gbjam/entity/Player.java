@@ -134,6 +134,8 @@ public class Player extends Mob{
 	private void wonBattle(Battle battle){
 		addXP(battle.getWinningXP());
 		battle.getLoser().toggleBattleLost(true);
+		new GameMessage("You defeated " + battle.getLoser().getName() + " and gained $" + battle.getLoser().getMoney());
+		Controller.addMoney(battle.getLoser().getMoney());
 	}
 	
 	private void die(){

@@ -88,6 +88,7 @@ public class Level {
 				newMob.setPhrase(mob.getChild("info").getAttributeValue("phrase"));
 				newMob.setLosingPhrase(mob.getChild("info").getAttributeValue("losingPhrase"));
 				newMob.setDirection(Integer.parseInt(mob.getChild("position").getAttributeValue("direction")));
+				newMob.setMoney(Integer.parseInt(mob.getChild("data").getAttributeValue("money")));
 				
 			}
 		  } catch (IOException e) {e.printStackTrace();} catch (JDOMException e) {e.printStackTrace();  }} catch (URISyntaxException e) {e.printStackTrace();}
