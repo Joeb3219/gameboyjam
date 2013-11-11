@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import com.charredgames.game.gbjam.entity.Mob;
+import com.charredgames.game.gbjam.entity.MobType;
 import com.charredgames.game.gbjam.graphics.Screen;
 import com.charredgames.game.gbjam.graphics.Tile;
 

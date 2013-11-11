@@ -13,7 +13,7 @@ import com.charredgames.game.gbjam.level.Level;
  * @author joeb3219 <joe@charredgames.com>
  * @since Nov 3, 2013
  */
-public class Mob extends Entity{
+public class Mob extends Entity implements Cloneable{
 
 	protected int identifier, health = 30, defaultHealth;
 	protected int strength = 5, dexterity = 5, defense = 5;
@@ -38,12 +38,11 @@ public class Mob extends Entity{
 		Controller.mobIdentifiers.put(identifier, this);
 	}
 	
-	public Mob(MobType mobType, int x, int y, int health, Sprite sprite, Level level){
+	public Mob(MobType mobType, int x, int y, int health, Level level){
 		this.x = x;
 		this.y = y;
 		this.health = health;
 		this.defaultHealth = health;
-		this.sprite = sprite;
 		this.type = mobType;
 		this.mood = type.getDefaultMood();
 		this.level = level;
@@ -55,8 +54,24 @@ public class Mob extends Entity{
 	public Mob(Keyboard input){	
 	}
 	
+	public void setDirection(int dir){
+		if(dir >= 0 && dir <= 3) direction = dir;
+	}
+	
+	public void setName(String name){
+		this.name = name;
+	}
+	
+	public void setPhrase(String phrase){
+		this.phrase = phrase;
+	}
+	
+	public void setLosingPhrase(String message){
+		this.losingPhrase = message;
+	}
+	
 	public void spawn(int x, int y, Level level){
-		new Mob(this.type, x, y, this.health, this.sprite, level);
+		//new Mob(this.type, x, y, this.health, this.sprite, level);
 	}
 	
 	public void update(){

@@ -1,7 +1,10 @@
 package com.charredgames.game.gbjam.entity;
 
+import com.charredgames.game.gbjam.Controller;
 import com.charredgames.game.gbjam.graphics.Screen;
 import com.charredgames.game.gbjam.graphics.Sprite;
+import com.charredgames.game.gbjam.inventory.Inventory;
+import com.charredgames.game.gbjam.level.Level;
 
 public class Salesman extends Mob{
 
@@ -10,6 +13,10 @@ public class Salesman extends Mob{
 		super(identifier, health, sprite, type);
 	}
 
+	public Salesman(MobType mobType, int x, int y, int health, Level level){
+		super(mobType, x, y, health, level);
+	}
+	
 	//public void move(){
 		
 	//}

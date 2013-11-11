@@ -19,6 +19,8 @@ import com.charredgames.game.gbjam.Controller;
 import com.charredgames.game.gbjam.GBJam;
 import com.charredgames.game.gbjam.entity.Chest;
 import com.charredgames.game.gbjam.entity.Mob;
+import com.charredgames.game.gbjam.entity.MobType;
+import com.charredgames.game.gbjam.entity.Salesman;
 import com.charredgames.game.gbjam.graphics.Screen;
 import com.charredgames.game.gbjam.graphics.Tile;
 import com.charredgames.game.gbjam.inventory.Inventory;
@@ -42,7 +44,7 @@ public class Level {
 		loadMobs(path + "/mobs.png");
 		loadBuildings(path + "/buildings.png");
 		loadMap(path + "/map.png");
-		findChests(path + "/chest.cgf");
+		findChests(path + "/level.cgf");
 	}
 	
 	private void findChests(String path){
@@ -53,32 +55,42 @@ public class Level {
 		try {
 			Document document = (Document) builder.build(xmlFile);
 			Element rootNode = document.getRootElement();
+			
+			//Handles loading world chests
 			List list = rootNode.getChildren("chest");
-	 
 			for (int i = 0; i < list.size(); i++) {				
 				Element node = (Element) list.get(i);
-	 
 				Inventory chestInventory = new Inventory();
-				
 				List inv = node.getChildren("item");
 				for(int j = 0; j < inv.size(); j++){
 					Element invNode = (Element) inv.get(j);
 					chestInventory.addItem(Item.getItem(Integer.parseInt(invNode.getAttributeValue("id"))), Integer.parseInt(invNode.getAttributeValue("quantity")));
 				}
-				
 				Chest chest = new Chest(this, Integer.parseInt(node.getChild("position").getAttributeValue("x")) * 16, Integer.parseInt(node.getChild("position").getAttributeValue("x")) * 16, 0, chestInventory);
 				addChest(chest);
+			}
+			
+			//Handles loading world mobs
+			List mobs = rootNode.getChildren("mob");
+			for(int i = 0; i < mobs.size(); i++){
+				Element mob = (Element) mobs.get(i);
+				
+				
+				String mobType = mob.getChild("data").getAttributeValue("mobType");
+				int x = Integer.parseInt(mob.getChild("position").getAttributeValue("x")), y = Integer.parseInt(mob.getChild("position").getAttributeValue("y"));
+				int health = Integer.parseInt(mob.getChild("data").getAttributeValue("health"));
+				
+				Mob newMob = Mob.testing;
+				
+				if(mobType.equalsIgnoreCase(MobType.SALESMAN.getTypeName())) newMob = new Salesman(MobType.SALESMAN, x * 16, y * 16, health, this);
+				
+				newMob.setName(mob.getChild("info").getAttributeValue("name"));
+				newMob.setPhrase(mob.getChild("info").getAttributeValue("phrase"));
+				newMob.setLosingPhrase(mob.getChild("info").getAttributeValue("losingPhrase"));
+				newMob.setDirection(Integer.parseInt(mob.getChild("position").getAttributeValue("direction")));
 				
 			}
-	 
-		  } catch (IOException io) {
-			System.out.println(io.getMessage());
-		  } catch (JDOMException jdomex) {
-			System.out.println(jdomex.getMessage());
-		  }} catch (URISyntaxException e) {
-				e.printStackTrace();
-			}
-		 
+		  } catch (IOException e) {e.printStackTrace();} catch (JDOMException e) {e.printStackTrace();  }} catch (URISyntaxException e) {e.printStackTrace();}
 	}
 	
 	private void loadBuildings(String path){

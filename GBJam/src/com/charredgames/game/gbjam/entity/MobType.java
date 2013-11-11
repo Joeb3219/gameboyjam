@@ -1,5 +1,8 @@
 package com.charredgames.game.gbjam.entity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum MobType {
 
 	//MAIN MOBS
@@ -20,10 +23,13 @@ public enum MobType {
 	
 	private String typeName;
 	private MobMood mood;
+	//We can clean this later!
+	private Map<String, MobType> types = new HashMap<String, MobType>();
 	
 	private MobType(String typeName, MobMood mood){
 		this.typeName = typeName;
 		this.mood = mood;
+		types.put(typeName, this);
 	}
 	
 	public String getTypeName(){

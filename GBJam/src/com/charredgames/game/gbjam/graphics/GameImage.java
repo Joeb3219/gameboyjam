@@ -19,6 +19,7 @@ public class GameImage {
 	public static final GameImage ITEM_STRENGTH_POTION = new GameImage("/textures/potion_strength.png");
 	public static final GameImage ITEM_DEXTERITY_POTION = new GameImage("/textures/potion_dexterity.png");
 	public static final GameImage ITEM_DEFENSE_POTION = new GameImage("/textures/potion_defense.png");
+	public static final GameImage ITEM_HEALTH_POTION = new GameImage("/textures/potion_health.png");
 
 	public GameImage(String path){
 		try{
