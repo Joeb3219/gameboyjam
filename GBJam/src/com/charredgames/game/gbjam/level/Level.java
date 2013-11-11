@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
+import org.jdom2.Namespace;
 import org.jdom2.input.SAXBuilder;
 
 import com.charredgames.game.gbjam.Controller;
@@ -20,6 +21,8 @@ import com.charredgames.game.gbjam.entity.Chest;
 import com.charredgames.game.gbjam.entity.Mob;
 import com.charredgames.game.gbjam.graphics.Screen;
 import com.charredgames.game.gbjam.graphics.Tile;
+import com.charredgames.game.gbjam.inventory.Inventory;
+import com.charredgames.game.gbjam.inventory.Item;
 
 /**
  * @author joeb3219 <joe@charredgames.com>
@@ -52,18 +55,19 @@ public class Level {
 			Element rootNode = document.getRootElement();
 			List list = rootNode.getChildren("chest");
 	 
-			for (int i = 0; i < list.size(); i++) {
-	 
+			for (int i = 0; i < list.size(); i++) {				
 				Element node = (Element) list.get(i);
 	 
-				System.out.println("Chest X : " + node.getChildText("x"));
-				System.out.println("Chest Y : " + node.getChildText("y"));
+				Inventory chestInventory = new Inventory();
 				
-				List inv = node.getChildren("inventory.item");
+				List inv = node.getChildren("item");
 				for(int j = 0; j < inv.size(); j++){
-					Element invNode = (Element) list.get(j);
-					System.out.println(invNode.getChild("quantity") + "x " + invNode.getChild("id"));
+					Element invNode = (Element) inv.get(j);
+					chestInventory.addItem(Item.getItem(Integer.parseInt(invNode.getAttributeValue("id"))), Integer.parseInt(invNode.getAttributeValue("quantity")));
 				}
+				
+				Chest chest = new Chest(this, Integer.parseInt(node.getChild("position").getAttributeValue("x")) * 16, Integer.parseInt(node.getChild("position").getAttributeValue("x")) * 16, 0, chestInventory);
+				addChest(chest);
 				
 			}
 	 

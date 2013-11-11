@@ -2,17 +2,18 @@
 
 <chests>
 	<chest>
-		<x>4</x>
-		<y>4</y>
-		<inventory>
-			<item>
-				<id>2</id>
-				<quantity>30</quantity>
-			</item>
-			<item>
-				<id>3</id>
-				<quantity>2</quantity>
-			</item>
-		</inventory>
+		<position x = "4" y = "4"></position>
+			<item id = "2" quantity = "30"> </item>
+			<item id = "3" quantity = "60"> </item>
+	</chest>
+	<chest>
+		<position x = "10" y = "10"></position>
+			<item id = "2" quantity = "30"> </item>
+			<item id = "3" quantity = "60"> </item>
+	</chest>
+	<chest>
+		<position x = "1" y = "10"></position>
+			<item id = "2" quantity = "30"> </item>
+			<item id = "3" quantity = "60"> </item>
 	</chest>
 </chests>

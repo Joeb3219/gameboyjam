@@ -1,5 +1,8 @@
 package com.charredgames.game.gbjam.inventory;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.charredgames.game.gbjam.graphics.GameImage;
 
 /**
@@ -13,6 +16,7 @@ public class Item {
 	private int id, cost, value;
 	private ItemType type;
 	private GameImage inventoryImage;
+	private static Map<Integer, Item> items = new HashMap<Integer, Item>();
 	
 	public static final Item NULL = new Item(0, "Nullificate", ItemType.WEAPON, 1000000000, 0, GameImage.ITEM_SWORD);
 	public static final Item SWORD = new Item(1, "Sword", ItemType.WEAPON, 100, 5, GameImage.ITEM_SWORD);
@@ -28,6 +32,7 @@ public class Item {
 		this.cost = cost;
 		this.type = type;
 		this.inventoryImage = inventoryImage;
+		items.put(id, this);
 	}
 	
 	public String getName(){
@@ -51,4 +56,8 @@ public class Item {
 		return value;
 	}
 	
+	public static Item getItem(int id){
+		if(items.containsKey(id)) return items.get(id);
+		return Item.NULL;
+	}
 }

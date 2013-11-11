@@ -246,15 +246,6 @@ public class GBJam extends Canvas implements Runnable{
 		player = new Player(keyboard);
 		player.reset();
 		player.setLevel(level);
-		Inventory chest = new Inventory();
-		chest.addItem(Item.APPLE, 30);
-		chest.addItem(Item.STRENGTH_POTION, 1);
-		chest.addItem(Item.DEXTERITY_POTION, 1);
-		chest.addItem(Item.DEFENSE_POTION, 1);
-		level.addChest(new Chest(level, 48, 16, 5, chest, Sprite.CHEST));
-		level.addChest(new Chest(level, 16, 48, 5, chest, Sprite.CHEST));
-		level.addChest(new Chest(level, 48, 48, 5, chest, Sprite.CHEST));
-		level.addChest(new Chest(level, 64, 64, 5, chest, Sprite.CHEST));
 	}
 	
 	public static void main(String[] args){
