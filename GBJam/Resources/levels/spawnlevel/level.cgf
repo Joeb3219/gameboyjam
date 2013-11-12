@@ -5,9 +5,15 @@
 
 	<chest>
 		<position x = "4" y = "4"/>
+			<item id = "0" quantity = "5"> </item>
+			<item id = "1" quantity = "5"> </item>
 			<item id = "2" quantity = "5"> </item>
 			<item id = "3" quantity = "2"> </item>
+			<item id = "4" quantity = "5"> </item>
+			<item id = "5" quantity = "5"> </item>
 			<item id = "6" quantity = "2"> </item>
+			<item id = "7" quantity = "5"> </item>
+			<item id = "8" quantity = "5"> </item>
 	</chest>
 	<chest>
 		<position x = "10" y = "10"/>

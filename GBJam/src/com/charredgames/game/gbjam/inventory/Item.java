@@ -25,6 +25,8 @@ public class Item {
 	public static final Item DEXTERITY_POTION = new Item(4, "Dexterity Potion", ItemType.POTION, 2500, 1, GameImage.ITEM_DEXTERITY_POTION);
 	public static final Item DEFENSE_POTION = new Item(5, "Defense Potion", ItemType.POTION, 2500, 1, GameImage.ITEM_DEFENSE_POTION);	
 	public static final Item HEALTH_POTION_20 = new Item(6, "Health Potion [20]", ItemType.EDIBLE, 6000, 20, GameImage.ITEM_HEALTH_POTION);
+	public static final Item HEALTH_POTION_10 = new Item(7, "Health Potion [10]", ItemType.EDIBLE, 3000, 10, GameImage.ITEM_HEALTH_POTION);
+	public static final Item HEARTPIECE = new Item(8, "Heart piece", ItemType.HEARTPIECE, 10000, 1, GameImage.INVENTORY_SELECT);
 	
 	public Item(int id,String name, ItemType type, int cost, int value, GameImage inventoryImage){
 		this.name = name;

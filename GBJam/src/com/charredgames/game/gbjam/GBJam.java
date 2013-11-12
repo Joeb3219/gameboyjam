@@ -71,8 +71,10 @@ public class GBJam extends Canvas implements Runnable{
 			Controller.updateMobs();
 		}
 		else if(gameState == GameState.INVENTORY){
-			if(keyboard.down) player.getInventory().getNextItem();
-			else if(keyboard.up) player.getInventory().getPreviousItem();
+			if(keyboard.down) player.getInventory().scrollDown();
+			else if(keyboard.up) player.getInventory().scrollUp();
+			else if(keyboard.right) player.getInventory().scrollRight();
+			else if(keyboard.left) player.getInventory().scrollLeft();
 		}
 		if(keyboard.start && (Controller.tickCount%2 == 0)){
 			if(gameState == GameState.INVENTORY) gameState = GameState.GAME;
@@ -139,18 +141,28 @@ public class GBJam extends Canvas implements Runnable{
 		int width = (window.getWidth()) - (xPos*2);
 		int yPos = HUDHeight + 20;
 		g.fillRect(xPos, yPos, width, window.getHeight()- HUDHeight - 40);
+		Item selectedItem = player.getInventory().getSelectedItem().getItem();
 		for(Entry<Integer, InventorySlot> entry : player.getInventory().getSlots().entrySet()){
+			if(yPos >= (7 * 48) + HUDHeight){
+				yPos = HUDHeight + 20;
+				xPos += 48;
+			}
 			if(entry.getValue() == null) continue;
 			Item item = entry.getValue().getItem();
 			int amount = entry.getValue().getQuantity();
-			yPos += 20;
-			g.setColor(Color.WHITE);
-			g.drawImage(item.getImage().getImage(), xPos + 10, yPos, item.getImage().getImage().getWidth(), item.getImage().getImage().getHeight(), null);
-			if(amount > 1) g.drawString(item.getName() + ": " + amount, xPos + 30, yPos + 12);
-			else g.drawString(item.getName(), xPos + 30, yPos + 12);
-			int selectedXPos = g.getFontMetrics().stringWidth(player.getInventory().getSelectedItem().getItem().getName()) + 80;
-			if(item == player.getInventory().getSelectedItem().getItem()) g.drawImage(GameImage.INVENTORY_SELECT.getImage(), selectedXPos, yPos, GameImage.INVENTORY_SELECT.getImage().getWidth(), GameImage.INVENTORY_SELECT.getImage().getHeight(), null);
+			if(selectedItem == item){
+				g.setColor(Color.LIGHT_GRAY);
+				g.fillRect(xPos, yPos, 48, 48);
+			}
+			g.drawImage(item.getImage().getImage(), xPos + 10, yPos, item.getImage().getImage().getWidth() * 2, item.getImage().getImage().getHeight() * 2, null);
+			if(amount > 1) g.drawString("" + amount, xPos + 30, yPos + 12);
+			yPos += 48;
 		}
+		g.setColor(Color.DARK_GRAY);
+		int nameplateWidth = 200, nameplateHeight = 40;
+		g.fillRect(window.getWidth()/2 - nameplateWidth/2, window.getHeight() - 70, nameplateWidth, nameplateHeight);
+		g.setColor(Color.WHITE);
+		g.drawString(selectedItem.getName(), (window.getWidth() - g.getFontMetrics().stringWidth(selectedItem.getName()))/2, (window.getHeight() - 70) + (70/2 + g.getFontMetrics().getHeight())/2);
 	}
 
 	private void loadBottomHUD(){

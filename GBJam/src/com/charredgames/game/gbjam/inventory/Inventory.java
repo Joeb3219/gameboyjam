@@ -24,6 +24,14 @@ public class Inventory {
 		return 1;
 	}
 	
+	public int getLastFullSlot(){
+		int slot = 1;
+		for(Entry<Integer, InventorySlot> entry : slots.entrySet()){
+			if(entry.getValue() != null) slot = entry.getKey();
+		}
+		return slot;
+	}
+	
 	public int getEmptySlot(){
 		for(Entry<Integer, InventorySlot> entry : slots.entrySet()){
 			if(entry.getValue() == null) return entry.getKey();
@@ -159,28 +167,66 @@ public class Inventory {
 		return selectedSlot;
 	}
 	
-	public InventorySlot getNextItem(){
+	public InventorySlot scrollDown(){
 		if(isEmpty()) return selectedSlot;
 		int currentSlot = getSlot(selectedSlot.getItem());
-		if(getInventorySlot(currentSlot + 1) != null) selectedSlot = getInventorySlot(currentSlot + 1);
-		else selectedSlot = getInventorySlot(1);
+		int col = getCol(currentSlot);
+		if((currentSlot + 1) != ((col + 1) * 7)){ //Check if the previous item is in the last column.
+			selectedSlot = getInventorySlot(currentSlot + 1);
+			if(selectedSlot == null) selectedSlot = getInventorySlot(getFirstFullSlot());
+		}
+		else {
+			if(getInventorySlot(col * 7) != null) selectedSlot = getInventorySlot((col * 7));
+			else selectedSlot = getInventorySlot(getFirstFullSlot());
+		}
 		if(selectedSlot == null) selectedSlot = getInventorySlot(currentSlot);
 		return selectedSlot;
 	}
 	
-	public InventorySlot getPreviousItem(){
+	public InventorySlot scrollUp(){
 		if(isEmpty()) return selectedSlot;
 		int currentSlot = getSlot(selectedSlot.getItem());
-		if(getInventorySlot(currentSlot - 1) != null) selectedSlot = getInventorySlot(currentSlot - 1);
+		int col = getCol(currentSlot);
+		if((currentSlot - 1) != ((col - 1) * 7)){ //Check if the previous item is in the last column.
+			selectedSlot = getInventorySlot(currentSlot - 1);
+			if(selectedSlot == null) selectedSlot = getInventorySlot(getLastFullSlot());
+		}
 		else {
-			for(int i = currentSlot; i <= 40; i++){
-				if(getInventorySlot(i) != null) selectedSlot = getInventorySlot(i);
-			}
+			if(getInventorySlot(col * 7) != null) selectedSlot = getInventorySlot(col * 7);
+			else selectedSlot = getInventorySlot(getLastFullSlot());
 		}
 		if(selectedSlot == null) selectedSlot = getInventorySlot(currentSlot);
 		return selectedSlot;
 	}
 
+	public InventorySlot scrollRight(){
+		if(isEmpty()) return selectedSlot;
+		int currentSlot = getSlot(selectedSlot.getItem());
+		if(currentSlot >= ((getCol(getLastFullSlot()) * 7) - 6) && currentSlot <= (getCol(getLastFullSlot()) * 7)){
+			selectedSlot = getInventorySlot(7 - ((getCol(getLastFullSlot()) * 7) - currentSlot));
+			if(selectedSlot == null) selectedSlot = getInventorySlot(getFirstFullSlot());
+		}
+		else{
+			selectedSlot = getInventorySlot(currentSlot + 7);
+			if(selectedSlot == null) selectedSlot = getInventorySlot(getLastFullSlot());
+		}
+		return selectedSlot;
+	}
+	
+	public InventorySlot scrollLeft(){
+		if(isEmpty()) return selectedSlot;
+		int currentSlot = getSlot(selectedSlot.getItem());
+		if(currentSlot >= 1 && currentSlot <= 7){
+			selectedSlot = getInventorySlot((getCol(getLastFullSlot()) * 7) - (7 - currentSlot));
+			if(selectedSlot == null) selectedSlot = getInventorySlot(getFirstFullSlot());
+		}
+		else{
+			selectedSlot = getInventorySlot(currentSlot - 7);
+			if(selectedSlot == null) selectedSlot = getInventorySlot(getLastFullSlot());
+		}
+		return selectedSlot;
+	}
+	
 	public int getFilledSlots(){
 		int num = 0;
 		for(Entry<Integer, InventorySlot> entry : slots.entrySet()){
@@ -188,4 +234,9 @@ public class Inventory {
 		}
 		return num;
 	}
+	
+	public int getCol(int slot){
+		return (int) Math.ceil(slot / 7) + 1;
+	}
+
 }
