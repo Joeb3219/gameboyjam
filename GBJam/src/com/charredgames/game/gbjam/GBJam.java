@@ -13,13 +13,13 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 
+import com.charredgames.game.gbjam.battle.Battle;
+import com.charredgames.game.gbjam.battle.BattleMove;
 import com.charredgames.game.gbjam.entity.Chest;
 import com.charredgames.game.gbjam.entity.Mob;
 import com.charredgames.game.gbjam.entity.Player;
 import com.charredgames.game.gbjam.graphics.GameImage;
 import com.charredgames.game.gbjam.graphics.Screen;
-import com.charredgames.game.gbjam.graphics.Sprite;
-import com.charredgames.game.gbjam.inventory.Inventory;
 import com.charredgames.game.gbjam.inventory.InventorySlot;
 import com.charredgames.game.gbjam.inventory.Item;
 import com.charredgames.game.gbjam.level.Level;
@@ -40,7 +40,7 @@ public class GBJam extends Canvas implements Runnable{
 	public static String title = "GBJam";
 	
 	private static JFrame window;
-	private Graphics g;
+	private static Graphics g;
 	private BufferStrategy buffer;
 	private Thread mainThread;
 	private boolean isRunning = false;
@@ -50,11 +50,11 @@ public class GBJam extends Canvas implements Runnable{
 	private static final Random rand = new Random();
 	
 	private Screen screen;
-	private Keyboard keyboard;
-	private Player player;
+	private static Keyboard keyboard;
+	private static Player player;
 	private Level level = Level.spawnLevel;
 	private int HUDHeight = 40;
-	private int HUD_BOTTOM_Height = 60;
+	private static int HUD_BOTTOM_Height = 60;
 	private static boolean showBottomHUD = false;
 	public static Mob BHUD_TARGET = Mob.testing;
 	private static GameState gameState = GameState.GAME;
@@ -129,8 +129,31 @@ public class GBJam extends Canvas implements Runnable{
 		
 		buffer.show();
 	}
+
+	public static void battle(Battle battle){
+		while(!battle.isOver()){
+			keyboard.update();
+			if(showBottomHUD){
+				if(keyboard.a) showBottomHUD = false;
+				else {
+					loadBottomHUD();
+					continue;
+				}
+			}
+			
+			if(gameState == GameState.GAME) setGameState(GameState.BATTLE);
+			
+			loadBattleScreen();
+			
+			battle.attack(true, BattleMove.STAB);
+			battle.attack(false, BattleMove.STAB);
+			
+		}
+		player.battleController(battle);
+		setGameState(GameState.GAME);
+	}
 	
-	private void loadBattleScreen(){
+	private static void loadBattleScreen(){
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, window.getWidth(), window.getHeight());
 	}
@@ -165,7 +188,7 @@ public class GBJam extends Canvas implements Runnable{
 		g.drawString(selectedItem.getName(), (window.getWidth() - g.getFontMetrics().stringWidth(selectedItem.getName()))/2, (window.getHeight() - 70) + (70/2 + g.getFontMetrics().getHeight())/2);
 	}
 
-	private void loadBottomHUD(){
+	private static void loadBottomHUD(){
 		g.setColor(new Color(44, 44, 44, 100));
 		g.fillRect(0, window.getHeight() - HUD_BOTTOM_Height, getWindowWidth(), HUD_BOTTOM_Height);
 		g.setColor(Color.WHITE);
@@ -316,6 +339,10 @@ public class GBJam extends Canvas implements Runnable{
 	
 	public static void toggleBottomHud(boolean cond){
 		showBottomHUD = cond;
+	}
+	
+	public static boolean getBottomHudState(){
+		return showBottomHUD;
 	}
 	
 	public static void setGameState(GameState state){

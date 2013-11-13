@@ -109,10 +109,18 @@ public class Player extends Mob{
 		return false;
 	}
 	
+	public void battleController(Battle battle){
+		if(battle.getWinner() != this) lostBattle(battle);
+		else wonBattle(battle);
+	}
+	
 	private void battle(Mob mob){
+		Battle battle = new Battle(this, mob, this.level);
+		
+		//GBJam.battle(battle);
+		
 		GBJam.setGameState(GameState.BATTLE);
 
-		Battle battle = new Battle(this, mob, this.level);
 		while(!battle.isOver()){
 			battle.attack(true, BattleMove.STAB);
 			battle.attack(false, BattleMove.STAB);
