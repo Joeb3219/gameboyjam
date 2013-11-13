@@ -116,6 +116,7 @@ public class Player extends Mob{
 	private void battle(Mob mob){
 		Battle battle = new Battle(this, mob, this.level);
 		currentBattle = battle;
+		
 		GBJam.setGameState(GameState.BATTLE);
 
 		while(!battle.isOver()){
@@ -126,8 +127,9 @@ public class Player extends Mob{
 				if(input.a) gbjam.showBottomHUD = false;
 				else continue;
 			}
-			battle.attack(true, BattleMove.STAB);
-			battle.attack(false, BattleMove.STAB);
+			if(battle.isPlayerTurn()) battle.attack(selectedMove);
+			else battle.attack(mob.selectedMove);
+			if(input.right) selectedMove = Controller.getNextMove(selectedMove); 
 		}
 		if(battle.getWinner() != this) lostBattle(battle);
 		else wonBattle(battle);

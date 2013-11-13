@@ -1,13 +1,10 @@
 package com.charredgames.game.gbjam;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
+import com.charredgames.game.gbjam.battle.BattleMove;
 import com.charredgames.game.gbjam.entity.Mob;
 import com.charredgames.game.gbjam.graphics.Screen;
 import com.charredgames.game.gbjam.graphics.Tile;
@@ -22,8 +19,7 @@ public class Controller {
 	public static Map<Integer, Mob> mobIdentifiers = new HashMap<Integer, Mob>();
 	public static ArrayList<Mob> mobs = new ArrayList<Mob>();
 	public static ArrayList<Mob> removeMobs = new ArrayList<Mob>();
-	private static ArrayList<String> names = new ArrayList<String>();
-	private static ArrayList<String> phrases = new ArrayList<String>();
+	public static ArrayList<BattleMove> moves = new ArrayList<BattleMove>();
 	
 	public static boolean soundOn = true;
 	public static int money = 0;
@@ -37,26 +33,6 @@ public class Controller {
 	public static void reset(){
 		money = 0;
 		tickCount = 0;
-		loadStrings();
-	}
-	
-	private static void loadStrings(){
-		Scanner s;
-		try {
-			s = new Scanner(new File(Controller.class.getResource(("/strings/names.txt")).toURI()));//.useDelimiter(System.getProperty("line.separator"));
-			while (s.hasNext()){
-				names.add(s.next());
-			}
-			s.close();
-		} catch (FileNotFoundException e) {e.printStackTrace();} catch (URISyntaxException e) {e.printStackTrace();}
-		
-		try {
-			s = new Scanner(new File(Controller.class.getResource(("/strings/phrases.txt")).toURI()));//.useDelimiter(System.getProperty("line.separator"));
-			while (s.hasNext()){
-				phrases.add(s.next());
-			}
-			s.close();
-		} catch (FileNotFoundException e) {e.printStackTrace();} catch (URISyntaxException e) {e.printStackTrace();}
 	}
 	
 	/**
@@ -112,17 +88,10 @@ public class Controller {
 		money += num;
 	}
 	
-	public static String getNextName(){
-		if(names.isEmpty()) reset(); 
-		if(names.size() <= count + 1) count = 0;
-		count++;
-		return names.get(count);
-	}
-	
-	public static String getNextPhrase(){
-		if(phrases.size() <= phraseCount + 1) phraseCount = 0;
-		phraseCount++;
-		return phrases.get(phraseCount);
+	public static BattleMove getNextMove(BattleMove currentMove){
+		int position = moves.indexOf(currentMove);
+		if(moves.size() - 1 >= position + 1) return moves.get(position + 1);
+		return BattleMove.STAB;
 	}
 	
 }

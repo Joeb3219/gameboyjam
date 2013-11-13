@@ -5,6 +5,7 @@ import java.util.Random;
 import com.charredgames.game.gbjam.Controller;
 import com.charredgames.game.gbjam.GBJam;
 import com.charredgames.game.gbjam.Keyboard;
+import com.charredgames.game.gbjam.battle.BattleMove;
 import com.charredgames.game.gbjam.graphics.GameImage;
 import com.charredgames.game.gbjam.graphics.Screen;
 import com.charredgames.game.gbjam.graphics.Sprite;
@@ -23,6 +24,7 @@ public class Mob extends Entity implements Cloneable{
 	protected boolean lostBattle, moving = false;
 	protected MobMood mood;
 	protected MobType type = MobType.NULL;
+	protected BattleMove selectedMove = BattleMove.STAB;
 	protected int viewDistance = 6;
 	protected String name = "Bob Saget", phrase = "I like shorts! They're comfy!", losingPhrase = "I'll win next time!";
 	protected Random rand = new Random();
@@ -51,98 +53,11 @@ public class Mob extends Entity implements Cloneable{
 		this.level = level;
 		inventory = new Inventory();
 		Controller.addMob(this);
-		setNameAndPhrase();
 	}
 	
 	public Mob(Keyboard input, GBJam jamInstance){	
 	}
 	
-	public int getMoney(){
-		return money;
-	}
-	
-	public void setMoney(int num){
-		this.money = num;
-	}
-	
-	public void setDirection(int dir){
-		if(dir >= 0 && dir <= 3) direction = dir;
-	}
-	
-	public void setName(String name){
-		this.name = name;
-	}
-	
-	public void setPhrase(String phrase){
-		this.phrase = phrase;
-	}
-	
-	public void setLosingPhrase(String message){
-		this.losingPhrase = message;
-	}
-	
-	public void spawn(int x, int y, Level level){
-		//new Mob(this.type, x, y, this.health, this.sprite, level);
-	}
-	
-	public void update(){
-		if(exp < 0) exp = 0;
-		move();
-	}
-	
-	protected void move(){
-		if(rand.nextInt(150) == 0) direction = rand.nextInt(4);
-	}
-	
-	public void render(Screen screen){
-		Sprite facingSprite = Sprite.MOB2_FORWARD;
-		if(direction == 1) facingSprite = Sprite.MOB2_LEFT;
-		else if(direction == 2) facingSprite = Sprite.MOB2_BACKWARD;
-		else if(direction == 3) facingSprite = Sprite.MOB2_RIGHT;
-		screen.renderTile(this.x, this.y, facingSprite);
-	}
-	
-	private void setNameAndPhrase(){
-		this.name = Controller.getNextName();
-		this.phrase = Controller.getNextPhrase();
-	}
-	
-	public String getPhrase(){
-		return phrase;
-	}
-	
-	public String getLosingPhrase(){
-		return losingPhrase;
-	}
-	
-	public String getName(){
-		return name;
-	}
-	
-	public Level getLevel(){
-		return level;
-	}
-
-	public void damage(int num){
-		health -= num;
-	}
-	
-	public void heal(int num){
-		health += num;
-	}
-	
-	public boolean isMoving(){
-		return moving;
-	}
-	
-	public MobType getType(){
-		return type;
-	}
-	
-	public MobMood getMood(){
-		return mood;
-	}
-
 	protected void canMove(int xCord, int yCord){
 		int originalDirection = direction;
 		if(xCord > 0){direction = 3;}
@@ -168,6 +83,10 @@ public class Mob extends Entity implements Cloneable{
 			for(Chest chest : level.getChests()){
 				if(!chest.doesExist()) continue;
 				if(chest.getX() == xPrime * 16 && chest.getY() == yPrime * 16) return true;
+			}
+			for(Mob mob : Controller.mobs){
+				if(!mob.doesExist()) continue;
+				if(mob.getX() == xPrime * 16 && mob.getY() == yPrime * 16) return true;
 			}
 		}
 		return false;
@@ -240,5 +159,87 @@ public class Mob extends Entity implements Cloneable{
 	public GameImage getBattleImage(){
 		return battleImage;
 	}
+	
+	public BattleMove getSelectedMove(){
+		return selectedMove;
+	}
+	
+	public int getMoney(){
+		return money;
+	}
+	
+	public void setMoney(int num){
+		this.money = num;
+	}
+	
+	public void setDirection(int dir){
+		if(dir >= 0 && dir <= 3) direction = dir;
+	}
+	
+	public void setName(String name){
+		this.name = name;
+	}
+	
+	public void setPhrase(String phrase){
+		this.phrase = phrase;
+	}
+	
+	public void setLosingPhrase(String message){
+		this.losingPhrase = message;
+	}
+	
+	public void update(){
+		if(exp < 0) exp = 0;
+		move();
+	}
+	
+	protected void move(){
+		if(rand.nextInt(150) == 0) direction = rand.nextInt(4);
+	}
+	
+	public void render(Screen screen){
+		Sprite facingSprite = Sprite.MOB2_FORWARD;
+		if(direction == 1) facingSprite = Sprite.MOB2_LEFT;
+		else if(direction == 2) facingSprite = Sprite.MOB2_BACKWARD;
+		else if(direction == 3) facingSprite = Sprite.MOB2_RIGHT;
+		screen.renderTile(this.x, this.y, facingSprite);
+	}
+	
+	public String getPhrase(){
+		return phrase;
+	}
+	
+	public String getLosingPhrase(){
+		return losingPhrase;
+	}
+	
+	public String getName(){
+		return name;
+	}
+	
+	public Level getLevel(){
+		return level;
+	}
+
+	public void damage(int num){
+		health -= num;
+	}
+	
+	public void heal(int num){
+		health += num;
+	}
+	
+	public boolean isMoving(){
+		return moving;
+	}
+	
+	public MobType getType(){
+		return type;
+	}
+	
+	public MobMood getMood(){
+		return mood;
+	}
+
 	
 }

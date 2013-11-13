@@ -40,7 +40,7 @@ public class Level {
 	public static Level spawnLevel = new Level("/levels/spawnlevel");
 	
 	public Level(String path){
-		loadMobs(path + "/mobs.png");
+		//loadMobs(path + "/mobs.png");
 		loadBuildings(path + "/buildings.png");
 		loadMap(path + "/map.png");
 		findChests(path + "/level.cgf");
@@ -108,7 +108,7 @@ public class Level {
 		}
 	}
 	
-	private void loadMobs(String path){
+	/*private void loadMobs(String path){
 		loadMap(path);
 		for(int y = 0; y < GBJam.getWindowHeight(); y++){
 			for(int x = 0; x < GBJam.getWindowWidth(); x++){
@@ -121,7 +121,7 @@ public class Level {
 			}
 		}
 		
-	}
+	}*/
 	
 	private void loadMap(String path){
 		try{

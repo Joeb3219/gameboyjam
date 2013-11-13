@@ -14,6 +14,7 @@ import java.util.Random;
 import javax.swing.JFrame;
 
 import com.charredgames.game.gbjam.battle.Battle;
+import com.charredgames.game.gbjam.battle.BattleMove;
 import com.charredgames.game.gbjam.entity.Chest;
 import com.charredgames.game.gbjam.entity.Mob;
 import com.charredgames.game.gbjam.entity.Player;
@@ -75,7 +76,7 @@ public class GBJam extends Canvas implements Runnable{
 			else if(keyboard.right) player.getInventory().scrollRight();
 			else if(keyboard.left) player.getInventory().scrollLeft();
 		}
-		if(keyboard.start && (Controller.tickCount%2 == 0)){
+		if(!showBottomHUD && keyboard.start && (Controller.tickCount%2 == 0)){
 			if(gameState == GameState.INVENTORY) gameState = GameState.GAME;
 			else gameState = GameState.INVENTORY;
 			if(keyboard.a) keyboard.a = false;
@@ -165,12 +166,32 @@ public class GBJam extends Canvas implements Runnable{
 			g.fillRect(drawX, 25, healthMultiplier, 10);
 		}
 		
+		g.setColor(Color.BLACK);
+		g.fillRoundRect(startingPos, startingYPos + 25, 375, 125, 20, 20);
+		g.setColor(Color.GRAY);
+		g.fillRoundRect(startingPos + 5, startingYPos + 30, 365, 115, 20, 20);
+		g.setColor(Color.WHITE);
+		g.setFont(new Font(Font.DIALOG, Font.BOLD, 14));
+		if(false && battle.isPlayerTurn()) g.drawString("Player's turn", startingPos + 20, startingYPos + 50);
+		else{
+			int xPos = startingPos + 5;
+			int yPos = startingYPos + 30;
+			for(BattleMove move : Controller.moves){
+				if(move == opponent.getSelectedMove()){
+					g.setColor(Color.LIGHT_GRAY);
+					g.fillRect((xPos + move.xOffset) - 3, (yPos + move.yOffset - g.getFontMetrics().getHeight()) + 3, (g.getFontMetrics().stringWidth(move.getName())) + 3, (g.getFontMetrics().getHeight()) + 3);
+				}
+				g.setColor(Color.WHITE);
+				g.drawString(move.getName(), xPos + move.xOffset, yPos + move.yOffset);
+			}
+		}
+		
 		//Player rendering
 		g.setColor(Color.BLACK);
-		g.drawImage(player.getBattleImage().getImage(), 5, 295, 64, 64, null);
+		g.drawImage(player.getBattleImage().getImage(), 5, 255, 64, 64, null);
 		healthMultiplier = (350 / player.getDefaultHealth());
 		startingPos = 100;
-		startingYPos = 315;
+		startingYPos = 275;
 		g.setFont(new Font(Font.DIALOG, Font.BOLD, 16));
 		g.drawString(player.getType().getTypeName() + " " + player.getName(), startingPos - 3, startingYPos - 7);
 		g.setFont(new Font(Font.DIALOG, Font.PLAIN, 14));
@@ -188,6 +209,26 @@ public class GBJam extends Canvas implements Runnable{
 			if(player.getHealth() >= health) g.setColor(Color.GREEN);
 			else g.setColor(Color.RED);
 			g.fillRect(drawX, startingYPos, healthMultiplier, 10);
+		}
+		
+		g.setColor(Color.BLACK);
+		g.fillRoundRect(startingPos, startingYPos + 25, 375, 125, 20, 20);
+		g.setColor(Color.GRAY);
+		g.fillRoundRect(startingPos + 5, startingYPos + 30, 365, 115, 20, 20);
+		g.setColor(Color.WHITE);
+		g.setFont(new Font(Font.DIALOG, Font.BOLD, 14));
+		if(false && !battle.isPlayerTurn()) g.drawString("Opponent's turn", startingPos + 20, startingYPos + 50);
+		else{
+			int xPos = startingPos + 5;
+			int yPos = startingYPos + 30;
+			for(BattleMove move : Controller.moves){
+				if(move == player.getSelectedMove()){
+					g.setColor(Color.LIGHT_GRAY);
+					g.fillRect((xPos + move.xOffset) - 3, (yPos + move.yOffset - g.getFontMetrics().getHeight()) + 3, (g.getFontMetrics().stringWidth(move.getName())) + 3, (g.getFontMetrics().getHeight()) + 3);
+				}
+				g.setColor(Color.WHITE);
+				g.drawString(move.getName(), xPos + move.xOffset, yPos + move.yOffset);
+			}
 		}
 		
 	}
