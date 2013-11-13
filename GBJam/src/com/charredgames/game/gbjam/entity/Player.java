@@ -85,7 +85,6 @@ public class Player extends Mob{
 		}
 	}
 
-	
 	private boolean checkMobs(){
 		for(Mob mob : Controller.mobs){
 			if(mob.getLevel() != level) continue;
@@ -98,7 +97,7 @@ public class Player extends Mob{
 				}
 			}
 			else if(!mob.didLose() && mob.getMood() == MobMood.AGRESSIVE && tileDistance(x, y, mob.getX(), mob.getY()) < mob.getViewDistance()){
-				if(isFacing(mob.getDirection(), x, y, mob.getX(), mob.getY())){
+				if(isFacing(mob.getDirection(), mob.getX(), mob.getY(), x, y)){
 					GBJam.setHUDMob(mob);
 					GBJam.toggleBottomHud(true);
 					battle(mob);
@@ -109,7 +108,6 @@ public class Player extends Mob{
 		GBJam.toggleBottomHud(false);
 		return false;
 	}
-	
 	
 	private void battle(Mob mob){
 		GBJam.setGameState(GameState.BATTLE);
@@ -124,7 +122,6 @@ public class Player extends Mob{
 		
 		GBJam.setGameState(GameState.GAME);
 	}
-	
 	
 	private void lostBattle(Battle battle){
 		addXP(-1 * battle.getWinningXP());
@@ -168,7 +165,6 @@ public class Player extends Mob{
 		else if(direction==3) player = Sprite.PLAYER_RIGHT;
 		screen.renderTile(this.x, this.y, player);
 	}
-	
 	
 	public void setLevel(Level level){
 		this.level = level;
