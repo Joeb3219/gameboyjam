@@ -21,12 +21,15 @@ import com.charredgames.game.gbjam.level.Level;
 public class Player extends Mob{
 
 	private Keyboard input;
-	private int defaultHealth = 20, tickCount = 0;
+	private static GBJam gbjam;
+	private int tickCount = 0;
+	public Battle currentBattle;
 	
-	public Player(Keyboard input) {
-		super(input);
+	public Player(Keyboard input, GBJam jamInstance) {
+		super(input, jamInstance);
 		inventory = new Inventory();
 		this.input = input;
+		gbjam = jamInstance;
 		this.sprite = Sprite.PLAYER_FORWARD;
 		type = MobType.PLAYER;
 		this.viewDistance = 1;
@@ -35,6 +38,7 @@ public class Player extends Mob{
 	}
 	
 	public void reset(){
+		this.defaultHealth = 30;
 		this.health = defaultHealth;
 	}
 
@@ -91,7 +95,7 @@ public class Player extends Mob{
 			if(input.a && tileDistance(x, y, mob.getX(), mob.getY()) == 1){
 				if(isFacing(direction, x, y, mob.getX(), mob.getY())){
 					GBJam.setHUDMob(mob);
-					GBJam.toggleBottomHud(true);
+					gbjam.showBottomHUD = true;
 					if(!mob.didLose() && mob.getMood() != MobMood.PASSIVE) battle(mob);
 					return true;
 				}
@@ -99,29 +103,29 @@ public class Player extends Mob{
 			else if(!mob.didLose() && mob.getMood() == MobMood.AGRESSIVE && tileDistance(x, y, mob.getX(), mob.getY()) < mob.getViewDistance()){
 				if(isFacing(mob.getDirection(), mob.getX(), mob.getY(), x, y)){
 					GBJam.setHUDMob(mob);
-					GBJam.toggleBottomHud(true);
+					gbjam.showBottomHUD = true;
 					battle(mob);
 					return true;
 				}
 			}
 		}
-		GBJam.toggleBottomHud(false);
+		gbjam.showBottomHUD = false;
 		return false;
 	}
-	
-	public void battleController(Battle battle){
-		if(battle.getWinner() != this) lostBattle(battle);
-		else wonBattle(battle);
-	}
-	
+
 	private void battle(Mob mob){
 		Battle battle = new Battle(this, mob, this.level);
-		
-		//GBJam.battle(battle);
-		
+		currentBattle = battle;
 		GBJam.setGameState(GameState.BATTLE);
 
 		while(!battle.isOver()){
+			gbjam.render();
+			gbjam.tick();
+
+			if(gbjam.showBottomHUD){
+				if(input.a) gbjam.showBottomHUD = false;
+				else continue;
+			}
 			battle.attack(true, BattleMove.STAB);
 			battle.attack(false, BattleMove.STAB);
 		}

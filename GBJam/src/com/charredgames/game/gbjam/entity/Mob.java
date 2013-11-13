@@ -3,7 +3,9 @@ package com.charredgames.game.gbjam.entity;
 import java.util.Random;
 
 import com.charredgames.game.gbjam.Controller;
+import com.charredgames.game.gbjam.GBJam;
 import com.charredgames.game.gbjam.Keyboard;
+import com.charredgames.game.gbjam.graphics.GameImage;
 import com.charredgames.game.gbjam.graphics.Screen;
 import com.charredgames.game.gbjam.graphics.Sprite;
 import com.charredgames.game.gbjam.inventory.Inventory;
@@ -15,7 +17,7 @@ import com.charredgames.game.gbjam.level.Level;
  */
 public class Mob extends Entity implements Cloneable{
 
-	protected int identifier, health = 30, defaultHealth;
+	protected int identifier, health = 30, defaultHealth = 30;
 	protected int strength = 5, dexterity = 5, defense = 5;
 	protected int direction = 2, exp = 0, money = 0;
 	protected boolean lostBattle, moving = false;
@@ -24,6 +26,7 @@ public class Mob extends Entity implements Cloneable{
 	protected int viewDistance = 6;
 	protected String name = "Bob Saget", phrase = "I like shorts! They're comfy!", losingPhrase = "I'll win next time!";
 	protected Random rand = new Random();
+	protected GameImage battleImage = GameImage.ITEM_SWORD;
 	
 	public static Mob testing = new Mob(0xFF111111, 30, Sprite.PLAYER_FORWARD, MobType.YOUNGSTER);
 	public static Mob SALESMAN = new Salesman(0xFF222222, 30, Sprite.PLAYER_LEFT, MobType.SALESMAN);
@@ -51,7 +54,7 @@ public class Mob extends Entity implements Cloneable{
 		setNameAndPhrase();
 	}
 	
-	public Mob(Keyboard input){	
+	public Mob(Keyboard input, GBJam jamInstance){	
 	}
 	
 	public int getMoney(){
@@ -233,4 +236,9 @@ public class Mob extends Entity implements Cloneable{
 	public int getDefaultHealth(){
 		return defaultHealth;
 	}
+	
+	public GameImage getBattleImage(){
+		return battleImage;
+	}
+	
 }

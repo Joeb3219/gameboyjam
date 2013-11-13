@@ -9,14 +9,12 @@ import java.util.ArrayList;
 public class GameMessage {
 
 	private String message;
-	private int y;
 	private int timer = 100;
 	public boolean visible = true;
 	public static ArrayList<GameMessage> messages = new ArrayList<GameMessage>();
 	
 	public GameMessage(String message){
 		this.message = message;
-		this.y = getY();
 		messages.add(0, this);
 	}
 	

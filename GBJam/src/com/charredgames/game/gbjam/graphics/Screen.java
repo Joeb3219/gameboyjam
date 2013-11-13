@@ -10,7 +10,7 @@ public class Screen {
 	public int xOffset, yOffset;
 	public int tileSize = 16;
 	public int[] pixels;
-	private int[] tiles;
+	//private int[] tiles;
 	
 	public Screen(int w, int h){
 		height = h;

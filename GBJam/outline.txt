@@ -19,7 +19,7 @@ LEFT TO DO (MAIN):
 		- Perhaps not random!
 		- Store extra hearts -> more max health? (Zelda)?
 	- More items
-	
+	- FIX THE EXP, STUPID.
 	
 	
 BATTLE SYSTEM:

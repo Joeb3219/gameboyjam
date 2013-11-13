@@ -36,7 +36,7 @@
 	
 	<mob>
 		<position x = "10" y = "10" direction = "3"/>
-		<data mobType = "salesman" health = "2" money = "300"/>
+		<data mobType = "salesman" health = "30" money = "300"/>
 		<info name = "George" phrase = "What's up?" losingPhrase = "I almost won!"/>
 	</mob>
 	

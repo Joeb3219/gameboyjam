@@ -30,8 +30,8 @@ public class Battle {
 		if(playerAttack) attacker = player;
 		else attacker = opponent;
 		//if(move == BattleMove.STAB) damage = (4 * ((attacker.getXPLevel() + 2) ^ 2)) * (attacker.getStrength() / (rand.nextInt(100) + 1));
-		if(move == BattleMove.STAB) damage = ( ((2 * attacker.getXPLevel()) * (1/2 * attacker.getStrength()) ) + (attacker.getStrength() / (rand.nextInt(100) + 1)/2) );
-		System.out.println(attacker.getName() + " " + damage);
+		if(move == BattleMove.STAB) damage = ( ((2 * attacker.getXPLevel()) * (1/2 * attacker.getStrength()) ) + (attacker.getStrength() / (rand.nextInt(100) + 1)/2) );// + 1;
+		else if(move == BattleMove.SLASH) damage = ( ((2 * attacker.getXPLevel()) * (1/2 * attacker.getStrength()) ) + (attacker.getStrength() / (rand.nextInt(100) + 1)/2) ) + 1;
 		if(attacker == player) opponent.damage(damage);
 		else player.damage(damage);
 		
@@ -66,6 +66,10 @@ public class Battle {
 	
 	public boolean isOver(){
 		return over;
+	}
+	
+	public Mob getOpponent(){
+		return opponent;
 	}
 	
 }
