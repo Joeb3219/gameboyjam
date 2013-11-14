@@ -22,6 +22,7 @@ LEFT TO DO (MAIN):
 	- FIX THE EXP, STUPID.
 	- Minimap (xxmarekxx_x)
 	- Battlelog (xxmarekxx_x)
+	- Chest closed sprite (ro88ie)
 	
 	
 BATTLE SYSTEM:

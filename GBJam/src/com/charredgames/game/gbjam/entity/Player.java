@@ -126,7 +126,8 @@ public class Player extends Mob{
 			lastTime = now;
 			while(delta >= 1){
 				gbjam.tick();
-				
+				ticks++;
+				delta--;
 				//Actual battle move code.
 				if(tileDistance(x, y, mob.getX(), mob.getY()) > 1 || gbjam.showBottomHUD){
 					if(tileDistance(x, y, mob.getX(), mob.getY()) > 1) mob.moveTowards(mob, this.x, this.y);
@@ -134,16 +135,17 @@ public class Player extends Mob{
 						if(input.a) gbjam.showBottomHUD = false;
 						continue;
 					}
+					continue;
 				}
-				if(battle.isPlayerTurn()) {
-					if(input.a) battle.attack(selectedMove);
+				else{
+					if(battle.isPlayerTurn()) {
+						if(input.a) battle.attack(selectedMove);
+					}
+					else battle.attack(mob.selectedMove);
+					if(input.right) selectedMove = Controller.getNextMove(selectedMove); 
+					if(input.left) selectedMove = Controller.getPreviousMove(selectedMove); 
 				}
-				else battle.attack(mob.selectedMove);
-				if(input.right) selectedMove = Controller.getNextMove(selectedMove); 
-				if(input.left) selectedMove = Controller.getPreviousMove(selectedMove); 
 				
-				ticks++;
-				delta--;
 			}
 			gbjam.render();
 			frames++;

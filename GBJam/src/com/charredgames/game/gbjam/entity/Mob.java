@@ -158,6 +158,18 @@ public class Mob extends Entity implements Cloneable{
 			if(direction == 1 && (chestY == y) && (chestDistance <= distance && chestX < x)) return true;
 		}
 		
+		for(Mob otherMob : Controller.mobs){
+			if(otherMob.getLevel() != mob.level) continue; 
+			int chestDistance = tileDistance(otherMob.getX(), otherMob.getY(), mob.getX(), mob.getY());
+			int mobX = otherMob.getX() / 16;
+			int mobY = otherMob.getY() / 16;
+			if(!otherMob.doesExist() || (Math.abs(mobX - x) > mob.getViewDistance()) || (Math.abs(mobY - y) > mob.getViewDistance() * 16)) continue;
+			if(direction == 0 && (mobX == x) && (chestDistance <= distance && mobY > y)) return true;
+			if(direction == 2 && (mobX == x) && (chestDistance <= distance && mobY < y)) return true;
+			if(direction == 3 && (mobY == y) && (chestDistance <= distance && mobX > x)) return true;
+			if(direction == 1 && (mobY == y) && (chestDistance <= distance && mobX < x)) return true;
+		}
+		
 		return false;
 	}
 	
