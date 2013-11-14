@@ -18,10 +18,10 @@ import com.charredgames.game.gbjam.level.Level;
  */
 public class Mob extends Entity implements Cloneable{
 
-	protected int identifier, health = 30, defaultHealth = 30;
+	protected int identifier, health = 30, defaultHealth = 30, xMovement, yMovement;
 	protected int strength = 5, dexterity = 5, defense = 5;
 	protected int direction = 2, exp = 0, money = 0;
-	protected boolean lostBattle, moving = false;
+	protected boolean lostBattle, moving = false, turning = false;
 	protected MobMood mood;
 	protected MobType type = MobType.NULL;
 	protected BattleMove selectedMove = BattleMove.STAB;
@@ -58,6 +58,24 @@ public class Mob extends Entity implements Cloneable{
 	}
 	
 	public Mob(Keyboard input, GBJam jamInstance){	
+	}
+	
+	public void update(){
+		if(exp < 0) exp = 0;
+		move();
+	}
+	
+	protected void move(){
+		if(turning && rand.nextInt(150) == 0) direction = rand.nextInt(4);
+		//int xRelation = Math.abs(a)
+	}
+	
+	public void render(Screen screen){
+		Sprite facingSprite = Sprite.MOB2_FORWARD;
+		if(direction == 1) facingSprite = Sprite.MOB2_LEFT;
+		else if(direction == 2) facingSprite = Sprite.MOB2_BACKWARD;
+		else if(direction == 3) facingSprite = Sprite.MOB2_RIGHT;
+		screen.renderTile(this.x, this.y, facingSprite);
 	}
 	
 	protected void canMove(int xCord, int yCord){
@@ -145,6 +163,12 @@ public class Mob extends Entity implements Cloneable{
 		return false;
 	}
 	
+	public void setMovingDetails(boolean turns, int xMovement, int yMovement){
+		this.turning = turns;
+		this.xMovement = xMovement;
+		this.yMovement = yMovement;
+	}
+	
 	public int getViewDistance(){
 		return viewDistance;
 	}
@@ -223,23 +247,6 @@ public class Mob extends Entity implements Cloneable{
 	
 	public void setLosingPhrase(String message){
 		this.losingPhrase = message;
-	}
-	
-	public void update(){
-		if(exp < 0) exp = 0;
-		move();
-	}
-	
-	protected void move(){
-		if(rand.nextInt(150) == 0) direction = rand.nextInt(4);
-	}
-	
-	public void render(Screen screen){
-		Sprite facingSprite = Sprite.MOB2_FORWARD;
-		if(direction == 1) facingSprite = Sprite.MOB2_LEFT;
-		else if(direction == 2) facingSprite = Sprite.MOB2_BACKWARD;
-		else if(direction == 3) facingSprite = Sprite.MOB2_RIGHT;
-		screen.renderTile(this.x, this.y, facingSprite);
 	}
 	
 	public String getPhrase(){

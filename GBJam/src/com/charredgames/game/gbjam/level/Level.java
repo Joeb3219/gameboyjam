@@ -86,7 +86,7 @@ public class Level {
 				newMob.setLosingPhrase(mob.getChild("info").getAttributeValue("losingPhrase"));
 				newMob.setDirection(Integer.parseInt(mob.getChild("position").getAttributeValue("direction")));
 				newMob.setMoney(Integer.parseInt(mob.getChild("data").getAttributeValue("money")));
-				
+				newMob.setMovingDetails(Boolean.getBoolean(mob.getChild("movement").getAttributeValue("turns")), Integer.parseInt(mob.getChild("movement").getAttributeValue("xMovement")), Integer.parseInt(mob.getChild("movement").getAttributeValue("yMovement")));
 			}
 			
 			//Handles loading level buildings

@@ -66,7 +66,7 @@ public class GBJam extends Canvas implements Runnable{
 		keyboard.update();
 		GameMessage.updateMessages();
 		GameEvent.updateCounter();
-		if(gameState == GameState.GAME){
+		if(gameState == GameState.GAME && !showBottomHUD){
 			player.update();
 			Controller.updateMobs();
 		}
@@ -82,6 +82,7 @@ public class GBJam extends Canvas implements Runnable{
 			if(keyboard.a) keyboard.a = false;
 			if(keyboard.b) keyboard.b = false;
 		}
+		if(keyboard.a && showBottomHUD && Controller.tickCount % 2 == 0) showBottomHUD = false;
 	}
 	
 	public void render(){

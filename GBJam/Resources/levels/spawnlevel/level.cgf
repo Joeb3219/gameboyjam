@@ -45,17 +45,19 @@
 	<mob>
 		<position x = "5" y = "5" direction = "2"/>
 		<data mobType = "salesman" health = "30" money = "100"/>
-		<movement turns = "true" xMovement = "0" yMovement = "0"/>
+		<movement turns = "false" xMovement = "0" yMovement = "0"/>
 		<info name = "Bob" phrase = "Hello, do you like pie?" losingPhrase = "I'll get you next time!"/>
 	</mob>
 	<mob>
 		<position x = "10" y = "10" direction = "3"/>
 		<data mobType = "salesman" health = "30" money = "300"/>
+		<movement turns = "false" xMovement = "0" yMovement = "0"/>
 		<info name = "George" phrase = "What's up?" losingPhrase = "I almost won!"/>
 	</mob>
 	<mob>
 		<position x = "5" y = "10" direction = "1"/>
 		<data mobType = "salesman" health = "30" money = "265"/>
+		<movement turns = "false" xMovement = "0" yMovement = "0"/>
 		<info name = "Youngster" phrase = "I like shorts! They're comfy and easy to wear!" losingPhrase = "I let you win!"/>
 	</mob>
 	
