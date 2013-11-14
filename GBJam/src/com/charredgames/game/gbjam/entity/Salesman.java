@@ -6,11 +6,6 @@ import com.charredgames.game.gbjam.level.Level;
 
 public class Salesman extends Mob{
 
-	
-	public Salesman(int identifier, int health, Sprite sprite, MobType type) {
-		super(identifier, health, sprite, type);
-	}
-
 	public Salesman(MobType mobType, int x, int y, int health, Level level){
 		super(mobType, x, y, health, level);
 	}

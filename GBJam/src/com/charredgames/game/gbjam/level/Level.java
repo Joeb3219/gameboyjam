@@ -15,7 +15,6 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
 import com.charredgames.game.gbjam.Controller;
-import com.charredgames.game.gbjam.GBJam;
 import com.charredgames.game.gbjam.entity.Chest;
 import com.charredgames.game.gbjam.entity.Mob;
 import com.charredgames.game.gbjam.entity.MobType;
@@ -54,21 +53,21 @@ public class Level {
 			Element rootNode = document.getRootElement();
 			
 			//Handles loading world chests
-			List list = rootNode.getChildren("chest");
+			List<Element> list = rootNode.getChildren("chest");
 			for (int i = 0; i < list.size(); i++) {				
 				Element node = (Element) list.get(i);
 				Inventory chestInventory = new Inventory();
-				List inv = node.getChildren("item");
+				List<Element> inv = node.getChildren("item");
 				for(int j = 0; j < inv.size(); j++){
 					Element invNode = (Element) inv.get(j);
 					chestInventory.addItem(Item.getItem(Integer.parseInt(invNode.getAttributeValue("id"))), Integer.parseInt(invNode.getAttributeValue("quantity")));
 				}
-				Chest chest = new Chest(this, Integer.parseInt(node.getChild("position").getAttributeValue("x")) * 16, Integer.parseInt(node.getChild("position").getAttributeValue("y")) * 16, 0, chestInventory);
+				Chest chest = new Chest(this, Integer.parseInt(node.getChild("position").getAttributeValue("x")) * 16, Integer.parseInt(node.getChild("position").getAttributeValue("y")) * 16, chestInventory);
 				addChest(chest);
 			}
 			
 			//Handles loading level mobs
-			List mobs = rootNode.getChildren("mob");
+			List<Element> mobs = rootNode.getChildren("mob");
 			for(int i = 0; i < mobs.size(); i++){
 				Element mob = (Element) mobs.get(i);
 				
@@ -81,16 +80,13 @@ public class Level {
 				
 				if(mobType.equalsIgnoreCase(MobType.SALESMAN.getTypeName())) newMob = new Salesman(MobType.SALESMAN, x * 16, y * 16, health, this);
 				
-				newMob.setName(mob.getChild("info").getAttributeValue("name"));
-				newMob.setPhrase(mob.getChild("info").getAttributeValue("phrase"));
-				newMob.setLosingPhrase(mob.getChild("info").getAttributeValue("losingPhrase"));
-				newMob.setDirection(Integer.parseInt(mob.getChild("position").getAttributeValue("direction")));
+				newMob.setMobStrings(mob.getChild("info").getAttributeValue("name"), mob.getChild("info").getAttributeValue("phrase"), mob.getChild("info").getAttributeValue("losingPhrase"));
 				newMob.setMoney(Integer.parseInt(mob.getChild("data").getAttributeValue("money")));
-				newMob.setMovingDetails(Boolean.getBoolean(mob.getChild("movement").getAttributeValue("turns")), Integer.parseInt(mob.getChild("movement").getAttributeValue("xMovement")), Integer.parseInt(mob.getChild("movement").getAttributeValue("yMovement")));
+				newMob.setMovingDetails(Integer.parseInt(mob.getChild("position").getAttributeValue("direction")), Boolean.getBoolean(mob.getChild("movement").getAttributeValue("turns")), Integer.parseInt(mob.getChild("movement").getAttributeValue("xMovement")), Integer.parseInt(mob.getChild("movement").getAttributeValue("yMovement")));
 			}
 			
 			//Handles loading level buildings
-			List buildings = rootNode.getChildren("building");
+			List<Element> buildings = rootNode.getChildren("building");
 			for(int i = 0; i < buildings.size(); i++){
 				Element building = (Element) buildings.get(i);
 				

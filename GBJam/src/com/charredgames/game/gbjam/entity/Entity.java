@@ -12,7 +12,7 @@ public abstract class Entity {
 
 	protected int x, y, originalX, originalY;
 	protected Level level;
-	protected boolean exists = true;
+	protected boolean exists = true, moving = false;
 	protected Inventory inventory;
 	protected Sprite sprite = Sprite.nullSprite;
 	
@@ -31,6 +31,10 @@ public abstract class Entity {
 	
 	public int getY(){
 		return y;
+	}
+	
+	public boolean isMoving(){
+		return moving;
 	}
 	
 	public Inventory getInventory(){

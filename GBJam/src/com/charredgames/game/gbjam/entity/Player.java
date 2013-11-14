@@ -56,9 +56,8 @@ public class Player extends Mob{
 		
 		if(moving && level.getTile(x / 16, y / 16).dropped()) Controller.addMoney(1);
 		
-		checkMobs();
-		
-		if(input.a && GBJam.currentEvent == GameEvent.NULL){
+		if(checkMobs()) return;
+		else if(input.a && GBJam.currentEvent == GameEvent.NULL){
 			Item selectedItem = inventory.getSelectedItem().getItem();
 			if(checkChests()) GameEvent.setEvent(GameEvent.OPENED_CHEST);
 			else if(selectedItem.getType() == ItemType.EDIBLE && health < defaultHealth){
@@ -66,9 +65,6 @@ public class Player extends Mob{
 				inventory.removeItem(selectedItem, 1);
 				new GameMessage("You ate 1 of " + selectedItem.getName());
 				GameEvent.setEvent(GameEvent.EATING);
-			}
-			else if(selectedItem.getType() == ItemType.WEAPON){
-				GameEvent.setEvent(GameEvent.WEAPON);
 			}
 			else if(selectedItem.getType() == ItemType.POTION){
 				if(selectedItem == Item.STRENGTH_POTION) strength += Item.STRENGTH_POTION.getValue();
@@ -92,7 +88,7 @@ public class Player extends Mob{
 		for(Mob mob : Controller.mobs){
 			if(mob.getLevel() != level) continue;
 			if(input.a && tileDistance(x, y, mob.getX(), mob.getY()) == 1){
-				if(isFacing(direction, x, y, mob.getX(), mob.getY())){
+				if(isFacing(direction, x, y, mob.getX(), mob.getY()) || (!mob.didLose() && mob.getMood() == MobMood.AGRESSIVE && isFacing(mob.getDirection(), mob.getX(), y, x, mob.getY()))){
 					GBJam.setHUDMob(mob);
 					gbjam.showBottomHUD = true;
 					if(!mob.didLose() && mob.getMood() != MobMood.PASSIVE) battle(mob);
@@ -112,13 +108,14 @@ public class Player extends Mob{
 		return false;
 	}
 
+	@SuppressWarnings("unused")
 	private void battle(Mob mob){
 		long lastTime = System.nanoTime();
 		long timer = System.currentTimeMillis();
 		final double nanoSeconds = 1000000000.0 / GBJam._DESIREDTPS;
 		double delta = 0;
 		int frames = 0, ticks = 0;
-		Battle battle = new Battle(this, mob, this.level);
+		Battle battle = new Battle(this, mob);
 		currentBattle = battle;
 		
 		GBJam.setGameState(GameState.BATTLE);

@@ -18,10 +18,10 @@ import com.charredgames.game.gbjam.level.Level;
  */
 public class Mob extends Entity implements Cloneable{
 
-	protected int identifier, health = 30, defaultHealth = 30, xMovement, yMovement;
+	protected int health = 30, defaultHealth = 30, xMovement, yMovement;
 	protected int strength = 5, dexterity = 5, defense = 5;
 	protected int direction = 2, exp = 0, money = 0;
-	protected boolean lostBattle, moving = false, turning = false;
+	protected boolean lostBattle, turning = false;
 	protected MobMood mood;
 	protected MobType type = MobType.NULL;
 	protected BattleMove selectedMove = BattleMove.STAB;
@@ -30,17 +30,15 @@ public class Mob extends Entity implements Cloneable{
 	protected Random rand = new Random();
 	protected GameImage battleImage = GameImage.ITEM_SWORD;
 	
-	public static Mob testing = new Mob(0xFF111111, 30, Sprite.PLAYER_FORWARD, MobType.YOUNGSTER);
-	public static Mob SALESMAN = new Salesman(0xFF222222, 30, Sprite.PLAYER_LEFT, MobType.SALESMAN);
+	public static Mob testing = new Mob(30, Sprite.PLAYER_FORWARD, MobType.YOUNGSTER);
 	
-	public Mob(int identifier, int health, Sprite sprite, MobType type){
+	public Mob( int health, Sprite sprite, MobType type){
 		this.sprite = sprite;
 		this.health = health;
 		this.defaultHealth = health;
 		this.type = type;
 		this.mood = type.getDefaultMood();
 		inventory = new Inventory();
-		Controller.mobIdentifiers.put(identifier, this);
 	}
 	
 	public Mob(MobType mobType, int x, int y, int health, Level level){
@@ -163,7 +161,8 @@ public class Mob extends Entity implements Cloneable{
 		return false;
 	}
 	
-	public void setMovingDetails(boolean turns, int xMovement, int yMovement){
+	public void setMovingDetails(int dir, boolean turns, int xMovement, int yMovement){
+		if(dir >= 0 && dir <= 3) direction = dir;
 		this.turning = turns;
 		this.xMovement = xMovement;
 		this.yMovement = yMovement;
@@ -233,20 +232,10 @@ public class Mob extends Entity implements Cloneable{
 		this.money = num;
 	}
 	
-	public void setDirection(int dir){
-		if(dir >= 0 && dir <= 3) direction = dir;
-	}
-	
-	public void setName(String name){
+	public void setMobStrings(String name, String phrase, String losingPhrase){
 		this.name = name;
-	}
-	
-	public void setPhrase(String phrase){
 		this.phrase = phrase;
-	}
-	
-	public void setLosingPhrase(String message){
-		this.losingPhrase = message;
+		this.losingPhrase = losingPhrase;
 	}
 	
 	public String getPhrase(){
@@ -271,10 +260,6 @@ public class Mob extends Entity implements Cloneable{
 	
 	public void heal(int num){
 		health += num;
-	}
-	
-	public boolean isMoving(){
-		return moving;
 	}
 	
 	public MobType getType(){
