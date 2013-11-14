@@ -131,9 +131,12 @@ public class Player extends Mob{
 				gbjam.tick();
 				
 				//Actual battle move code.
-				if(gbjam.showBottomHUD){
-					if(input.a) gbjam.showBottomHUD = false;
-					else continue;
+				if(tileDistance(x, y, mob.getX(), mob.getY()) > 1 || gbjam.showBottomHUD){
+					if(tileDistance(x, y, mob.getX(), mob.getY()) > 1) mob.moveTowards(mob, this.x, this.y);
+					else{
+						if(input.a) gbjam.showBottomHUD = false;
+						continue;
+					}
 				}
 				if(battle.isPlayerTurn()) {
 					if(input.a) battle.attack(selectedMove);
@@ -155,6 +158,8 @@ public class Player extends Mob{
 		}
 		if(battle.getWinner() != this) lostBattle(battle);
 		else wonBattle(battle);
+		
+		mob.setPosition(mob.originalX, mob.originalY);
 		
 		GBJam.setGameState(GameState.GAME);
 	}

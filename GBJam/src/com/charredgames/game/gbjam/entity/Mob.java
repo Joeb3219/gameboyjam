@@ -46,6 +46,8 @@ public class Mob extends Entity implements Cloneable{
 	public Mob(MobType mobType, int x, int y, int health, Level level){
 		this.x = x;
 		this.y = y;
+		this.originalX = x;
+		this.originalY = y;
 		this.health = health;
 		this.defaultHealth = health;
 		this.type = mobType;
@@ -106,6 +108,18 @@ public class Mob extends Entity implements Cloneable{
 		else if(direction == 0 && xDelta == 0 && (yPrime - y) < 0) return true;
 		else if(direction == 2 && xDelta == 0 && (yPrime - y) > 0) return true;
 		return false;
+	}
+	
+	public void moveTowards(Mob mob, int xPrime, int yPrime){
+		if(mob.x == xPrime && mob.y >= yPrime) mob.direction = 2;
+		else if(mob.x == xPrime && mob.y >= yPrime) mob.direction = 0;
+		else if(mob.x <= xPrime && mob.y == yPrime) mob.direction = 3;
+		else if(mob.x >= xPrime && mob.y == yPrime) mob.direction = 1;
+
+		if(mob.direction == 0) mob.y+= 16;
+		else if(mob.direction == 1) mob.x -= 16;
+		else if(mob.direction == 2) mob.y -= 16;
+		else if(mob.direction == 3) mob.x += 16;
 	}
 	
 	public boolean solidInWay(Mob mob, int xPrime, int yPrime){

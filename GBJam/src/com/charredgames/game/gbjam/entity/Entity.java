@@ -10,7 +10,7 @@ import com.charredgames.game.gbjam.level.Level;
  */
 public abstract class Entity {
 
-	protected int x, y;
+	protected int x, y, originalX, originalY;
 	protected Level level;
 	protected boolean exists = true;
 	protected Inventory inventory;

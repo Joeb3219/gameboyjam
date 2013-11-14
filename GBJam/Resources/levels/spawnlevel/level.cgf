@@ -45,6 +45,7 @@
 	<mob>
 		<position x = "5" y = "5" direction = "2"/>
 		<data mobType = "salesman" health = "30" money = "100"/>
+		<movement turns = "true" xMovement = "0" yMovement = "0"/>
 		<info name = "Bob" phrase = "Hello, do you like pie?" losingPhrase = "I'll get you next time!"/>
 	</mob>
 	<mob>
