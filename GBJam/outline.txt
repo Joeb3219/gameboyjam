@@ -20,6 +20,8 @@ LEFT TO DO (MAIN):
 		- Store extra hearts -> more max health? (Zelda)?
 	- More items
 	- FIX THE EXP, STUPID.
+	- Minimap (xxmarekxx_x)
+	- Battlelog (xxmarekxx_x)
 	
 	
 BATTLE SYSTEM:

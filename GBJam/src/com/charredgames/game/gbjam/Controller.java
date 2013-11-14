@@ -93,4 +93,10 @@ public class Controller {
 		return BattleMove.STAB;
 	}
 	
+	public static BattleMove getPreviousMove(BattleMove currentMove){
+		int position = moves.indexOf(currentMove);
+		if(position - 1 >= 0) return moves.get(position - 1);
+		return BattleMove.RUN;
+	}
+	
 }

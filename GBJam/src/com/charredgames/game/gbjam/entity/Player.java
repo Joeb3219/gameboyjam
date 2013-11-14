@@ -113,22 +113,45 @@ public class Player extends Mob{
 	}
 
 	private void battle(Mob mob){
+		long lastTime = System.nanoTime();
+		long timer = System.currentTimeMillis();
+		final double nanoSeconds = 1000000000.0 / GBJam._DESIREDTPS;
+		double delta = 0;
+		int frames = 0, ticks = 0;
 		Battle battle = new Battle(this, mob, this.level);
 		currentBattle = battle;
 		
 		GBJam.setGameState(GameState.BATTLE);
 
 		while(!battle.isOver()){
-			gbjam.render();
-			gbjam.tick();
-
-			if(gbjam.showBottomHUD){
-				if(input.a) gbjam.showBottomHUD = false;
-				else continue;
+			long now = System.nanoTime();
+			delta+= (now - lastTime) / nanoSeconds;
+			lastTime = now;
+			while(delta >= 1){
+				gbjam.tick();
+				
+				//Actual battle move code.
+				if(gbjam.showBottomHUD){
+					if(input.a) gbjam.showBottomHUD = false;
+					else continue;
+				}
+				if(battle.isPlayerTurn()) {
+					if(input.a) battle.attack(selectedMove);
+				}
+				else battle.attack(mob.selectedMove);
+				if(input.right) selectedMove = Controller.getNextMove(selectedMove); 
+				if(input.left) selectedMove = Controller.getPreviousMove(selectedMove); 
+				
+				ticks++;
+				delta--;
 			}
-			if(battle.isPlayerTurn()) battle.attack(selectedMove);
-			else battle.attack(mob.selectedMove);
-			if(input.right) selectedMove = Controller.getNextMove(selectedMove); 
+			gbjam.render();
+			frames++;
+			if((System.currentTimeMillis() - timer) > 1000){
+				timer += 1000;
+				ticks = 0;
+				frames = 0;
+			}
 		}
 		if(battle.getWinner() != this) lostBattle(battle);
 		else wonBattle(battle);

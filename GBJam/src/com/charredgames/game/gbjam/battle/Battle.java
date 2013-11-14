@@ -17,6 +17,7 @@ public class Battle {
 	private Level level;
 	private boolean over = false, playerTurn = true;
 	private final Random rand = new Random();
+	private BattleMove previousMove = BattleMove.STAB;
 	
 	public Battle(Player player, Mob opponent, Level level){
 		this.player = player;
@@ -35,10 +36,18 @@ public class Battle {
 			playerTurn = true;
 			attacker = opponent;
 		}
-		if(move == BattleMove.STAB) damage = ( ((2 * attacker.getXPLevel()) * (1/2 * attacker.getStrength()) ) + (attacker.getStrength() / (rand.nextInt(100) + 1)/2) );// + 1;
-		else if(move == BattleMove.SLASH) damage = ( ((2 * attacker.getXPLevel()) * (1/2 * attacker.getStrength()) ) + (attacker.getStrength() / (rand.nextInt(100) + 1)/2) );// + 1;
+		//if(move == BattleMove.STAB) damage = ( ((2 * attacker.getXPLevel()) * (1/2 * attacker.getStrength()) ) + (attacker.getStrength() / (rand.nextInt(100) + 1)/2) ) + 1;
+		if(move == BattleMove.STAB) damage = ( (2 * attacker.getXPLevel()) + ((1/2 * attacker.getStrength()) + (1/8 * attacker.getDexterity())) / ((rand.nextInt(3) + 1)) ) + (rand.nextInt(4) / (rand.nextInt(4) + 1) ); 
+		else if(move == BattleMove.SLASH) damage = ( (2 * attacker.getXPLevel()) + ((1/8 * attacker.getStrength()) + (1/2 * attacker.getDexterity())) / ((rand.nextInt(5) + 1)) ) + (6 / (rand.nextInt(4) + 1) ); 
+		else if(move == BattleMove.BLOCK) damage = 0;
+		
+		if(previousMove == BattleMove.BLOCK) damage /= (rand.nextInt(Math.abs(damage)) + 1);
+		
+		System.out.println(move + " " + damage);
 		if(attacker == player) opponent.damage(damage);
 		else player.damage(damage);
+		
+		previousMove = move;
 		
 		if(player.getHealth() <= 0){
 			winner = opponent;
