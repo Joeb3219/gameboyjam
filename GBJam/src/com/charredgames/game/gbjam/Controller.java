@@ -24,7 +24,6 @@ public class Controller {
 	public static boolean soundOn = true;
 	public static int money = 0;
 	public static int tickCount = 0;
-	private static int count, phraseCount = 0;
 
 	public static void update(){
 		tickCount++;

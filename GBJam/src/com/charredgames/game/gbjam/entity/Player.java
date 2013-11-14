@@ -9,7 +9,6 @@ import com.charredgames.game.gbjam.GameMessage;
 import com.charredgames.game.gbjam.GameState;
 import com.charredgames.game.gbjam.Keyboard;
 import com.charredgames.game.gbjam.battle.Battle;
-import com.charredgames.game.gbjam.battle.BattleMove;
 import com.charredgames.game.gbjam.graphics.Screen;
 import com.charredgames.game.gbjam.graphics.Sprite;
 import com.charredgames.game.gbjam.inventory.Inventory;
@@ -101,7 +100,7 @@ public class Player extends Mob{
 				}
 			}
 			else if(!mob.didLose() && mob.getMood() == MobMood.AGRESSIVE && tileDistance(x, y, mob.getX(), mob.getY()) < mob.getViewDistance()){
-				if(isFacing(mob.getDirection(), mob.getX(), mob.getY(), x, y)){
+				if(isFacing(mob.getDirection(), mob.getX(), y, x, mob.getY()) && !solidInWay(mob, x, y)){
 					GBJam.setHUDMob(mob);
 					gbjam.showBottomHUD = true;
 					battle(mob);

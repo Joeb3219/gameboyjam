@@ -40,13 +40,11 @@ public class Level {
 	public static Level spawnLevel = new Level("/levels/spawnlevel");
 	
 	public Level(String path){
-		//loadMobs(path + "/mobs.png");
-		loadBuildings(path + "/buildings.png");
 		loadMap(path + "/map.png");
-		findChests(path + "/level.cgf");
+		loadLevelCGF(path + "/level.cgf");
 	}
 	
-	private void findChests(String path){
+	private void loadLevelCGF(String path){
 		SAXBuilder builder = new SAXBuilder();
 		File xmlFile;
 		try {
@@ -65,11 +63,11 @@ public class Level {
 					Element invNode = (Element) inv.get(j);
 					chestInventory.addItem(Item.getItem(Integer.parseInt(invNode.getAttributeValue("id"))), Integer.parseInt(invNode.getAttributeValue("quantity")));
 				}
-				Chest chest = new Chest(this, Integer.parseInt(node.getChild("position").getAttributeValue("x")) * 16, Integer.parseInt(node.getChild("position").getAttributeValue("x")) * 16, 0, chestInventory);
+				Chest chest = new Chest(this, Integer.parseInt(node.getChild("position").getAttributeValue("x")) * 16, Integer.parseInt(node.getChild("position").getAttributeValue("y")) * 16, 0, chestInventory);
 				addChest(chest);
 			}
 			
-			//Handles loading world mobs
+			//Handles loading level mobs
 			List mobs = rootNode.getChildren("mob");
 			for(int i = 0; i < mobs.size(); i++){
 				Element mob = (Element) mobs.get(i);
@@ -90,38 +88,20 @@ public class Level {
 				newMob.setMoney(Integer.parseInt(mob.getChild("data").getAttributeValue("money")));
 				
 			}
+			
+			//Handles loading level buildings
+			List buildings = rootNode.getChildren("building");
+			for(int i = 0; i < buildings.size(); i++){
+				Element building = (Element) buildings.get(i);
+				
+				if(building.getAttributeValue("id").equalsIgnoreCase("hospital")){
+					this.hospitalX = Integer.parseInt(building.getChild("position").getAttributeValue("x")) * 16;
+					this.hospitalY = Integer.parseInt(building.getChild("position").getAttributeValue("y")) * 16;
+				}
+				
+			}
 		  } catch (IOException e) {e.printStackTrace();} catch (JDOMException e) {e.printStackTrace();  }} catch (URISyntaxException e) {e.printStackTrace();}
 	}
-	
-	private void loadBuildings(String path){
-		loadMap(path);
-		int hospitalColour = 0xFFF72BFF;
-		for(int y = 0; y < GBJam.getWindowHeight(); y++){
-			for(int x = 0; x < GBJam.getWindowWidth(); x++){
-				if( x < 0 || y < 0 || x >= width || y >= height) continue;
-				int tileColour = tiles[x + y * width];
-				if(tileColour == hospitalColour) {
-					hospitalX = x * 16;
-					hospitalY = y * 16;
-				}
-			}
-		}
-	}
-	
-	/*private void loadMobs(String path){
-		loadMap(path);
-		for(int y = 0; y < GBJam.getWindowHeight(); y++){
-			for(int x = 0; x < GBJam.getWindowWidth(); x++){
-				if( x < 0 || y < 0 || x >= width || y >= height) continue;
-				int tileColour = tiles[x + y * width];
-				if(Controller.mobIdentifiers.containsKey(tileColour)) {
-					Mob.SALESMAN.spawn(x * 32, y * 32, this);
-					Controller.mobIdentifiers.get(tileColour).spawn(x * 16, y * 16, this);
-				}
-			}
-		}
-		
-	}*/
 	
 	private void loadMap(String path){
 		try{

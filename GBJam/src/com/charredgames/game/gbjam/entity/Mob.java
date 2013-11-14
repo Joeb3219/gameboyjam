@@ -108,6 +108,29 @@ public class Mob extends Entity implements Cloneable{
 		return false;
 	}
 	
+	public boolean solidInWay(Mob mob, int xPrime, int yPrime){
+		int direction = mob.getDirection();
+		int x = mob.getX();
+		int y = mob.getY();
+		int distance = tileDistance(x, y, xPrime, yPrime);
+		
+		x /= 16;
+		y /= 16;
+		
+		for(Chest chest : level.getChests()){
+			int chestDistance = tileDistance(chest.getX(), chest.getY(), mob.getX(), mob.getY());
+			int chestX = chest.getX() / 16;
+			int chestY = chest.getY() / 16;
+			if(!chest.doesExist() || (Math.abs(chestX - x) > mob.getViewDistance()) || (Math.abs(chestY - y) > mob.getViewDistance() * 16)) continue;
+			if(direction == 0 && (chestX == x) && (chestDistance <= distance && chestY > y)) return true;
+			if(direction == 2 && (chestX == x) && (chestDistance <= distance && chestY < y)) return true;
+			if(direction == 3 && (chestY == y) && (chestDistance <= distance && chestX > x)) return true;
+			if(direction == 1 && (chestY == y) && (chestDistance <= distance && chestX < x)) return true;
+		}
+		
+		return false;
+	}
+	
 	public int getViewDistance(){
 		return viewDistance;
 	}
