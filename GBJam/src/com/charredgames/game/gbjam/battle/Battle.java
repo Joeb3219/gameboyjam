@@ -40,7 +40,11 @@ public class Battle {
 		else if(move == BattleMove.BLOCK) damage = 0;
 		
 		//if(previousMove == BattleMove.BLOCK) damage /= (rand.nextInt(Math.abs(damage)) + 1);
-		if(previousMove == BattleMove.BLOCK) damage /= ((victim.getDefense() / (rand.nextInt(victim.getDefense() / 8) + 1))) + 1;
+		if(previousMove == BattleMove.BLOCK) {
+			damage /= ((victim.getDefense() / (rand.nextInt((victim.getDefense() / 8) + 1) + 1)));
+			damage ++;
+		}
+		
 		
 		if(attacker == player) opponent.damage(damage);
 		else player.damage(damage);
