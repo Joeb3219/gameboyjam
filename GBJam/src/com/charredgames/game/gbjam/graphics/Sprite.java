@@ -33,6 +33,8 @@ public class Sprite {
 	public static final Sprite SAND = new Sprite(16, 1, 0, SpriteSheet.SCENERY);
 
 	public static final Sprite mob = new Sprite(16, 0xFFFF88BB);
+	public static final Sprite HOSPITAL = new Sprite(16, 0xFFFFFFFF);
+	public static final Sprite HOSPITAL_DOOR = new Sprite(16, 0xFF232323);
 	
 	public static final Sprite nullSprite = new Sprite(16, 0xFF222222);
 	

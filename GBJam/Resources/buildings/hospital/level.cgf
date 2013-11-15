@@ -1,0 +1,25 @@
+<?xml version ="1.0"?>
+
+<hospital>
+
+	<chest>
+		<position x = "4" y = "4"/>
+			<item id = "0" quantity = "5"> </item>
+			<item id = "1" quantity = "5"> </item>
+			<item id = "2" quantity = "5"> </item>
+			<item id = "3" quantity = "2"> </item>
+			<item id = "4" quantity = "5"> </item>
+			<item id = "5" quantity = "5"> </item>
+			<item id = "6" quantity = "2"> </item>
+			<item id = "7" quantity = "5"> </item>
+			<item id = "8" quantity = "5"> </item>
+	</chest>
+	
+	<mob>
+		<position x = "5" y = "5" direction = "2"/>
+		<data mobType = "salesman" health = "30" money = "100"/>
+		<movement turns = "true" xMovement = "2" yMovement = "3"/>
+		<info name = "Bob" phrase = "Hello, do you like pie?" losingPhrase = "I'll get you next time!"/>
+	</mob>
+	
+</hospital>

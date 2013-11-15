@@ -19,6 +19,9 @@ public class Tile {
 	public static final Tile GRASS = new Tile(0xFF448844, Sprite.GRASS, false);
 	public static final Tile TALL_GRASS = new Tile(0xFF559955, Sprite.TALL_GRASS, false, 15);
 	
+	public static final Tile HOSPITAL = new Tile(0xFF111111, Sprite.HOSPITAL, true);
+	public static final Tile HOSPITAL_DOOR = new Tile(0xFF111111, Sprite.HOSPITAL_DOOR, false);
+	
 	public static final Tile nullTile = new Tile(0xFFFFFFFF, Sprite.nullSprite, true);
 	
 	public Tile(int identifier, Sprite sprite, boolean solid, int dropChance){

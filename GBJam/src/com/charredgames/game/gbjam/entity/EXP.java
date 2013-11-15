@@ -11,21 +11,21 @@ public class EXP{
 	private int level, exp;
 	private static ArrayList<EXP> levels = new ArrayList<EXP>();
 	
-	private static final EXP ONE = new EXP(1, 0);
-	private static final EXP TWO = new EXP(2, 100);
-	private static final EXP THREE = new EXP(3, 400);
-	private static final EXP FOUR = new EXP(4, 1000);
-	private static final EXP FIVE = new EXP(5, 2500);
-	private static final EXP SIX = new EXP(6, 4200);
-	private static final EXP SEVEN = new EXP(7, 7800);
-	private static final EXP EIGHT = new EXP(8, 10000);
-	private static final EXP NINE = new EXP(9, 13500);
-	private static final EXP TEN = new EXP(10, 17000);
-	private static final EXP ELEVEN = new EXP(11, 22000);
-	private static final EXP TWELVE = new EXP(12, 28000);
-	private static EXP THIRTEEN = new EXP(13, 33500);
-	private static EXP FOURTEEN = new EXP(14, 39000);
-	private static EXP FIFTEEN = new EXP(15, 46000);
+	public static final EXP ONE = new EXP(1, 0);
+	public static final EXP TWO = new EXP(2, 100);
+	public static final EXP THREE = new EXP(3, 400);
+	public static final EXP FOUR = new EXP(4, 1000);
+	public static final EXP FIVE = new EXP(5, 2500);
+	public static final EXP SIX = new EXP(6, 4200);
+	public static final EXP SEVEN = new EXP(7, 7800);
+	public static final EXP EIGHT = new EXP(8, 10000);
+	public static final EXP NINE = new EXP(9, 13500);
+	public static final EXP TEN = new EXP(10, 17000);
+	public static final EXP ELEVEN = new EXP(11, 22000);
+	public static final EXP TWELVE = new EXP(12, 28000);
+	public static EXP THIRTEEN = new EXP(13, 33500);
+	public static EXP FOURTEEN = new EXP(14, 39000);
+	public static EXP FIFTEEN = new EXP(15, 46000);
 	
 	public EXP(int level, int exp){
 		this.level = level;

@@ -46,8 +46,6 @@ public class Battle {
 			damage ++;
 		}
 		
-		System.out.println(move);
-		
 		if(attacker == player) opponent.damage(damage);
 		else player.damage(damage);
 		

@@ -62,9 +62,7 @@ public class Mob extends Entity implements Cloneable{
 	}
 	
 	protected void move(){
-		System.out.println(turning);
 		if(turning && rand.nextInt(150) == 0) direction = rand.nextInt(4);
-		//int xRelation = Math.abs(a)
 	}
 	
 	protected BattleMove getRandomBattleMove(){
@@ -96,7 +94,7 @@ public class Mob extends Entity implements Cloneable{
 		}
 	}
 	
-	private boolean collision(int xCord, int yCord){
+	protected boolean collision(int xCord, int yCord){
 		for(int i = 0; i < 4; i++){ //Four point detection
 			final int xPrime = ((this.x + xCord) + i % 2 * 10 + 2)/16;
 			final int yPrime = ((this.y + yCord) + i % 2 * 12 + 2)/16;
