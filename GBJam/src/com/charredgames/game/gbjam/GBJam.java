@@ -56,7 +56,7 @@ public class GBJam extends Canvas implements Runnable{
 	public static final int HUDHeight = 40;
 	private static int HUD_BOTTOM_Height = 60;
 	public boolean showBottomHUD = false;
-	public static Mob BHUD_TARGET = Mob.testing;
+	public static Mob BHUD_TARGET;
 	private static GameState gameState = GameState.GAME;
 	public static GameEvent currentEvent = GameEvent.NULL;
 	Font defaultFont;

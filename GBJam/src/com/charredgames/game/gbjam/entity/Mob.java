@@ -30,8 +30,6 @@ public class Mob extends Entity implements Cloneable{
 	protected Random rand = new Random();
 	protected GameImage battleImage = GameImage.ITEM_SWORD;
 	
-	public static Mob testing = new Mob(30, Sprite.PLAYER_FORWARD, MobType.YOUNGSTER);
-	
 	public Mob( int health, Sprite sprite, MobType type){
 		this.sprite = sprite;
 		this.health = health;
@@ -64,8 +62,13 @@ public class Mob extends Entity implements Cloneable{
 	}
 	
 	protected void move(){
+		System.out.println(turning);
 		if(turning && rand.nextInt(150) == 0) direction = rand.nextInt(4);
 		//int xRelation = Math.abs(a)
+	}
+	
+	protected BattleMove getRandomBattleMove(){
+		return BattleMove.BLOCK;
 	}
 	
 	public void render(Screen screen){
@@ -124,6 +127,13 @@ public class Mob extends Entity implements Cloneable{
 		else if(direction == 0 && xDelta == 0 && (yPrime - y) < 0) return true;
 		else if(direction == 2 && xDelta == 0 && (yPrime - y) > 0) return true;
 		return false;
+	}
+	
+	public void face(int dir){
+		if(dir == 0) this.direction = 2;
+		else if(dir == 1) this.direction = 3;
+		else if(dir == 2) this.direction = 0;
+		else if(dir == 3) this.direction = 1;		
 	}
 	
 	public void moveTowards(Mob mob, int xPrime, int yPrime){

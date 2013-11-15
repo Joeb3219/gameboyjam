@@ -20,6 +20,7 @@ import com.charredgames.game.gbjam.entity.Mob;
 import com.charredgames.game.gbjam.entity.MobType;
 import com.charredgames.game.gbjam.entity.Salesman;
 import com.charredgames.game.gbjam.graphics.Screen;
+import com.charredgames.game.gbjam.graphics.Sprite;
 import com.charredgames.game.gbjam.graphics.Tile;
 import com.charredgames.game.gbjam.inventory.Inventory;
 import com.charredgames.game.gbjam.inventory.Item;
@@ -76,13 +77,15 @@ public class Level {
 				int x = Integer.parseInt(mob.getChild("position").getAttributeValue("x")), y = Integer.parseInt(mob.getChild("position").getAttributeValue("y"));
 				int health = Integer.parseInt(mob.getChild("data").getAttributeValue("health"));
 				
-				Mob newMob = Mob.testing;
+				Mob newMob;
 				
 				if(mobType.equalsIgnoreCase(MobType.SALESMAN.getTypeName())) newMob = new Salesman(MobType.SALESMAN, x * 16, y * 16, health, this);
-				
+				else newMob = new Salesman(MobType.SALESMAN, 0, 0, health, this);
+
+						
 				newMob.setMobStrings(mob.getChild("info").getAttributeValue("name"), mob.getChild("info").getAttributeValue("phrase"), mob.getChild("info").getAttributeValue("losingPhrase"));
 				newMob.setMoney(Integer.parseInt(mob.getChild("data").getAttributeValue("money")));
-				newMob.setMovingDetails(Integer.parseInt(mob.getChild("position").getAttributeValue("direction")), Boolean.getBoolean(mob.getChild("movement").getAttributeValue("turns")), Integer.parseInt(mob.getChild("movement").getAttributeValue("xMovement")), Integer.parseInt(mob.getChild("movement").getAttributeValue("yMovement")));
+				newMob.setMovingDetails(Integer.parseInt(mob.getChild("position").getAttributeValue("direction")), Boolean.parseBoolean(mob.getChild("movement").getAttributeValue("turns")), Integer.parseInt(mob.getChild("movement").getAttributeValue("xMovement")), Integer.parseInt(mob.getChild("movement").getAttributeValue("yMovement")));
 			}
 			
 			//Handles loading level buildings

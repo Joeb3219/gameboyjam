@@ -91,6 +91,7 @@ public class Player extends Mob{
 				if(isFacing(direction, x, y, mob.getX(), mob.getY()) || (!mob.didLose() && mob.getMood() == MobMood.AGRESSIVE && isFacing(mob.getDirection(), mob.getX(), y, x, mob.getY()))){
 					GBJam.setHUDMob(mob);
 					gbjam.showBottomHUD = true;
+					mob.face(this.direction);
 					if(!mob.didLose() && mob.getMood() != MobMood.PASSIVE) battle(mob);
 					return true;
 				}
@@ -98,6 +99,7 @@ public class Player extends Mob{
 			else if(!mob.didLose() && mob.getMood() == MobMood.AGRESSIVE && tileDistance(x, y, mob.getX(), mob.getY()) < mob.getViewDistance()){
 				if(isFacing(mob.getDirection(), mob.getX(), y, x, mob.getY()) && !solidInWay(mob, x, y)){
 					GBJam.setHUDMob(mob);
+					mob.face(this.direction);
 					gbjam.showBottomHUD = true;
 					battle(mob);
 					return true;
@@ -141,7 +143,7 @@ public class Player extends Mob{
 					if(battle.isPlayerTurn()) {
 						if(input.a) battle.attack(selectedMove);
 					}
-					else battle.attack(mob.selectedMove);
+					else battle.attack(mob.getRandomBattleMove());
 					if(input.right) selectedMove = Controller.getNextMove(selectedMove); 
 					if(input.left) selectedMove = Controller.getPreviousMove(selectedMove); 
 				}

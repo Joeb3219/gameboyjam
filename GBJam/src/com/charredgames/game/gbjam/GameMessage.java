@@ -42,4 +42,10 @@ public class GameMessage {
 		}
 	}
 	
+	public static void removeAllMessages(){
+		for(GameMessage message : messages){
+			messages.set(messages.indexOf(message),null);
+		}
+	}
+	
 }

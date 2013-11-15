@@ -2,6 +2,7 @@ package com.charredgames.game.gbjam.battle;
 
 import java.util.Random;
 
+import com.charredgames.game.gbjam.GameMessage;
 import com.charredgames.game.gbjam.entity.Mob;
 import com.charredgames.game.gbjam.entity.Player;
 
@@ -20,6 +21,7 @@ public class Battle {
 	public Battle(Player player, Mob opponent){
 		this.player = player;
 		this.opponent = opponent;
+		GameMessage.removeAllMessages();
 	}
 	
 	public void attack(BattleMove move){
@@ -39,12 +41,12 @@ public class Battle {
 		else if(move == BattleMove.SLASH) damage = ( (2 * attacker.getXPLevel()) + ((1/8 * attacker.getStrength()) + (1/2 * attacker.getDexterity())) / ((rand.nextInt(5) + 1)) ) + (6 / (rand.nextInt(4) + 1) ); 
 		else if(move == BattleMove.BLOCK) damage = 0;
 		
-		//if(previousMove == BattleMove.BLOCK) damage /= (rand.nextInt(Math.abs(damage)) + 1);
 		if(previousMove == BattleMove.BLOCK) {
 			damage /= ((victim.getDefense() / (rand.nextInt((victim.getDefense() / 8) + 1) + 1)));
 			damage ++;
 		}
 		
+		System.out.println(move);
 		
 		if(attacker == player) opponent.damage(damage);
 		else player.damage(damage);
