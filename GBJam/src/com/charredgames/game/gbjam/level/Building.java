@@ -25,6 +25,8 @@ public class Building extends Level{
 	
 	public Building(String path){
 		super(path);
+		this.hospitalX = -128;
+		this.hospitalY = -128;
 	}
 	
 	protected void loadLevelCGF(String path){

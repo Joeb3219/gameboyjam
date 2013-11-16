@@ -22,6 +22,7 @@ import com.charredgames.game.gbjam.graphics.GameImage;
 import com.charredgames.game.gbjam.graphics.Screen;
 import com.charredgames.game.gbjam.inventory.InventorySlot;
 import com.charredgames.game.gbjam.inventory.Item;
+import com.charredgames.game.gbjam.level.Building;
 import com.charredgames.game.gbjam.level.Level;
 
 /**
@@ -52,7 +53,9 @@ public class GBJam extends Canvas implements Runnable{
 	private Screen screen;
 	private static Keyboard keyboard;
 	private static Player player;
-	private Level level = Level.spawnLevel;
+	//private Level level = Level.spawnLevel;
+	private Level level = Building.HOSPITAL;
+	private Building currentBuilding = null;
 	public static final int HUDHeight = 40;
 	private static int HUD_BOTTOM_Height = 60;
 	public boolean showBottomHUD = false;
