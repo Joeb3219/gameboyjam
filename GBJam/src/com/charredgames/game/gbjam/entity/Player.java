@@ -11,10 +11,12 @@ import com.charredgames.game.gbjam.Keyboard;
 import com.charredgames.game.gbjam.battle.Battle;
 import com.charredgames.game.gbjam.graphics.Screen;
 import com.charredgames.game.gbjam.graphics.Sprite;
+import com.charredgames.game.gbjam.graphics.Tile;
 import com.charredgames.game.gbjam.inventory.Inventory;
 import com.charredgames.game.gbjam.inventory.InventorySlot;
 import com.charredgames.game.gbjam.inventory.Item;
 import com.charredgames.game.gbjam.inventory.ItemType;
+import com.charredgames.game.gbjam.level.Building;
 import com.charredgames.game.gbjam.level.Level;
 
 public class Player extends Mob{
@@ -23,6 +25,7 @@ public class Player extends Mob{
 	private static GBJam gbjam;
 	private int tickCount = 0;
 	public Battle currentBattle;
+	private boolean inBuilding = false;
 	
 	public Player(Keyboard input, GBJam jamInstance) {
 		super(input, jamInstance);
@@ -77,13 +80,35 @@ public class Player extends Mob{
 		}
 		
 		//Hospital management
-		if(tileDistance(x, y, level.getHospitalX(), level.getHospitalY()) <= 4){
+		if(level == Building.HOSPITAL){
 			if(tickCount % GBJam._DESIREDTPS == 0){
 				heal(1);
 			}
 		}
+		
+		if(!inBuilding){
+			if(level.getHospitalX() == x && level.getHospitalY() == y){
+				inBuilding = true;
+				GBJam.hitBuilding(Building.HOSPITAL, true);
+			}
+			else if(level.getMartX() == x && level.getMartY() == y){
+				inBuilding = true;
+				GBJam.hitBuilding(Building.MART, true);
+			}
+		}
+		else{
+			if(level.getTile(x / 16, y / 16) == Tile.HOSPITAL_DOOR){
+				inBuilding = false;
+				GBJam.hitBuilding(Building.HOSPITAL, false);
+			}
+			else if(level.getTile(x / 16, y / 16) == Tile.MART_DOOR){
+				inBuilding = false;
+				GBJam.hitBuilding(Building.MART, false);
+			}
+		}
+		
 	}
-
+	
 	private boolean checkMobs(){
 		for(Mob mob : Controller.mobs){
 			if(mob.getLevel() != level) continue;
@@ -179,7 +204,8 @@ public class Player extends Mob{
 	
 	private void die(){
 		health = defaultHealth;
-		setPosition(level.getHospitalX(), level.getHospitalY());
+		inBuilding = true;
+		GBJam.hitBuilding(Building.HOSPITAL, true);
 	}
 	
 	private boolean checkChests(){

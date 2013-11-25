@@ -8,6 +8,7 @@ import com.charredgames.game.gbjam.battle.BattleMove;
 import com.charredgames.game.gbjam.entity.Mob;
 import com.charredgames.game.gbjam.graphics.Screen;
 import com.charredgames.game.gbjam.graphics.Tile;
+import com.charredgames.game.gbjam.level.Level;
 
 /**
  * @author joeb3219 <joe@charredgames.com>
@@ -36,15 +37,15 @@ public class Controller {
 		mobs.add(mob);
 	}
 	
-	public static void updateMobs(){
+	public static void updateMobs(Level level){
 		for(Mob mob : mobs){
-			mob.update();
+			if(level == mob.getLevel()) mob.update();
 		}
 	}
 	
-	public static void renderMobs(Screen screen){
+	public static void renderMobs(Level level, Screen screen){
 		for(Mob mob : mobs){
-			mob.render(screen);
+			if(level == mob.getLevel()) mob.render(screen);
 		}
 	}
 	

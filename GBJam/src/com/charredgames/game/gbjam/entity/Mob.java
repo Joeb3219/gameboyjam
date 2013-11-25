@@ -290,5 +290,9 @@ public class Mob extends Entity implements Cloneable{
 		return mood;
 	}
 
+	public void setDirection(int dir){
+		this.direction = dir;
+	}
+
 	
 }

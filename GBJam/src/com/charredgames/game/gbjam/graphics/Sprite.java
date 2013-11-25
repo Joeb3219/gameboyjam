@@ -37,6 +37,37 @@ public class Sprite {
 	public static final Sprite HOSPITAL_DOOR = new Sprite(16, 0xFF232323);
 	public static final Sprite HOSPITAL_FLOOR = new Sprite(16, 1, 2, SpriteSheet.SCENERY);
 	
+	public static final Sprite HOSPITAL_1 = new Sprite(16, 0, 0, SpriteSheet.BUILDINGS);
+	public static final Sprite HOSPITAL_2 = new Sprite(16, 1, 0, SpriteSheet.BUILDINGS);
+	public static final Sprite HOSPITAL_3 = new Sprite(16, 2, 0, SpriteSheet.BUILDINGS);
+	public static final Sprite HOSPITAL_4 = new Sprite(16, 3, 0, SpriteSheet.BUILDINGS);
+	public static final Sprite HOSPITAL_5 = new Sprite(16, 4, 0, SpriteSheet.BUILDINGS);
+	public static final Sprite HOSPITAL_6 = new Sprite(16, 0, 1, SpriteSheet.BUILDINGS);
+	public static final Sprite HOSPITAL_7 = new Sprite(16, 1, 1, SpriteSheet.BUILDINGS);
+	public static final Sprite HOSPITAL_8 = new Sprite(16, 2, 1, SpriteSheet.BUILDINGS);
+	public static final Sprite HOSPITAL_9 = new Sprite(16, 3, 1, SpriteSheet.BUILDINGS);
+	public static final Sprite HOSPITAL_10 = new Sprite(16, 4, 1, SpriteSheet.BUILDINGS);
+	public static final Sprite HOSPITAL_11 = new Sprite(16, 0, 2, SpriteSheet.BUILDINGS);
+	public static final Sprite HOSPITAL_12 = new Sprite(16, 1, 2, SpriteSheet.BUILDINGS);
+	public static final Sprite HOSPITAL_13 = new Sprite(16, 2, 2, SpriteSheet.BUILDINGS);
+	public static final Sprite HOSPITAL_14 = new Sprite(16, 3, 2, SpriteSheet.BUILDINGS);
+	public static final Sprite HOSPITAL_15 = new Sprite(16, 4, 2, SpriteSheet.BUILDINGS);
+	public static final Sprite MART_1 = new Sprite(16, 0, 4, SpriteSheet.BUILDINGS);
+	public static final Sprite MART_2 = new Sprite(16, 1, 4, SpriteSheet.BUILDINGS);
+	public static final Sprite MART_3 = new Sprite(16, 2, 4, SpriteSheet.BUILDINGS);
+	public static final Sprite MART_4 = new Sprite(16, 3, 4, SpriteSheet.BUILDINGS);
+	public static final Sprite MART_5 = new Sprite(16, 4, 4, SpriteSheet.BUILDINGS);
+	public static final Sprite MART_6 = new Sprite(16, 0, 5, SpriteSheet.BUILDINGS);
+	public static final Sprite MART_7 = new Sprite(16, 1, 5, SpriteSheet.BUILDINGS);
+	public static final Sprite MART_8 = new Sprite(16, 2, 5, SpriteSheet.BUILDINGS);
+	public static final Sprite MART_9 = new Sprite(16, 3, 5, SpriteSheet.BUILDINGS);
+	public static final Sprite MART_10 = new Sprite(16, 4, 5, SpriteSheet.BUILDINGS);
+	public static final Sprite MART_11 = new Sprite(16, 0, 6, SpriteSheet.BUILDINGS);
+	public static final Sprite MART_12 = new Sprite(16, 1, 6, SpriteSheet.BUILDINGS);
+	public static final Sprite MART_13 = new Sprite(16, 2, 6, SpriteSheet.BUILDINGS);
+	public static final Sprite MART_14 = new Sprite(16, 3, 6, SpriteSheet.BUILDINGS);
+	public static final Sprite MART_15 = new Sprite(16, 4, 6, SpriteSheet.BUILDINGS);
+
 	public static final Sprite nullSprite = new Sprite(16, 0xFF222222);
 	
 	public Sprite(int size, int x, int y, SpriteSheet spriteSheet){

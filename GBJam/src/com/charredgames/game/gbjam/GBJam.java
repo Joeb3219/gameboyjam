@@ -17,6 +17,7 @@ import com.charredgames.game.gbjam.battle.Battle;
 import com.charredgames.game.gbjam.battle.BattleMove;
 import com.charredgames.game.gbjam.entity.Chest;
 import com.charredgames.game.gbjam.entity.Mob;
+import com.charredgames.game.gbjam.entity.MobType;
 import com.charredgames.game.gbjam.entity.Player;
 import com.charredgames.game.gbjam.graphics.GameImage;
 import com.charredgames.game.gbjam.graphics.Screen;
@@ -53,12 +54,10 @@ public class GBJam extends Canvas implements Runnable{
 	private Screen screen;
 	private static Keyboard keyboard;
 	private static Player player;
-	//private Level level = Level.spawnLevel;
-	private Level level = Building.HOSPITAL;
-	private Building currentBuilding = null;
+	private static Level level = Level.spawnLevel, pastLevel = Level.spawnLevel;
 	public static final int HUDHeight = 40;
 	private static int HUD_BOTTOM_Height = 60;
-	public boolean showBottomHUD = false;
+	public static boolean showBottomHUD = false;
 	public static Mob BHUD_TARGET;
 	private static GameState gameState = GameState.GAME;
 	public static GameEvent currentEvent = GameEvent.NULL;
@@ -69,9 +68,9 @@ public class GBJam extends Canvas implements Runnable{
 		keyboard.update();
 		GameMessage.updateMessages();
 		GameEvent.updateCounter();
-		if(gameState == GameState.GAME && !showBottomHUD){
+		if(gameState == GameState.GAME && !showBottomHUD && Controller.tickCount %2 == 1){
 			player.update();
-			Controller.updateMobs();
+			Controller.updateMobs(level);
 		}
 		else if(gameState == GameState.INVENTORY){
 			if(keyboard.down) player.getInventory().scrollDown();
@@ -84,6 +83,9 @@ public class GBJam extends Canvas implements Runnable{
 			else gameState = GameState.INVENTORY;
 			if(keyboard.a) keyboard.a = false;
 			if(keyboard.b) keyboard.b = false;
+		}
+		if(showBottomHUD){
+			if(GBJam.BHUD_TARGET.getType() == MobType.DOCTOR) player.heal(20);
 		}
 		if(keyboard.a && showBottomHUD && Controller.tickCount % 2 == 0) showBottomHUD = false;
 	}
@@ -105,7 +107,7 @@ public class GBJam extends Canvas implements Runnable{
 		for(Chest chest : level.getChests()) {
 			if(chest.doesExist()) chest.render(screen);
 		}
-		Controller.renderMobs(screen);
+		Controller.renderMobs(level, screen);
 		player.render(screen);
 		
 		for(int i = 0; i < pixels.length; i ++) pixels[i] = screen.pixels[i];
@@ -261,11 +263,11 @@ public class GBJam extends Canvas implements Runnable{
 	}
 
 	private static void loadBottomHUD(){
-		g.setColor(new Color(44, 44, 44, 100));
+		g.setColor(new Color(44, 44, 44, 255));
 		g.fillRect(0, window.getHeight() - HUD_BOTTOM_Height, getWindowWidth(), HUD_BOTTOM_Height);
 		g.setColor(Color.WHITE);
-		if(!BHUD_TARGET.didLose()) g.drawString(BHUD_TARGET.getName() + " : " + BHUD_TARGET.getPhrase(), 10,(window.getHeight() - HUD_BOTTOM_Height) + 20 );
-		else g.drawString(BHUD_TARGET.getName() + " : " + BHUD_TARGET.getLosingPhrase(), 10,(window.getHeight() - HUD_BOTTOM_Height) + 20 );
+		if(!BHUD_TARGET.didLose()) g.drawString(BHUD_TARGET.getType().getTypeName() + " " + BHUD_TARGET.getName() + " : " + BHUD_TARGET.getPhrase(), 10,(window.getHeight() - HUD_BOTTOM_Height) + 20 );
+		else g.drawString(BHUD_TARGET.getType().getTypeName() + " " + BHUD_TARGET.getName() + " : " + BHUD_TARGET.getLosingPhrase(), 10,(window.getHeight() - HUD_BOTTOM_Height) + 20 );
 	}
 	
 	private void loadHUD(){
@@ -411,6 +413,22 @@ public class GBJam extends Canvas implements Runnable{
 	
 	public static void setGameState(GameState state){
 		gameState = state;
+	}
+	
+	public static void hitBuilding(Building building, boolean entered){
+		if(entered){
+			pastLevel = level;
+			level = building;
+			player.setLevel(level);
+			player.setPosition(building.spawnX, building.spawnY);
+			player.setDirection(0);
+		}else{
+			level = pastLevel;
+			player.setLevel(level);
+			if(building == Building.HOSPITAL) player.setPosition(level.getHospitalX(), level.getHospitalY() + 16);
+			else if(building == Building.MART) player.setPosition(level.getMartX(), level.getMartY() + 16);
+			player.setDirection(2);
+		}
 	}
 	
 }

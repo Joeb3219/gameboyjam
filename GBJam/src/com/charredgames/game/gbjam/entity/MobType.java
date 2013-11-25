@@ -6,7 +6,7 @@ import java.util.Map;
 public enum MobType {
 
 	//MAIN MOBS
-	SALESMAN("Salesman", MobMood.PASSIVE), 
+	DOCTOR("Doctor", MobMood.PASSIVE), SALESMAN("Salesman", MobMood.PASSIVE), 
 	
 	HIPPIE("Hippie", MobMood.PASSIVE),
 	

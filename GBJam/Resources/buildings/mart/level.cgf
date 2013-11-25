@@ -13,9 +13,9 @@
 	
 	<mob>
 		<position x = "5" y = "5" direction = "2"/>
-		<data mobType = "doctor" health = "30" money = "100"/>
+		<data mobType = "salesman" health = "30" money = "100"/>
 		<movement turns = "true" xMovement = "0" yMovement = "0"/>
-		<info name = "Fletcher" phrase = "Here, have a bandage!" losingPhrase = "Heal heal heal!"/>
+		<info name = "George" phrase = "Everything is for sale at the right price!" losingPhrase = "Heal heal heal!"/>
 	</mob>
 	
 </hospital>

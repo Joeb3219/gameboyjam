@@ -20,9 +20,39 @@ public class Tile {
 	public static final Tile TALL_GRASS = new Tile(0xFF559955, Sprite.TALL_GRASS, false, 15);
 	
 	public static final Tile HOSPITAL = new Tile(0xFF111111, Sprite.HOSPITAL, true);
-	public static final Tile HOSPITAL_DOOR = new Tile(0xFF8E8E8E, Sprite.HOSPITAL_DOOR, false);
+	public static final Tile HOSPITAL_DOOR = new Tile(0xFF8E8E8E, Sprite.HOSPITAL_13, false);
+	public static final Tile MART_DOOR = new Tile(0xFF9F9F9F, Sprite.MART_13, false);
 	public static final Tile HOSPITAL_FLOOR = new Tile(0xFF575757, Sprite.HOSPITAL_FLOOR, false);
 	
+	public static final Tile HOSPITAL_1 = new Tile(0xFF999999, Sprite.HOSPITAL_1, true);
+	public static final Tile HOSPITAL_2 = new Tile(0xFF999999, Sprite.HOSPITAL_2, true);
+	public static final Tile HOSPITAL_3 = new Tile(0xFF999999, Sprite.HOSPITAL_3, true);
+	public static final Tile HOSPITAL_4 = new Tile(0xFF999999, Sprite.HOSPITAL_4, true);
+	public static final Tile HOSPITAL_5 = new Tile(0xFF999999, Sprite.HOSPITAL_5, true);
+	public static final Tile HOSPITAL_6 = new Tile(0xFF999999, Sprite.HOSPITAL_6, true);
+	public static final Tile HOSPITAL_7 = new Tile(0xFF999999, Sprite.HOSPITAL_7, true);
+	public static final Tile HOSPITAL_8 = new Tile(0xFF999999, Sprite.HOSPITAL_8, true);
+	public static final Tile HOSPITAL_9 = new Tile(0xFF999999, Sprite.HOSPITAL_9, true);
+	public static final Tile HOSPITAL_10 = new Tile(0xFF999999, Sprite.HOSPITAL_10, true);
+	public static final Tile HOSPITAL_11 = new Tile(0xFF999999, Sprite.HOSPITAL_11, true);
+	public static final Tile HOSPITAL_12 = new Tile(0xFF999999, Sprite.HOSPITAL_12, true);
+	public static final Tile HOSPITAL_14 = new Tile(0xFF999999, Sprite.HOSPITAL_14, true);
+	public static final Tile HOSPITAL_15 = new Tile(0xFF999999, Sprite.HOSPITAL_15, true);
+	public static final Tile MART_1 = new Tile(0xFF999999, Sprite.MART_1, true);
+	public static final Tile MART_2 = new Tile(0xFF999999, Sprite.MART_2, true);
+	public static final Tile MART_3 = new Tile(0xFF999999, Sprite.MART_3, true);
+	public static final Tile MART_4 = new Tile(0xFF999999, Sprite.MART_4, true);
+	public static final Tile MART_5 = new Tile(0xFF999999, Sprite.MART_5, true);
+	public static final Tile MART_6 = new Tile(0xFF999999, Sprite.MART_6, true);
+	public static final Tile MART_7 = new Tile(0xFF999999, Sprite.MART_7, true);
+	public static final Tile MART_8 = new Tile(0xFF999999, Sprite.MART_8, true);
+	public static final Tile MART_9 = new Tile(0xFF999999, Sprite.MART_9, true);
+	public static final Tile MART_10 = new Tile(0xFF999999, Sprite.MART_10, true);
+	public static final Tile MART_11 = new Tile(0xFF999999, Sprite.MART_11, true);
+	public static final Tile MART_12 = new Tile(0xFF999999, Sprite.MART_12, true);
+	public static final Tile MART_14 = new Tile(0xFF999999, Sprite.MART_14, true);
+	public static final Tile MART_15 = new Tile(0xFF999999, Sprite.MART_15, true);
+
 	public static final Tile nullTile = new Tile(0xFFFFFFFF, Sprite.nullSprite, true);
 	
 	public Tile(int identifier, Sprite sprite, boolean solid, int dropChance){

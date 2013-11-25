@@ -37,7 +37,8 @@ public class Level {
 	protected int[] tiles;
 	protected ArrayList<Mob> mobs = new ArrayList<Mob>();
 	protected ArrayList<Chest> chests = new ArrayList<Chest>();
-	protected int hospitalX, hospitalY = 32;
+	protected int hospitalX, hospitalY = -1000;
+	protected int martX, martY = -1000;
 	
 	public static Level spawnLevel = new Level("/levels/spawnlevel");
 	
@@ -84,6 +85,7 @@ public class Level {
 				if(mobType.equalsIgnoreCase(MobType.SALESMAN.getTypeName())) newMob = new Salesman(MobType.SALESMAN, x * 16, y * 16, health, this);
 				else if(mobType.equalsIgnoreCase(MobType.YOUNGSTER.getTypeName())) newMob = new Youngster(MobType.YOUNGSTER, x * 16, y * 16, health, this);
 				else if(mobType.equalsIgnoreCase(MobType.BIKER.getTypeName())) newMob = new Biker(MobType.BIKER, x * 16, y * 16, health, this);
+				else if(mobType.equalsIgnoreCase(MobType.DOCTOR.getTypeName())) newMob = new Biker(MobType.DOCTOR, x * 16, y * 16, health, this);
 				else newMob = new Salesman(MobType.SALESMAN, 0, 0, health, this);
 
 						
@@ -101,7 +103,11 @@ public class Level {
 					this.hospitalX = Integer.parseInt(building.getChild("position").getAttributeValue("x")) * 16;
 					this.hospitalY = Integer.parseInt(building.getChild("position").getAttributeValue("y")) * 16;
 				}
-				
+				else if(building.getAttributeValue("id").equalsIgnoreCase("mart")){
+					this.martX = Integer.parseInt(building.getChild("position").getAttributeValue("x")) * 16;
+					this.martY = Integer.parseInt(building.getChild("position").getAttributeValue("y")) * 16;
+				}
+
 			}
 		  } catch (IOException e) {e.printStackTrace();} catch (JDOMException e) {e.printStackTrace();  }} catch (URISyntaxException e) {e.printStackTrace();}
 	}
@@ -132,8 +138,50 @@ public class Level {
 	public Tile getTile(int x, int y){
 		if( x < 0 || y < 0 || x >= width || y >= height) return Tile.nullTile;
 		int tileColour = tiles[x + y * width];
-		if( ( x == hospitalX / 16) && ( y == hospitalY / 16) ) return Tile.HOSPITAL_DOOR;
-		if( (Math.abs( x - hospitalX / 16 ) <= 2) && (y - hospitalY / 16) >= -2 && y - hospitalY / 16 < 1) return Tile.HOSPITAL;
+
+		if(!(this instanceof Building) && (x == hospitalX / 16) && y == hospitalY / 16) return Tile.HOSPITAL_DOOR;
+		if(!(this instanceof Building) && (Math.abs( x - hospitalX / 16 ) <= 2) && 
+			(y - hospitalY / 16) >= -2 && y - hospitalY / 16 < 1){
+			int xPos = x - hospitalX / 16 ;
+			int yPos = (y - hospitalY / 16);
+
+			if(xPos == -2 && yPos == -2) return Tile.HOSPITAL_1;
+			if(xPos == -1 && yPos == -2) return Tile.HOSPITAL_2;
+			if(xPos == 0 && yPos == -2) return Tile.HOSPITAL_3;
+			if(xPos == 1 && yPos == -2) return Tile.HOSPITAL_4;
+			if(xPos == 2 && yPos == -2) return Tile.HOSPITAL_5;
+			if(xPos == -2 && yPos == -1) return Tile.HOSPITAL_6;
+			if(xPos == -1 && yPos == -1) return Tile.HOSPITAL_7;
+			if(xPos == 0 && yPos == -1) return Tile.HOSPITAL_8;
+			if(xPos == 1 && yPos == -1) return Tile.HOSPITAL_9;
+			if(xPos == 2 && yPos == -1) return Tile.HOSPITAL_10;
+			if(xPos == -2 && yPos == 0) return Tile.HOSPITAL_11;
+			if(xPos == -1 && yPos == 0) return Tile.HOSPITAL_12;
+			if(xPos == 1 && yPos == 0) return Tile.HOSPITAL_14;
+			if(xPos == 2 && yPos == 0) return Tile.HOSPITAL_15;
+		}
+		if(!(this instanceof Building) && (x == martX / 16) && y == martY / 16) return Tile.MART_DOOR;
+		if(!(this instanceof Building) && (Math.abs( x - martX / 16 ) <= 2) && 
+			(y - martY / 16) >= -2 && y - martY / 16 < 1){
+			int xPos = x - martX / 16 ;
+			int yPos = (y - martY / 16);
+
+			if(xPos == -2 && yPos == -2) return Tile.MART_1;
+			if(xPos == -1 && yPos == -2) return Tile.MART_2;
+			if(xPos == 0 && yPos == -2) return Tile.MART_3;
+			if(xPos == 1 && yPos == -2) return Tile.MART_4;
+			if(xPos == 2 && yPos == -2) return Tile.MART_5;
+			if(xPos == -2 && yPos == -1) return Tile.MART_6;
+			if(xPos == -1 && yPos == -1) return Tile.MART_7;
+			if(xPos == 0 && yPos == -1) return Tile.MART_8;
+			if(xPos == 1 && yPos == -1) return Tile.MART_9;
+			if(xPos == 2 && yPos == -1) return Tile.MART_10;
+			if(xPos == -2 && yPos == 0) return Tile.MART_11;
+			if(xPos == -1 && yPos == 0) return Tile.MART_12;
+			if(xPos == 1 && yPos == 0) return Tile.MART_14;
+			if(xPos == 2 && yPos == 0) return Tile.MART_15;
+		}
+		
 		if(Controller.tileColours.containsKey(tileColour)) return Controller.tileColours.get(tileColour);
 		return Tile.nullTile;
 	}
@@ -152,5 +200,13 @@ public class Level {
 	
 	public int getHospitalY(){
 		return hospitalY;
+	}
+
+	public int getMartX(){
+		return martX;
+	}
+	
+	public int getMartY(){
+		return martY;
 	}
 }

@@ -22,11 +22,12 @@ import com.charredgames.game.gbjam.inventory.Item;
 public class Building extends Level{
 
 	public static final Building HOSPITAL = new Building("/buildings/hospital");
+	public static final Building MART = new Building("/buildings/mart");
+	
+	public int spawnX = 5 * 16, spawnY = 8 * 16;
 	
 	public Building(String path){
 		super(path);
-		this.hospitalX = -128;
-		this.hospitalY = -128;
 	}
 	
 	protected void loadLevelCGF(String path){
@@ -67,6 +68,7 @@ public class Building extends Level{
 				if(mobType.equalsIgnoreCase(MobType.SALESMAN.getTypeName())) newMob = new Salesman(MobType.SALESMAN, x * 16, y * 16, health, this);
 				else if(mobType.equalsIgnoreCase(MobType.YOUNGSTER.getTypeName())) newMob = new Youngster(MobType.YOUNGSTER, x * 16, y * 16, health, this);
 				else if(mobType.equalsIgnoreCase(MobType.BIKER.getTypeName())) newMob = new Biker(MobType.BIKER, x * 16, y * 16, health, this);
+				else if(mobType.equalsIgnoreCase(MobType.DOCTOR.getTypeName())) newMob = new Biker(MobType.DOCTOR, x * 16, y * 16, health, this);
 				else newMob = new Salesman(MobType.SALESMAN, 0, 0, health, this);
 
 						
