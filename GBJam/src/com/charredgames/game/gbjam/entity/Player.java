@@ -52,8 +52,8 @@ public class Player extends Mob{
 		int xPrime = 0, yPrime = 0;
 		if(input.right) xPrime += 16;
 		if(input.left) xPrime -= 16;
-		if(input.up) yPrime -= 16;
-		if(input.down) yPrime += 16;
+		if(input.up && xPrime == 0) yPrime -= 16;
+		if(input.down && xPrime == 0) yPrime += 16;
 		
 		if(xPrime != 0 || yPrime != 0) canMove(xPrime, yPrime);
 		
