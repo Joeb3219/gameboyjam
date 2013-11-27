@@ -12,6 +12,7 @@ public class Inventory {
 
 	private Map<Integer, InventorySlot> slots = new LinkedHashMap<Integer, InventorySlot>(); //Controlls Inventory slots
 	private InventorySlot selectedSlot = new InventorySlot(Item.SWORD, 1);
+	private InventoryState state = InventoryState.NULL;
 	
 	public Inventory(){
 		for(int i = 1; i <= 40; i++) slots.put(i, null);
@@ -237,6 +238,14 @@ public class Inventory {
 	
 	public int getCol(int slot){
 		return (int) Math.ceil(slot / 7) + 1;
+	}
+	
+	public InventoryState getState(){
+		return state;
+	}
+	
+	public void setState(InventoryState state){
+		this.state = state;
 	}
 
 }
