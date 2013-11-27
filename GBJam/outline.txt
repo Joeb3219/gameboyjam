@@ -23,6 +23,16 @@ LEFT TO DO (MAIN):
 	- Minimap (xxmarekxx_x)
 	- Battlelog (xxmarekxx_x)
 	- Chest closed sprite (ro88ie)
+	- Improve dialogue system
+		- Multiple lines
+		- Add multiple phrases/multi-line dialogue to mobs
+		- Integrate "GameMessage" class into "scrollable" (click A to see next box) dialogue box.
+	- Level transition system (Enter point to get to next level)
+	- Main/Loading menu
+	- Save/load states
+	- Add inventory interactions
+		- Press A button while hovering item
+			- Drop, Use 1, Use all, Examine
 	
 	
 BATTLE SYSTEM:

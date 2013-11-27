@@ -30,7 +30,6 @@ import com.charredgames.game.gbjam.inventory.Item;
  * @author joeb3219 <joe@charredgames.com>
  * @since Nov 3, 2013
  */
-@SuppressWarnings("unused")
 public class Level {
 
 	protected int width, height;

@@ -60,6 +60,7 @@ public class GBJam extends Canvas implements Runnable{
 	public static boolean showBottomHUD = false;
 	public static Mob BHUD_TARGET;
 	private static GameState gameState = GameState.GAME;
+	private static PauseState selectedPauseState = PauseState.NULL, activatedPauseState = PauseState.NULL;
 	public static GameEvent currentEvent = GameEvent.NULL;
 	Font defaultFont;
 	
@@ -71,16 +72,33 @@ public class GBJam extends Canvas implements Runnable{
 		if(gameState == GameState.GAME && !showBottomHUD && Controller.tickCount %2 == 1){
 			player.update();
 			Controller.updateMobs(level);
-		}
-		else if(gameState == GameState.INVENTORY){
+		}		
+		else if(activatedPauseState == PauseState.INVENTORY){
 			if(keyboard.down) player.getInventory().scrollDown();
 			else if(keyboard.up) player.getInventory().scrollUp();
 			else if(keyboard.right) player.getInventory().scrollRight();
 			else if(keyboard.left) player.getInventory().scrollLeft();
+			else if(keyboard.start) activatedPauseState = PauseState.NULL; 
 		}
-		if(!showBottomHUD && keyboard.start && (Controller.tickCount%2 == 0)){
-			if(gameState == GameState.INVENTORY) gameState = GameState.GAME;
-			else gameState = GameState.INVENTORY;
+		else if(selectedPauseState != PauseState.NULL && activatedPauseState == PauseState.NULL){
+			if(keyboard.down) selectedPauseState = Controller.getNextPauseState(selectedPauseState);
+			else if(keyboard.up) selectedPauseState = Controller.getLastPauseState(selectedPauseState);
+			else if(keyboard.a) activatedPauseState = selectedPauseState;
+			if(activatedPauseState == PauseState.RESUME){
+				gameState = GameState.GAME;
+				selectedPauseState = PauseState.NULL;
+				activatedPauseState = PauseState.NULL;
+			}
+		}
+		if(!showBottomHUD && keyboard.start && activatedPauseState == PauseState.NULL &&(Controller.tickCount%2 == 0)){
+			if(selectedPauseState == PauseState.NULL) {
+				selectedPauseState = PauseState.RESUME;
+				gameState = GameState.INVENTORY;
+			}
+			else{
+				gameState = GameState.GAME;
+				selectedPauseState = PauseState.NULL;
+			}
 			if(keyboard.a) keyboard.a = false;
 			if(keyboard.b) keyboard.b = false;
 		}
@@ -116,7 +134,9 @@ public class GBJam extends Canvas implements Runnable{
 		
 		loadHUD();
 		
-		if(gameState == GameState.INVENTORY) loadInventory();
+		if(activatedPauseState == PauseState.INVENTORY) loadInventory();
+		
+		if(selectedPauseState != PauseState.NULL && activatedPauseState == PauseState.NULL) drawPauseMenu(); 
 		
 		if(showBottomHUD) {
 			loadBottomHUD();
@@ -138,6 +158,23 @@ public class GBJam extends Canvas implements Runnable{
 		}
 		
 		buffer.show();
+	}
+	
+	private void drawPauseMenu(){
+		g.setColor(Color.GRAY);
+		int xPos = 150;
+		int width = (window.getWidth()) - (xPos*2);
+		int breakConstant = 60;
+		int yPos = HUDHeight + breakConstant;
+		g.fillRect(xPos, yPos, width, window.getHeight() - HUDHeight - (breakConstant * 3));
+		g.setColor(Color.WHITE);
+		g.setFont(new Font(Font.DIALOG, Font.BOLD, 16));
+		for(PauseState state : Controller.pauseStates){
+			yPos += 25;
+			if(selectedPauseState == state) g.setColor(Color.RED);
+			else g.setColor(Color.WHITE);
+			g.drawString(state.getOutput(), xPos + 15, yPos);
+		}
 	}
 	
 	private void loadBattleScreen(){

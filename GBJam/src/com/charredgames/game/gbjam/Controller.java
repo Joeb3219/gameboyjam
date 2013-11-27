@@ -19,6 +19,7 @@ public class Controller {
 	public static Map<Integer, Tile> tileColours = new HashMap<Integer, Tile>();
 	public static ArrayList<Mob> mobs = new ArrayList<Mob>();
 	public static ArrayList<BattleMove> moves = new ArrayList<BattleMove>();
+	public static ArrayList<PauseState> pauseStates = new ArrayList<PauseState>();
 	
 	public static boolean soundOn = true;
 	public static int money = 0;
@@ -71,6 +72,28 @@ public class Controller {
 		int position = moves.indexOf(currentMove);
 		if(position - 1 >= 0) return moves.get(position - 1);
 		return BattleMove.RUN;
+	}
+	
+	public static void addPauseState(PauseState state){
+		pauseStates.add(state);
+	}
+	
+	public static PauseState getNextPauseState(PauseState current){
+		int nextPost = pauseStates.indexOf(current) + 1;
+		PauseState next = PauseState.NULL;
+		if(pauseStates.size() > nextPost) next = pauseStates.get(nextPost);
+		else next = pauseStates.get(0);
+		if(next == PauseState.NULL)  return PauseState.RESUME;
+		return next;
+	}
+	
+	public static PauseState getLastPauseState(PauseState current){
+		int lastPost = pauseStates.indexOf(current) - 1;
+		PauseState next = PauseState.NULL;
+		if(lastPost >= 0) next = pauseStates.get(lastPost);
+		else next = pauseStates.get(pauseStates.size() - 2);
+		if(next == PauseState.NULL)  return PauseState.RESUME;
+		return next;
 	}
 	
 }

@@ -115,7 +115,7 @@ public class Player extends Mob{
 			if(input.a && tileDistance(x, y, mob.getX(), mob.getY()) == 1){
 				if(isFacing(direction, x, y, mob.getX(), mob.getY()) || (!mob.didLose() && mob.getMood() == MobMood.AGRESSIVE && isFacing(mob.getDirection(), mob.getX(), y, x, mob.getY()))){
 					GBJam.setHUDMob(mob);
-					gbjam.showBottomHUD = true;
+					GBJam.showBottomHUD = true;
 					mob.face(this.direction);
 					if(!mob.didLose() && mob.getMood() != MobMood.PASSIVE) battle(mob);
 					return true;
@@ -125,13 +125,13 @@ public class Player extends Mob{
 				if(isFacing(mob.getDirection(), mob.getX(), y, x, mob.getY()) && !solidInWay(mob, x, y)){
 					GBJam.setHUDMob(mob);
 					mob.face(this.direction);
-					gbjam.showBottomHUD = true;
+					GBJam.showBottomHUD = true;
 					battle(mob);
 					return true;
 				}
 			}
 		}
-		gbjam.showBottomHUD = false;
+		GBJam.showBottomHUD = false;
 		return false;
 	}
 
@@ -156,10 +156,10 @@ public class Player extends Mob{
 				ticks++;
 				delta--;
 				//Actual battle move code.
-				if(tileDistance(x, y, mob.getX(), mob.getY()) > 1 || gbjam.showBottomHUD){
+				if(tileDistance(x, y, mob.getX(), mob.getY()) > 1 || GBJam.showBottomHUD){
 					if(tileDistance(x, y, mob.getX(), mob.getY()) > 1) mob.moveTowards(mob, this.x, this.y);
 					else{
-						if(input.a) gbjam.showBottomHUD = false;
+						if(input.a) GBJam.showBottomHUD = false;
 						continue;
 					}
 					continue;
