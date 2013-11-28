@@ -232,6 +232,18 @@ public class Mob extends Entity implements Cloneable{
 		return defense;
 	}
 	
+	public void setStrength(int num){
+		strength += num;
+	}
+	
+	public void setDexterity(int num){
+		dexterity += num;
+	}
+	
+	public void setDefense(int num){
+		defense += num;
+	}
+	
 	public int getDefaultHealth(){
 		return defaultHealth;
 	}

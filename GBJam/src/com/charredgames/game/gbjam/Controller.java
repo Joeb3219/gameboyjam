@@ -8,7 +8,9 @@ import com.charredgames.game.gbjam.battle.BattleMove;
 import com.charredgames.game.gbjam.entity.Mob;
 import com.charredgames.game.gbjam.graphics.Screen;
 import com.charredgames.game.gbjam.graphics.Tile;
+import com.charredgames.game.gbjam.inventory.InventoryState;
 import com.charredgames.game.gbjam.level.Level;
+import com.charredgames.game.gbjam.message.MessageSector;
 
 /**
  * @author joeb3219 <joe@charredgames.com>
@@ -20,8 +22,10 @@ public class Controller {
 	public static ArrayList<Mob> mobs = new ArrayList<Mob>();
 	public static ArrayList<BattleMove> moves = new ArrayList<BattleMove>();
 	public static ArrayList<PauseState> pauseStates = new ArrayList<PauseState>();
+	public static ArrayList<InventoryState> inventoryStates = new ArrayList<InventoryState>();
+	public static ArrayList<MessageSector> messageSectors = new ArrayList<MessageSector>();
 	
-	public static boolean soundOn = true;
+	public static boolean soundOn = false;
 	public static int money = 0;
 	public static int tickCount = 0;
 
@@ -72,6 +76,22 @@ public class Controller {
 		int position = moves.indexOf(currentMove);
 		if(position - 1 >= 0) return moves.get(position - 1);
 		return BattleMove.RUN;
+	}
+	
+	public static void addMessageSector(MessageSector sector){
+		messageSectors.add(sector);
+	}
+	
+	public static MessageSector getNextUnusedSector(){
+		for(MessageSector sector : messageSectors){
+			if(!sector.hasDisplayed()) return sector;
+		}
+		
+		return null;
+	}
+	
+	public static void addInventoryState(InventoryState state){
+		inventoryStates.add(state);
 	}
 	
 	public static void addPauseState(PauseState state){

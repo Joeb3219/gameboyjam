@@ -30,10 +30,10 @@ LEFT TO DO (MAIN):
 	- Level transition system (Enter point to get to next level)
 	- Main/Loading menu
 	- Save/load states
-	- Add inventory interactions
+!	- Add inventory interactions
 		- Press A button while hovering item
 			- Drop, Use 1, Use all, Examine
-	
+	- Refactor the tick/update method.
 	
 BATTLE SYSTEM:
 ==============

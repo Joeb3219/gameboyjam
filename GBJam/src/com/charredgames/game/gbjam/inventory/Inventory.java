@@ -12,7 +12,8 @@ public class Inventory {
 
 	private Map<Integer, InventorySlot> slots = new LinkedHashMap<Integer, InventorySlot>(); //Controlls Inventory slots
 	private InventorySlot selectedSlot = new InventorySlot(Item.SWORD, 1);
-	private InventoryState state = InventoryState.NULL;
+	private InventoryState state = InventoryState.USE;
+	public boolean showMenu = false, activated = false;
 	
 	public Inventory(){
 		for(int i = 1; i <= 40; i++) slots.put(i, null);
@@ -169,6 +170,7 @@ public class Inventory {
 	}
 	
 	public InventorySlot scrollDown(){
+		resetState();
 		if(isEmpty()) return selectedSlot;
 		int currentSlot = getSlot(selectedSlot.getItem());
 		int col = getCol(currentSlot);
@@ -185,6 +187,7 @@ public class Inventory {
 	}
 	
 	public InventorySlot scrollUp(){
+		resetState();
 		if(isEmpty()) return selectedSlot;
 		int currentSlot = getSlot(selectedSlot.getItem());
 		int col = getCol(currentSlot);
@@ -201,6 +204,7 @@ public class Inventory {
 	}
 
 	public InventorySlot scrollRight(){
+		resetState();
 		if(isEmpty()) return selectedSlot;
 		int currentSlot = getSlot(selectedSlot.getItem());
 		if(currentSlot >= ((getCol(getLastFullSlot()) * 7) - 6) && currentSlot <= (getCol(getLastFullSlot()) * 7)){
@@ -215,6 +219,7 @@ public class Inventory {
 	}
 	
 	public InventorySlot scrollLeft(){
+		resetState();
 		if(isEmpty()) return selectedSlot;
 		int currentSlot = getSlot(selectedSlot.getItem());
 		if(currentSlot >= 1 && currentSlot <= 7){
@@ -246,6 +251,26 @@ public class Inventory {
 	
 	public void setState(InventoryState state){
 		this.state = state;
+	}
+	
+	public void resetState(){
+		this.state = InventoryState.USE;
+		showMenu = false;
+		activated = false;
+	}
+	
+	public void getNextState(){
+		if(state == InventoryState.USE) state =   InventoryState.USE_ALL;
+		else if(state == InventoryState.USE_ALL) state =   InventoryState.EXAMINE;
+		else if(state == InventoryState.EXAMINE) state =   InventoryState.DROP;
+		else state =  InventoryState.USE;
+	}
+	
+	public void getPreviousState(){
+		if(state == InventoryState.DROP) state =   InventoryState.EXAMINE;
+		else if(state == InventoryState.EXAMINE) state =   InventoryState.USE_ALL;
+		else if(state == InventoryState.USE_ALL) state =   InventoryState.USE;
+		else state =  InventoryState.DROP;
 	}
 
 }

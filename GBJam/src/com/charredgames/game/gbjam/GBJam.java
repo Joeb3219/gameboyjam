@@ -17,14 +17,20 @@ import com.charredgames.game.gbjam.battle.Battle;
 import com.charredgames.game.gbjam.battle.BattleMove;
 import com.charredgames.game.gbjam.entity.Chest;
 import com.charredgames.game.gbjam.entity.Mob;
-import com.charredgames.game.gbjam.entity.MobType;
 import com.charredgames.game.gbjam.entity.Player;
 import com.charredgames.game.gbjam.graphics.GameImage;
 import com.charredgames.game.gbjam.graphics.Screen;
+import com.charredgames.game.gbjam.inventory.Inventory;
 import com.charredgames.game.gbjam.inventory.InventorySlot;
+import com.charredgames.game.gbjam.inventory.InventoryState;
 import com.charredgames.game.gbjam.inventory.Item;
+import com.charredgames.game.gbjam.inventory.ItemType;
 import com.charredgames.game.gbjam.level.Building;
 import com.charredgames.game.gbjam.level.Level;
+import com.charredgames.game.gbjam.message.Message;
+import com.charredgames.game.gbjam.message.MessageBlock;
+import com.charredgames.game.gbjam.message.MessageSector;
+import com.charredgames.game.gbjam.message.MessageType;
 
 /**
  * @author joeb3219 <joe@charredgames.com>
@@ -63,22 +69,36 @@ public class GBJam extends Canvas implements Runnable{
 	private static PauseState selectedPauseState = PauseState.NULL, activatedPauseState = PauseState.NULL;
 	public static GameEvent currentEvent = GameEvent.NULL;
 	Font defaultFont;
+	private static MessageSector currentSector = null;
 	
 	public void tick(){
 		Controller.update();
 		keyboard.update();
 		GameMessage.updateMessages();
 		GameEvent.updateCounter();
+		currentSector = Controller.getNextUnusedSector();
+		if(currentSector != null && currentSector.getNextBlock() != null) showBottomHUD = true;
+		else showBottomHUD = false;
+		
 		if(gameState == GameState.GAME && !showBottomHUD && Controller.tickCount %2 == 1){
 			player.update();
 			Controller.updateMobs(level);
 		}		
 		else if(activatedPauseState == PauseState.INVENTORY){
-			if(keyboard.down) player.getInventory().scrollDown();
-			else if(keyboard.up) player.getInventory().scrollUp();
-			else if(keyboard.right) player.getInventory().scrollRight();
-			else if(keyboard.left) player.getInventory().scrollLeft();
-			else if(keyboard.start || keyboard.b) activatedPauseState = PauseState.NULL; 
+			if(!player.getInventory().showMenu){
+				if(keyboard.down) player.getInventory().scrollDown();
+				else if(keyboard.up) player.getInventory().scrollUp();
+				else if(keyboard.right) player.getInventory().scrollRight();
+				else if(keyboard.left) player.getInventory().scrollLeft();
+				else if(keyboard.start || keyboard.b) activatedPauseState = PauseState.NULL;
+				else if(keyboard.a) player.getInventory().showMenu = true;
+			}
+			else{
+				if(keyboard.down) player.getInventory().getNextState();
+				else if(keyboard.up) player.getInventory().getPreviousState();
+				else if(keyboard.start || keyboard.b) player.getInventory().showMenu = false;
+				if(keyboard.a && currentEvent == GameEvent.NULL) playerInventoryUpdate();
+			}
 		}
 		else if(selectedPauseState != PauseState.NULL && activatedPauseState == PauseState.NULL){
 			if(keyboard.down) selectedPauseState = Controller.getNextPauseState(selectedPauseState);
@@ -103,9 +123,52 @@ public class GBJam extends Canvas implements Runnable{
 			if(keyboard.b) keyboard.b = false;
 		}
 		if(showBottomHUD){
-			if(GBJam.BHUD_TARGET.getType() == MobType.DOCTOR) player.heal(20);
+			if(currentSector == null) {
+				currentSector = Controller.getNextUnusedSector();
+				return;
+			}
+			if(currentSector != null && keyboard.a && Controller.tickCount % 2 == 0) currentSector.toggleCurrentBlock();
+			if(currentSector.getNextBlock() == null) currentSector = Controller.getNextUnusedSector();
+			//if(GBJam.BHUD_TARGET.getType() == MobType.DOCTOR) player.heal(20);
 		}
-		if(keyboard.a && showBottomHUD && Controller.tickCount % 2 == 0) showBottomHUD = false;
+		if(keyboard.a && showBottomHUD && (Controller.getNextUnusedSector() == null) && Controller.tickCount % 2 == 0) showBottomHUD = false;
+	}
+	
+	private void playerInventoryUpdate(){
+		Inventory inventory = player.getInventory();
+		Item selectedItem = inventory.getSelectedItem().getItem();
+		int quantity = inventory.getSelectedItem().getQuantity();
+		InventoryState state = inventory.getState();
+		inventory.showMenu = false;
+		
+		if(state == InventoryState.DROP){
+			if(selectedItem.isDroppable()) inventory.removeItem(selectedItem, quantity);
+			else System.out.println("You cannot drop that item!");
+		}
+		else if(state == InventoryState.EXAMINE) System.out.println(selectedItem.getName()); 
+		else if(state == InventoryState.USE || state == InventoryState.USE_ALL){
+			if(selectedItem.getType() == ItemType.EDIBLE || selectedItem.getType() == ItemType.POTION || selectedItem.getType() == ItemType.HEARTPIECE){
+				int use = 1;
+				if(state == InventoryState.USE_ALL) use = quantity;
+				if(selectedItem.getType() == ItemType.EDIBLE && player.getHealth() < player.getDefaultHealth()){
+					if(use > 1) use = player.getDefaultHealth() / selectedItem.getValue();
+					player.heal(selectedItem.getValue() * use);
+					inventory.removeItem(selectedItem, use);
+					new Message("You ate " + use + " of " + selectedItem.getName(), MessageType.ITEM_USAGE);
+					new GameMessage("You ate " + use + " of " + selectedItem.getName());
+					GameEvent.setEvent(GameEvent.EATING);
+				}
+				else if(selectedItem.getType() == ItemType.POTION){
+					if(selectedItem == Item.STRENGTH_POTION) player.setStrength(Item.STRENGTH_POTION.getValue() * use);
+					if(selectedItem == Item.DEXTERITY_POTION) player.setDexterity(Item.DEXTERITY_POTION.getValue() * use);
+					if(selectedItem == Item.DEFENSE_POTION) player.setDefense(Item.DEFENSE_POTION.getValue() * use);
+					new GameMessage("You drank " + use + " of " + selectedItem.getName());
+					inventory.removeItem(selectedItem, use);
+					GameEvent.setEvent(GameEvent.EATING);
+				}
+			}
+			else System.out.println("You cannot use that now!");
+		}
 	}
 	
 	public void render(){
@@ -270,14 +333,15 @@ public class GBJam extends Canvas implements Runnable{
 	}
 	
 	private void loadInventory(){
+		Inventory inventory = player.getInventory();
 		g.setColor(new Color(97, 97, 97, 200));
 		int xPos = 20;//(getWindowWidth()/2)-150;
 		int width = (window.getWidth()) - (xPos*2);
 		int yPos = HUDHeight + 20;
 		g.fillRect(xPos, yPos, width, window.getHeight()- HUDHeight - 40);
-		Item selectedItem = player.getInventory().getSelectedItem().getItem();
-		int quantity = 0;
-		for(Entry<Integer, InventorySlot> entry : player.getInventory().getSlots().entrySet()){
+		Item selectedItem = inventory.getSelectedItem().getItem();
+		int quantity = 0, selectedXPos = 0, selectedYPos = 0;
+		for(Entry<Integer, InventorySlot> entry : inventory.getSlots().entrySet()){
 			if(yPos >= (7 * 48) + HUDHeight){
 				yPos = HUDHeight + 20;
 				xPos += 48;
@@ -288,9 +352,10 @@ public class GBJam extends Canvas implements Runnable{
 			if(selectedItem == item){
 				g.setColor(Color.LIGHT_GRAY);
 				g.fillRect(xPos, yPos, 48, 48);
+				selectedXPos = xPos;
+				selectedYPos = yPos;
 			}
 			g.drawImage(item.getImage().getImage(), xPos + 10, yPos, item.getImage().getImage().getWidth() * 2, item.getImage().getImage().getHeight() * 2, null);
-			//if(amount > 1) g.drawString("" + amount, xPos + 30, yPos + 12);
 			yPos += 48;
 		}
 		g.setColor(Color.DARK_GRAY);
@@ -299,14 +364,32 @@ public class GBJam extends Canvas implements Runnable{
 		g.setColor(Color.WHITE);
 		if(quantity > 1) g.drawString(selectedItem.getName() + " x" + quantity, (window.getWidth() - g.getFontMetrics().stringWidth(selectedItem.getName() + " x" + quantity))/2, (window.getHeight() - 70) + (70/2 + g.getFontMetrics().getHeight())/2);
 		else g.drawString(selectedItem.getName(), (window.getWidth() - g.getFontMetrics().stringWidth(selectedItem.getName()))/2, (window.getHeight() - 70) + (70/2 + g.getFontMetrics().getHeight())/2);
+	
+		//Draw the usage pane
+		if(inventory.showMenu){
+			g.setColor(Color.GRAY);
+			g.fillRect(selectedXPos + 15, selectedYPos + 15, 60, 65);
+			for(InventoryState state : Controller.inventoryStates){
+				if(inventory.getState() == state) g.setColor(Color.RED);
+				else g.setColor(Color.WHITE);
+				selectedYPos += 15;
+				g.drawString(state.getName(), selectedXPos + 20, selectedYPos + 15);
+			}
+		}
 	}
 
 	private static void loadBottomHUD(){
+		if(currentSector == null) currentSector = Controller.getNextUnusedSector();
+		if(currentSector == null) return;
+		//if(currentSector.getNextBlock() == null) return;
 		g.setColor(new Color(44, 44, 44, 255));
 		g.fillRect(0, window.getHeight() - HUD_BOTTOM_Height, getWindowWidth(), HUD_BOTTOM_Height);
 		g.setColor(Color.WHITE);
-		if(!BHUD_TARGET.didLose()) g.drawString(BHUD_TARGET.getType().getTypeName() + " " + BHUD_TARGET.getName() + " : " + BHUD_TARGET.getPhrase(), 10,(window.getHeight() - HUD_BOTTOM_Height) + 20 );
-		else g.drawString(BHUD_TARGET.getType().getTypeName() + " " + BHUD_TARGET.getName() + " : " + BHUD_TARGET.getLosingPhrase(), 10,(window.getHeight() - HUD_BOTTOM_Height) + 20 );
+		MessageBlock block = currentSector.getNextBlock();
+		System.out.println(block.getText() + " G");
+		g.drawString(block.getText(), 10, (window.getHeight() - HUD_BOTTOM_Height) + 20);
+		//if(!BHUD_TARGET.didLose()) g.drawString(BHUD_TARGET.getType().getTypeName() + " " + BHUD_TARGET.getName() + " : " + BHUD_TARGET.getPhrase(), 10,(window.getHeight() - HUD_BOTTOM_Height) + 20 );
+		//else g.drawString(BHUD_TARGET.getType().getTypeName() + " " + BHUD_TARGET.getName() + " : " + BHUD_TARGET.getLosingPhrase(), 10,(window.getHeight() - HUD_BOTTOM_Height) + 20 );
 	}
 	
 	private void loadHUD(){

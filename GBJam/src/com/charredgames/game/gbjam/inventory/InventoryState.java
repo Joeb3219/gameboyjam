@@ -1,5 +1,7 @@
 package com.charredgames.game.gbjam.inventory;
 
+import com.charredgames.game.gbjam.Controller;
+
 public enum InventoryState {
 
 	/*
@@ -12,6 +14,11 @@ public enum InventoryState {
 	
 	private InventoryState(String name){
 		this.name = name;
+		Controller.addInventoryState(this);
+	}
+	
+	public String getName(){
+		return name;
 	}
 	
 }
