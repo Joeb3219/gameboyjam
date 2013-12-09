@@ -40,6 +40,7 @@ public class Level {
 	protected int martX, martY = -1000;
 	
 	public static Level spawnLevel = new Level("/levels/spawnlevel");
+	public static Level testificate = new Level("/levels/testificate");
 	
 	public Level(String path){
 		loadMap(path + "/map.png");

@@ -1,0 +1,158 @@
+<?xml version ="1.0"?>
+
+<level>
+
+	<chest>
+		<position x = "4" y = "4"/>
+			<item id = "0" quantity = "5"> </item>
+			<item id = "1" quantity = "5"> </item>
+			<item id = "2" quantity = "5"> </item>
+			<item id = "3" quantity = "2"> </item>
+			<item id = "4" quantity = "5"> </item>
+			<item id = "5" quantity = "5"> </item>
+			<item id = "6" quantity = "2"> </item>
+			<item id = "7" quantity = "5"> </item>
+			<item id = "8" quantity = "5"> </item>
+	</chest>
+	<chest>
+		<position x = "10" y = "10"/>
+			<item id = "2" quantity = "5"/>
+			<item id = "3" quantity = "6"/>
+	</chest>
+	<chest>
+		<position x = "3" y = "10"/>
+			<item id = "2" quantity = "3"/>
+			<item id = "3" quantity = "1"/>
+	</chest>
+	<chest>
+		<position x = "5" y = "6"/>
+			<item id = "5" quantity = "7"/>
+	</chest>
+	<chest>
+		<position x = "5" y = "4"/>
+			<item id = "5" quantity = "7"/>
+	</chest>
+	<chest>
+		<position x = "6" y = "10"/>
+			<item id = "3" quantity = "7"/>
+	</chest>
+	<chest>
+		<position x = "11" y = "10"/>
+			<item id = "3" quantity = "7"/>
+	</chest>
+	<chest>
+		<position x = "16" y = "6"/>
+			<item id = "0" quantity = "5"> </item>
+			<item id = "1" quantity = "5"> </item>
+			<item id = "2" quantity = "5"> </item>
+			<item id = "3" quantity = "2"> </item>
+			<item id = "4" quantity = "5"> </item>
+			<item id = "5" quantity = "5"> </item>
+			<item id = "6" quantity = "2"> </item>
+			<item id = "7" quantity = "5"> </item>
+			<item id = "8" quantity = "5"> </item>
+	</chest>
+	<chest>
+		<position x = "17" y = "6"/>
+			<item id = "0" quantity = "5"> </item>
+			<item id = "1" quantity = "5"> </item>
+			<item id = "2" quantity = "5"> </item>
+			<item id = "3" quantity = "2"> </item>
+			<item id = "4" quantity = "5"> </item>
+			<item id = "5" quantity = "5"> </item>
+			<item id = "6" quantity = "2"> </item>
+			<item id = "7" quantity = "5"> </item>
+			<item id = "8" quantity = "5"> </item>
+	</chest>
+	
+	
+	<mob>
+		<position x = "5" y = "5" direction = "2"/>
+		<data mobType = "salesman" health = "30" money = "100"/>
+		<movement turns = "true" xMovement = "2" yMovement = "3"/>
+		<info name = "Bob" phrase = "Hello, do you like pie?" losingPhrase = "I'll get you next time!"/>
+	</mob>
+	<mob>
+		<position x = "10" y = "10" direction = "3"/>
+		<data mobType = "salesman" health = "30" money = "300"/>
+		<movement turns = "true" xMovement = "2" yMovement = "3"/>
+		<info name = "George" phrase = "What's up?" losingPhrase = "I almost won!"/>
+	</mob>
+	<mob>
+		<position x = "5" y = "10" direction = "1"/>
+		<data mobType = "salesman" health = "30" money = "265"/>
+		<movement turns = "true" xMovement = "4" yMovement = "4"/>
+		<info name = "Youngster" phrase = "I like shorts! They're comfy and easy to wear!" losingPhrase = "I let you win!"/>
+	</mob>
+	
+	<mob>
+		<position x = "15" y = "5" direction = "3"/>
+		<data mobType = "youngster" health = "30" money = "265"/>
+		<movement turns = "false" xMovement = "0" yMovement = "0"/>
+		<info name = "Jordan" phrase = "I like shorts! They're comfy and easy to wear!" losingPhrase = "I let you win!"/>
+	</mob>
+	<mob>
+		<position x = "15" y = "6" direction = "3"/>
+		<data mobType = "youngster" health = "30" money = "265"/>
+		<movement turns = "false" xMovement = "0" yMovement = "0"/>
+		<info name = "Jordan2" phrase = "I like shorts! They're comfy and easy to wear!" losingPhrase = "I let you win!"/>
+	</mob>
+	<mob>
+		<position x = "15" y = "7" direction = "3"/>
+		<data mobType = "youngster" health = "30" money = "265"/>
+		<movement turns = "false" xMovement = "0" yMovement = "0"/>
+		<info name = "Jordy" phrase = "I like shorts! They're comfy and easy to wear!" losingPhrase = "I let you win!"/>
+	</mob>
+	<mob>
+		<position x = "18" y = "5" direction = "1"/>
+		<data mobType = "youngster" health = "30" money = "265"/>
+		<movement turns = "false" xMovement = "0" yMovement = "0"/>
+		<info name = "Jordanson" phrase = "I like shorts! They're comfy and easy to wear!" losingPhrase = "I let you win!"/>
+	</mob>
+	<mob>
+		<position x = "18" y = "6" direction = "1"/>
+		<data mobType = "youngster" health = "30" money = "265"/>
+		<movement turns = "false" xMovement = "0" yMovement = "0"/>
+		<info name = "JordanGangster" phrase = "I like shorts! They're comfy and easy to wear!" losingPhrase = "I let you win!"/>
+	</mob>
+	<mob>
+		<position x = "18" y = "7" direction = "1"/>
+		<data mobType = "youngster" health = "30" money = "265"/>
+		<movement turns = "false" xMovement = "0" yMovement = "0"/>
+		<info name = "Jordan3" phrase = "I like shorts! They're comfy and easy to wear!" losingPhrase = "I let you win!"/>
+	</mob>
+	<mob>
+		<position x = "16" y = "5" direction = "0"/>
+		<data mobType = "youngster" health = "30" money = "265"/>
+		<movement turns = "false" xMovement = "0" yMovement = "0"/>
+		<info name = "Jordan4" phrase = "I like shorts! They're comfy and easy to wear!" losingPhrase = "I let you win!"/>
+	</mob>
+	<mob>
+		<position x = "17" y = "5" direction = "0"/>
+		<data mobType = "youngster" health = "30" money = "265"/>
+		<movement turns = "false" xMovement = "0" yMovement = "0"/>
+		<info name = "Jordan5" phrase = "I like shorts! They're comfy and easy to wear!" losingPhrase = "I let you win!"/>
+	</mob>
+	<mob>
+		<position x = "30" y = "5" direction = "0"/>
+		<data mobType = "biker" health = "30" money = "600"/>
+		<movement turns = "false" xMovement = "2" yMovement = "2"/>
+		<info name = "Chad" phrase = "I bet my bike is stronger than yours!" losingPhrase = "I can't believe you won!"/>
+	</mob>
+	<mob>
+		<position x = "36" y = "8" direction = "0"/>
+		<data mobType = "biker" health = "30" money = "600"/>
+		<movement turns = "false" xMovement = "2" yMovement = "2"/>
+		<info name = "Tom" phrase = "My bike costs $10,000!" losingPhrase = "Get out of here, kid!"/>
+	</mob>
+	
+	
+	
+	<building id = "hospital">
+		<position x = "2" y = "9"/>
+	</building>
+	<building id = "mart">
+		<position x = "9" y = "9"/>
+	</building>
+	
+</level>

@@ -36,7 +36,7 @@ public class MessageSector {
 	public void toggleCurrentBlock(){
 		MessageBlock currentBlock = getNextBlock();
 		for(MessageBlock block : blocks){
-			if(block == currentBlock) block.toggleDisplayed(false);
+			if(block == currentBlock) block.toggleDisplayed(true);
 		}
 	}
 	

@@ -60,7 +60,8 @@ public class GBJam extends Canvas implements Runnable{
 	private Screen screen;
 	private static Keyboard keyboard;
 	private static Player player;
-	private static Level level = Level.spawnLevel, pastLevel = Level.spawnLevel;
+	//private static Level level = Level.spawnLevel, pastLevel = Level.spawnLevel;
+	private static Level level = Level.testificate, pastLevel = Level.testificate;
 	public static final int HUDHeight = 40;
 	private static int HUD_BOTTOM_Height = 60;
 	public static boolean showBottomHUD = false;
@@ -77,8 +78,21 @@ public class GBJam extends Canvas implements Runnable{
 		GameMessage.updateMessages();
 		GameEvent.updateCounter();
 		currentSector = Controller.getNextUnusedSector();
+		//System.out.println(currentSector);
 		if(currentSector != null && currentSector.getNextBlock() != null) showBottomHUD = true;
 		else showBottomHUD = false;
+		
+		if(showBottomHUD){
+			//if(currentSector == null) {
+			//	currentSector = Controller.getNextUnusedSector();
+			//	return;
+			//}
+			System.out.println(currentSector + " " + currentSector.getNextBlock());
+			//if(currentSector != null && keyboard.a && Controller.tickCount % 2 == 0) currentSector.toggleCurrentBlock();
+			//if(currentSector.getNextBlock() == null) currentSector = Controller.getNextUnusedSector();
+			//if(GBJam.BHUD_TARGET.getType() == MobType.DOCTOR) player.heal(20);
+			return;
+		}
 		
 		if(gameState == GameState.GAME && !showBottomHUD && Controller.tickCount %2 == 1){
 			player.update();
@@ -122,16 +136,8 @@ public class GBJam extends Canvas implements Runnable{
 			if(keyboard.a) keyboard.a = false;
 			if(keyboard.b) keyboard.b = false;
 		}
-		if(showBottomHUD){
-			if(currentSector == null) {
-				currentSector = Controller.getNextUnusedSector();
-				return;
-			}
-			if(currentSector != null && keyboard.a && Controller.tickCount % 2 == 0) currentSector.toggleCurrentBlock();
-			if(currentSector.getNextBlock() == null) currentSector = Controller.getNextUnusedSector();
-			//if(GBJam.BHUD_TARGET.getType() == MobType.DOCTOR) player.heal(20);
-		}
-		if(keyboard.a && showBottomHUD && (Controller.getNextUnusedSector() == null) && Controller.tickCount % 2 == 0) showBottomHUD = false;
+		
+		//if(keyboard.a && showBottomHUD && (Controller.getNextUnusedSector() == null) && Controller.tickCount % 2 == 0) showBottomHUD = false;
 	}
 	
 	private void playerInventoryUpdate(){
@@ -379,17 +385,13 @@ public class GBJam extends Canvas implements Runnable{
 	}
 
 	private static void loadBottomHUD(){
-		if(currentSector == null) currentSector = Controller.getNextUnusedSector();
 		if(currentSector == null) return;
-		//if(currentSector.getNextBlock() == null) return;
 		g.setColor(new Color(44, 44, 44, 255));
 		g.fillRect(0, window.getHeight() - HUD_BOTTOM_Height, getWindowWidth(), HUD_BOTTOM_Height);
 		g.setColor(Color.WHITE);
 		MessageBlock block = currentSector.getNextBlock();
 		System.out.println(block.getText() + " G");
 		g.drawString(block.getText(), 10, (window.getHeight() - HUD_BOTTOM_Height) + 20);
-		//if(!BHUD_TARGET.didLose()) g.drawString(BHUD_TARGET.getType().getTypeName() + " " + BHUD_TARGET.getName() + " : " + BHUD_TARGET.getPhrase(), 10,(window.getHeight() - HUD_BOTTOM_Height) + 20 );
-		//else g.drawString(BHUD_TARGET.getType().getTypeName() + " " + BHUD_TARGET.getName() + " : " + BHUD_TARGET.getLosingPhrase(), 10,(window.getHeight() - HUD_BOTTOM_Height) + 20 );
 	}
 	
 	private void loadHUD(){

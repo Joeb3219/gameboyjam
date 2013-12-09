@@ -1,0 +1,3 @@
+public static final Tile tile16 = new Tile("0xFF000016", false);
+public static final Tile tile0 = new Tile("0xFF000000", false);
+public static final Tile tile15 = new Tile("0xFF000015", false);

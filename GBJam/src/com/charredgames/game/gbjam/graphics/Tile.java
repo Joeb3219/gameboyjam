@@ -19,6 +19,10 @@ public class Tile {
 	public static final Tile GRASS = new Tile(0xFF448844, Sprite.GRASS, false);
 	public static final Tile TALL_GRASS = new Tile(0xFF559955, Sprite.TALL_GRASS, false, 15);
 	
+	public static final Tile tile16 = new Tile(0xFF000010, Sprite.TALL_GRASS, false);
+	public static final Tile tile0 = new Tile(0xFF000000, Sprite.SAND, false);
+	public static final Tile tile15 = new Tile(0xFF00000f, Sprite.GRASS, false);
+	
 	public static final Tile HOSPITAL = new Tile(0xFF111111, Sprite.HOSPITAL, true);
 	public static final Tile HOSPITAL_DOOR = new Tile(0xFF8E8E8E, Sprite.HOSPITAL_13, false);
 	public static final Tile MART_DOOR = new Tile(0xFF9F9F9F, Sprite.MART_13, false);
